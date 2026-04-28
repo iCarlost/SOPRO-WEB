@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SOPRO · Sistema de Presupuestación de Obra Pública</title>
+  <meta name="description" content="SOPRO es una aplicación de escritorio para presupuestación de obra pública: presupuestos, APUs, explosión de insumos, programa de obra, reportes PDF/Excel y control de licenciamiento." />
+  <meta name="author" content="Carlos Pérez" />
+  <meta name="application-name" content="SOPRO — Sistema de Presupuestación de Obra Pública" />
+  <meta name="keywords" content="SOPRO, presupuesto de obra pública, análisis de precios unitarios, APU, programa de obra, explosión de insumos, Sinaloa, software de presupuestos" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="SOPRO · Sistema de Presupuestación de Obra Pública" />
+  <meta property="og:description" content="Presupuestos, APUs, explosión de insumos, programa de obra y reportes PDF/Excel en una aplicación de escritorio para Windows." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── tokens ─────────────────────────────────────────── */
+    :root {
+      --ink:      #0a0f1e;
+      --ink-2:    #1e293b;
+      --muted:    #64748b;
+      --muted-lt: #94a3b8;
+      --surface:  #f8fafc;
+      --card:     #ffffff;
+      --line:     #e2e8f0;
+
+      --brand:    #1447a0;
+      --brand-md: #1d64d8;
+      --brand-lt: #3b82f6;
+      --brand-glow: rgba(29,100,216,.18);
+
+      --accent:   #0ea5e9;
+      --accent-lt:#bae6fd;
+      --ok:       #10b981;
+      --amber:    #f59e0b;
+
+      --hero-bg:  #060d1f;
+      --hero-line: rgba(255,255,255,.06);
+
+      --radius:   14px;
+      --radius-sm:8px;
+      --font:     'Sora', sans-serif;
+      --mono:     'JetBrains Mono', monospace;
+    }
+
+    /* ─── reset ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+    html { scroll-behavior: smooth }
+    body {
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--surface);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--brand-md); text-decoration: none }
+    a:hover { text-decoration: underline }
+    img, svg { display: block }
+
+    /* ─── layout ──────────────────────────────────────────── */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.4rem }
+    section { padding: 5rem 0 }
+
+    /* ─── nav ─────────────────────────────────────────────── */
+    .nav-wrap {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      transition: background .3s, box-shadow .3s;
+    }
+    .nav-wrap.scrolled {
+      background: rgba(6,13,31,.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 1px 0 rgba(255,255,255,.07);
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .brand {
+      display: flex; align-items: center; gap: .65rem;
+      font-weight: 800; font-size: 1.18rem;
+      color: #fff; letter-spacing: -.3px;
+    }
+    .logo-mark {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      display: grid; place-items: center;
+      font-size: .95rem; font-weight: 900; color: #fff;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.15), 0 6px 20px rgba(29,100,216,.45);
+    }
+    .menu {
+      display: flex; gap: .25rem; align-items: center;
+    }
+    .menu a {
+      color: rgba(255,255,255,.7); font-size: .9rem; font-weight: 500;
+      padding: .45rem .75rem; border-radius: 8px;
+      transition: color .2s, background .2s;
+    }
+    .menu a:hover {
+      color: #fff; background: rgba(255,255,255,.08); text-decoration: none;
+    }
+    .menu .btn-nav {
+      background: var(--brand-md); color: #fff; font-weight: 700;
+      padding: .5rem 1rem; border-radius: 9px; margin-left: .25rem;
+    }
+    .menu .btn-nav:hover { background: var(--brand-lt); }
+
+    /* ─── hero ────────────────────────────────────────────── */
+    .hero {
+      background: var(--hero-bg);
+      color: #fff;
+      padding: 7rem 0 5.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    /* grid lines background */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--hero-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--hero-line) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+    }
+    /* glow orb */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -120px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 500px;
+      background: radial-gradient(ellipse, rgba(29,100,216,.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(29,100,216,.18);
+      border: 1px solid rgba(59,130,246,.3);
+      color: #93c5fd;
+      border-radius: 999px; padding: .35rem .85rem;
+      font-size: .82rem; font-weight: 600; letter-spacing: .4px; text-transform: uppercase;
+      margin-bottom: 1.1rem;
+    }
+    .eyebrow-dot {
+      width: 6px; height: 6px; border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1 }
+      50% { opacity: .4 }
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -.5px;
+      margin-bottom: .9rem;
+    }
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, #60a5fa, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-desc {
+      color: #94a3b8; font-size: 1.05rem; line-height: 1.7;
+      margin-bottom: 1.7rem; max-width: 480px;
+    }
+    .cta { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      border: none; border-radius: var(--radius-sm);
+      padding: .8rem 1.3rem; font-weight: 700; font-size: .95rem;
+      cursor: pointer; text-decoration: none;
+      font-family: var(--font);
+      transition: transform .15s, box-shadow .15s, background .2s;
+    }
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--brand-md); color: #fff;
+      box-shadow: 0 4px 18px rgba(29,100,216,.4);
+    }
+    .btn-primary:hover {
+      background: var(--brand-lt);
+      box-shadow: 0 6px 24px rgba(29,100,216,.55);
+    }
+    .btn-ghost {
+      background: transparent; color: #cbd5e1;
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.07); color: #fff; }
+    .btn-outline {
+      background: #fff; color: var(--ink-2);
+      border: 1px solid var(--line);
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+    .btn-outline:hover { background: var(--surface); }
+
+    /* hero stats row */
+    .hero-stats {
+      display: flex; gap: 2rem; margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .stat-item { }
+    .stat-val {
+      font-size: 1.5rem; font-weight: 800;
+      background: linear-gradient(90deg, #fff, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-lbl { color: #64748b; font-size: .8rem; margin-top: .1rem }
+
+    /* ─── app mockup ──────────────────────────────────────── */
+    .mock-wrap {
+      background: rgba(255,255,255,.97);
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.2);
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,.08),
+        0 30px 80px rgba(0,0,0,.45),
+        0 0 60px rgba(29,100,216,.12);
+      overflow: hidden;
+    }
+    .titlebar {
+      display: flex; align-items: center; gap: .4rem;
+      background: #f0f4f8;
+      border-bottom: 1px solid #dde3ea;
+      padding: .65rem .9rem;
+    }
+    .dot { width: 11px; height: 11px; border-radius: 999px; }
+    .dot-r { background: #ff5f57 }
+    .dot-y { background: #febc2e }
+    .dot-g { background: #28c840 }
+    .titlebar-title {
+      margin-left: .4rem; color: #64748b;
+      font-size: .8rem; font-weight: 500;
+      font-family: var(--mono);
+    }
+    .app-body {
+      display: grid; grid-template-columns: 148px 1fr;
+      min-height: 300px; color: var(--ink);
+    }
+    .sidebar {
+      background: #f8fafc;
+      border-right: 1px solid #e5e7eb;
+      padding: .85rem .6rem;
+    }
+    .side-label {
+      font-size: .68rem; font-weight: 700; letter-spacing: .8px;
+      text-transform: uppercase; color: #94a3b8;
+      padding: .3rem .5rem; margin-bottom: .25rem;
+    }
+    .side-item {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .82rem; color: #475569;
+      padding: .48rem .6rem; border-radius: 7px;
+      margin: .1rem 0; cursor: default;
+      transition: background .15s;
+    }
+    .side-item.active {
+      background: #dbeafe; color: #1d4ed8; font-weight: 700;
+    }
+    .side-item:not(.active):hover { background: #f1f5f9 }
+    .side-icon { font-size: .95rem }
+
+    .main-area { padding: .85rem; background: #fff; }
+    .toolbar-row {
+      display: flex; align-items: center; gap: .5rem;
+      background: #f8fafc; border: 1px solid #e2e8f0;
+      border-radius: 8px; padding: .5rem .75rem;
+      margin-bottom: .75rem; font-size: .78rem; color: #64748b;
+    }
+    .tb-btn {
+      background: #e0e7ff; color: #3730a3; border-radius: 5px;
+      padding: .2rem .55rem; font-size: .74rem; font-weight: 600;
+    }
+    .tb-sep { width: 1px; height: 14px; background: #e2e8f0; margin: 0 .15rem }
+
+    table.preview {
+      width: 100%; border-collapse: collapse; font-size: .78rem;
+    }
+    table.preview th {
+      background: #1447a0; color: #fff; text-align: left;
+      padding: .5rem .7rem; font-weight: 600; font-size: .74rem;
+      letter-spacing: .2px;
+    }
+    table.preview th:last-child, table.preview td:last-child { text-align: right }
+    table.preview td {
+      padding: .45rem .7rem; border-bottom: 1px solid #f1f5f9; color: #334155;
+    }
+    table.preview tr:hover td { background: #f8fafc }
+    .clave { font-family: var(--mono); font-size: .72rem; color: #64748b }
+    .importe { font-family: var(--mono); font-weight: 600; color: #1447a0 }
+    .total-row td { background: #f0f9ff; font-weight: 700 }
+
+    .statusbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: .65rem; padding-top: .6rem;
+      border-top: 1px solid #f1f5f9;
+      font-size: .72rem; color: #94a3b8; font-family: var(--mono);
+    }
+    .status-ok {
+      display: inline-flex; align-items: center; gap: .3rem;
+      color: var(--ok); font-weight: 600;
+    }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor }
+
+    /* ─── section headings ────────────────────────────────── */
+    .section-label {
+      display: inline-block; font-size: .75rem; font-weight: 700;
+      letter-spacing: .8px; text-transform: uppercase;
+      color: var(--brand-md); margin-bottom: .5rem;
+    }
+    h2 { font-size: clamp(1.5rem,3vw,2rem); font-weight: 800; letter-spacing: -.3px; margin-bottom: .5rem }
+    .sub { color: var(--muted); margin-bottom: 2rem; line-height: 1.6; max-width: 560px }
+
+    /* ─── feature cards ───────────────────────────────────── */
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem }
+    .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem }
+
+    .feat-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.04);
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+    .feat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,0,0,.08);
+      border-color: #bfdbfe;
+    }
+    .feat-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: #eff6ff; display: grid; place-items: center;
+      font-size: 1.2rem; margin-bottom: .9rem;
+    }
+    .feat-card h3 { font-size: 1.02rem; font-weight: 700; margin-bottom: .4rem }
+    .feat-card p { color: var(--muted); font-size: .9rem; line-height: 1.6 }
+
+    /* ─── flow steps ──────────────────────────────────────── */
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 0; position: relative;
+    }
+    .steps-grid::before {
+      content: '';
+      position: absolute; top: 26px; left: calc(16.66% + 16px);
+      right: calc(16.66% + 16px);
+      height: 2px;
+      background: linear-gradient(90deg, var(--brand-md), var(--accent));
+      opacity: .3;
+    }
+    .step-card {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 1.3rem;
+      margin: .5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.04);
+    }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 999px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-md));
+      color: #fff; font-weight: 800; font-size: .88rem;
+      display: grid; place-items: center; margin-bottom: .8rem;
+    }
+    .step-card h3 { font-size: .98rem; font-weight: 700; margin-bottom: .35rem }
+    .step-card p { color: var(--muted); font-size: .87rem; line-height: 1.55 }
+
+    /* ─── download ────────────────────────────────────────── */
+    .download-section { background: var(--hero-bg); color: #fff }
+    .download-section h2 { color: #fff }
+    .download-section .sub { color: #94a3b8 }
+
+    .download-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      padding: 2rem;
+      backdrop-filter: blur(8px);
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .version-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.3);
+      color: #34d399;
+      border-radius: 999px; padding: .3rem .75rem;
+      font-size: .82rem; font-weight: 700; font-family: var(--mono);
+      margin-bottom: 1rem;
+    }
+    .version-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok) }
+
+    .req-box {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.2rem;
+    }
+    .req-title {
+      font-size: .72rem; letter-spacing: .7px; text-transform: uppercase;
+      font-weight: 700; color: #64748b; margin-bottom: .75rem;
+      font-family: var(--mono);
+    }
+    .req-item {
+      display: flex; align-items: center; gap: .55rem;
+      font-size: .87rem; color: #94a3b8; margin: .5rem 0;
+      font-family: var(--mono);
+    }
+    .req-item::before { content: '›'; color: #3b82f6; font-weight: 700 }
+
+    .smartscreen-note {
+      background: rgba(245,158,11,.08);
+      border: 1px solid rgba(245,158,11,.2);
+      border-radius: var(--radius-sm);
+      padding: .75rem 1rem;
+      color: #fbbf24; font-size: .83rem; line-height: 1.55;
+      margin-top: 1.1rem;
+    }
+
+    /* ─── license ─────────────────────────────────────────── */
+    .lic-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.3rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.04);
+    }
+    .lic-card h3 { font-size: .98rem; font-weight: 700; margin-bottom: .4rem }
+    .lic-card p { color: var(--muted); font-size: .9rem; line-height: 1.6 }
+    .notice {
+      background: #fffbeb; border: 1px solid #fde68a;
+      color: #92400e; border-radius: var(--radius);
+      padding: 1rem 1.2rem; font-size: .9rem; line-height: 1.6;
+      margin-top: 1.5rem;
+      display: flex; gap: .6rem; align-items: flex-start;
+    }
+
+    /* ─── faq ─────────────────────────────────────────────── */
+    .faq-section { background: var(--surface) }
+    details {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 1rem 1.25rem;
+      transition: border-color .2s;
+    }
+    details + details { margin-top: .6rem }
+    details[open] { border-color: #bfdbfe }
+    summary {
+      cursor: pointer; font-weight: 700; font-size: .98rem;
+      list-style: none; display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem;
+    }
+    summary::-webkit-details-marker { display: none }
+    summary::after {
+      content: '+'; color: var(--brand-md); font-size: 1.3rem; font-weight: 300;
+      transition: transform .2s;
+    }
+    details[open] summary::after { transform: rotate(45deg) }
+    details p { color: var(--muted); margin-top: .7rem; line-height: 1.65; font-size: .93rem }
+
+    /* ─── contact ─────────────────────────────────────────── */
+    .contact-section { background: #fff }
+    .contact-card {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 20px; padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,.05);
+      max-width: 440px;
+    }
+    .contact-card h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 1rem }
+    .contact-row {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .7rem 0; border-bottom: 1px solid var(--line);
+      font-size: .92rem;
+    }
+    .contact-row:last-of-type { border-bottom: none }
+    .contact-icon {
+      width: 34px; height: 34px; border-radius: 8px;
+      background: #eff6ff; display: grid; place-items: center; font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* ─── footer ──────────────────────────────────────────── */
+    footer {
+      background: var(--hero-bg);
+      color: #94a3b8; padding: 2.5rem 0;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .footer-brand { display: flex; align-items: center; gap: .55rem; color: #fff; font-weight: 800 }
+    .footer-logo {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      display: grid; place-items: center; font-size: .75rem; font-weight: 900; color: #fff;
+    }
+    .footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap }
+    .footer-links a { color: #64748b; font-size: .88rem; transition: color .2s }
+    .footer-links a:hover { color: #93c5fd; text-decoration: none }
+    .footer-copy { font-size: .82rem; color: #334155; margin-top: .4rem }
+
+    /* ─── scroll reveal ───────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(22px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none }
+
+    /* ─── responsive ──────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr }
+      .mock-wrap { max-width: 520px; margin: 0 auto }
+      .app-body { grid-template-columns: 1fr }
+      .sidebar { border-right: none; border-bottom: 1px solid #e5e7eb; display: none }
+      .grid-3, .steps-grid { grid-template-columns: 1fr }
+      .grid-2 { grid-template-columns: 1fr }
+      .download-card { grid-template-columns: 1fr }
+      .steps-grid::before { display: none }
+      .menu { display: none }
+      .hero-stats { gap: 1.2rem }
+      .footer-inner { flex-direction: column; align-items: flex-start }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAV ═══════════════════════════════════════════════ -->
+  <div class="nav-wrap" id="nav">
+    <div class="container">
+      <nav>
+        <a class="brand" href="#" style="text-decoration:none">
+          <div class="logo-mark">S</div>
+          SOPRO
+        </a>
+        <div class="menu">
+          <a href="#caracteristicas">Características</a>
+          <a href="#flujo">Flujo</a>
+          <a href="#licencia">Licencia</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contacto">Contacto</a>
+          <a href="#descargas" class="btn-nav">Descargar</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ═══ HERO ═══════════════════════════════════════════════ -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Software de escritorio · Windows
+          </div>
+          <h1>Presupuesta obra pública<br>con <em>precisión profesional</em>.</h1>
+          <p class="hero-desc">
+            SOPRO centraliza presupuestos, análisis de precios unitarios, explosión de insumos,
+            programa de obra y reportes PDF/Excel en una sola aplicación de escritorio para Windows.
+          </p>
+          <div class="cta">
+            <a class="btn btn-primary" href="#descargas">
+              ⬇ Descargar SOPRO
+            </a>
+            <a class="btn btn-ghost" href="#flujo">
+              Ver flujo de trabajo
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-val">6+</div>
+              <div class="stat-lbl">Módulos integrados</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-val">PDF</div>
+              <div class="stat-lbl">y Excel nativo</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-val">100%</div>
+              <div class="stat-lbl">Local · sin servidor</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- mock app window -->
+        <div class="mock-wrap">
+          <div class="titlebar">
+            <div class="dot dot-r"></div>
+            <div class="dot dot-y"></div>
+            <div class="dot dot-g"></div>
+            <span class="titlebar-title">SOPRO · Presupuesto de obra</span>
+          </div>
+          <div class="app-body">
+            <div class="sidebar">
+              <div class="side-label">Módulos</div>
+              <div class="side-item active"><span class="side-icon">📊</span>Presupuesto</div>
+              <div class="side-item"><span class="side-icon">🧩</span>Matrices APU</div>
+              <div class="side-item"><span class="side-icon">⚗️</span>Explosión</div>
+              <div class="side-item"><span class="side-icon">🗓</span>Programa</div>
+              <div class="side-item"><span class="side-icon">📑</span>Reportes</div>
+            </div>
+            <div class="main-area">
+              <div class="toolbar-row">
+                <span class="tb-btn">Recalcular</span>
+                <div class="tb-sep"></div>
+                <span class="tb-btn" style="background:#fef3c7;color:#92400e">Exportar PDF</span>
+                <div class="tb-sep"></div>
+                <span class="tb-btn" style="background:#dcfce7;color:#166534">Excel</span>
+              </div>
+              <table class="preview">
+                <thead>
+                  <tr>
+                    <th>Clave</th>
+                    <th>Descripción</th>
+                    <th>Unidad</th>
+                    <th>Importe</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="clave">1.01</td>
+                    <td>Trazo y nivelación</td>
+                    <td>m²</td>
+                    <td class="importe">$12,450.00</td>
+                  </tr>
+                  <tr>
+                    <td class="clave">2.03</td>
+                    <td>Base hidráulica compactada</td>
+                    <td>m³</td>
+                    <td class="importe">$85,320.00</td>
+                  </tr>
+                  <tr>
+                    <td class="clave">3.02</td>
+                    <td>Carpeta asfáltica</td>
+                    <td>m²</td>
+                    <td class="importe">$214,980.00</td>
+                  </tr>
+                  <tr class="total-row">
+                    <td colspan="3" style="font-weight:700">Total presupuesto</td>
+                    <td class="importe">$312,750.00</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="statusbar">
+                <span>v<span id="mock-ver">—</span></span>
+                <span class="status-ok"><span class="status-dot"></span>Licencia activa</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ═══ CARACTERÍSTICAS ════════════════════════════════ -->
+    <section id="caracteristicas">
+      <div class="container">
+        <span class="section-label reveal">Módulos</span>
+        <h2 class="reveal">Características principales</h2>
+        <p class="sub reveal">Pensado para el trabajo técnico diario de presupuestación de obra pública.</p>
+        <div class="grid-3">
+          <div class="feat-card reveal">
+            <div class="feat-icon">📊</div>
+            <h3>Presupuestos</h3>
+            <p>Captura y organiza conceptos de obra con capítulos, subcapítulos y niveles de agrupación.</p>
+          </div>
+          <div class="feat-card reveal">
+            <div class="feat-icon">🧩</div>
+            <h3>Matrices APU</h3>
+            <p>Análisis de precios unitarios con materiales, mano de obra, herramienta, maquinaria, básicos y cuadrillas.</p>
+          </div>
+          <div class="feat-card reveal">
+            <div class="feat-icon">⚗️</div>
+            <h3>Explosión de insumos</h3>
+            <p>Consolida cantidades e importes de todos los insumos utilizados en el presupuesto.</p>
+          </div>
+          <div class="feat-card reveal">
+            <div class="feat-icon">🗓</div>
+            <h3>Programa de obra</h3>
+            <p>Organiza actividades, periodos, Gantt y curva S para planeación y seguimiento.</p>
+          </div>
+          <div class="feat-card reveal">
+            <div class="feat-icon">📄</div>
+            <h3>Reportes PDF / Excel</h3>
+            <p>Exporta con formato profesional respetando columnas visibles y configuración del usuario.</p>
+          </div>
+          <div class="feat-card reveal">
+            <div class="feat-icon">🔐</div>
+            <h3>Licenciamiento</h3>
+            <p>Control de uso mediante licencia local firmada digitalmente con verificación automática de versión.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FLUJO ═══════════════════════════════════════════ -->
+    <section id="flujo" style="background:#fff">
+      <div class="container">
+        <span class="section-label reveal">Proceso</span>
+        <h2 class="reveal">Flujo de trabajo</h2>
+        <p class="sub reveal">Del proyecto nuevo al expediente técnico completo, en seis pasos.</p>
+        <div class="steps-grid">
+          <div class="step-card reveal">
+            <div class="step-num">1</div>
+            <h3>Crear proyecto</h3>
+            <p>Define datos generales, ubicación y configuración inicial del proyecto.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-num">2</div>
+            <h3>Capturar presupuesto</h3>
+            <p>Agrega conceptos, cantidades, agrupaciones y matrices asociadas.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-num">3</div>
+            <h3>Integrar matrices</h3>
+            <p>Administra APUs, básicos, cuadrillas e insumos desde el propio sistema.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-num">4</div>
+            <h3>Recalcular</h3>
+            <p>Actualiza importes, precios unitarios, indirectos, financiamiento y utilidad.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-num">5</div>
+            <h3>Programar obra</h3>
+            <p>Genera actividades, periodos, Gantt, curva S y programa de insumos.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-num">6</div>
+            <h3>Exportar reportes</h3>
+            <p>Genera reportes técnicos en PDF y Excel para revisión o integración de expediente.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ DESCARGAS ══════════════════════════════════════ -->
+    <section id="descargas" class="download-section">
+      <div class="container">
+        <span class="section-label reveal" style="color:#38bdf8">Distribución</span>
+        <h2 class="reveal">Descargar SOPRO</h2>
+        <p class="sub reveal">Instalador para Windows. Siempre disponible en el repositorio público de releases.</p>
+        <div class="download-card reveal">
+          <div>
+            <div class="version-pill">
+              <span class="version-dot"></span>
+              <span id="latest-version">Consultando versión…</span>
+            </div>
+            <h3 style="color:#fff;font-size:1.25rem;margin-bottom:.5rem">Instalador para Windows</h3>
+            <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;margin-bottom:1.2rem">
+              Descarga directa desde GitHub Releases. No requiere cuenta ni registro.
+            </p>
+            <div class="cta">
+              <a class="btn btn-primary" id="download-btn" href="https://github.com/iCarlost/SOPRO-Releases/releases/latest" target="_blank" rel="noopener">
+                ⬇ Descargar instalador
+              </a>
+              <a class="btn btn-ghost" href="https://github.com/iCarlost/SOPRO-Releases/releases/latest" target="_blank" rel="noopener">
+                Ver release en GitHub
+              </a>
+            </div>
+            <div class="smartscreen-note">
+              ⚠ Windows puede mostrar advertencia de SmartScreen. Selecciona <strong>«Más información»</strong> → <strong>«Ejecutar de todas formas»</strong>.
+            </div>
+          </div>
+          <div class="req-box">
+            <div class="req-title">Requisitos</div>
+            <div class="req-item">Windows 10 o superior</div>
+            <div class="req-item">Permisos de usuario estándar</div>
+            <div class="req-item">Licencia SOPRO (.lic)</div>
+            <div class="req-item">Sin servidor requerido</div>
+            <div class="req-item">Internet solo para descarga</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ LICENCIA ═══════════════════════════════════════ -->
+    <section id="licencia">
+      <div class="container">
+        <span class="section-label reveal">Activación</span>
+        <h2 class="reveal">Licencia y activación</h2>
+        <p class="sub reveal">SOPRO controla el uso mediante una licencia local firmada digitalmente.</p>
+        <div class="grid-2">
+          <div class="lic-card reveal">
+            <h3>🆓 Instalación libre</h3>
+            <p>El instalador puede ejecutarse en cualquier equipo, pero SOPRO requiere una licencia válida para operar.</p>
+          </div>
+          <div class="lic-card reveal">
+            <h3>🔏 Licencia firmada</h3>
+            <p>La licencia se entrega como archivo <strong>.lic</strong> y está protegida contra modificación mediante firma digital.</p>
+          </div>
+          <div class="lic-card reveal">
+            <h3>⏱ Vigencia controlada</h3>
+            <p>La fecha de expiración forma parte de la licencia firmada. Copiar el archivo no reinicia la vigencia.</p>
+          </div>
+          <div class="lic-card reveal">
+            <h3>🔔 Actualizaciones</h3>
+            <p>SOPRO notifica automáticamente cuando hay una nueva versión disponible en el repositorio de releases.</p>
+          </div>
+        </div>
+        <div class="notice reveal">
+          <span>ℹ️</span>
+          <span>La licencia se valida localmente. No se requiere servidor de activación ni conexión permanente a internet.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FAQ ════════════════════════════════════════════ -->
+    <section id="faq" class="faq-section">
+      <div class="container">
+        <span class="section-label reveal">FAQ</span>
+        <h2 class="reveal">Preguntas frecuentes</h2>
+        <div style="max-width:700px;margin-top:1.5rem">
+          <details class="reveal">
+            <summary>¿SOPRO funciona sin internet?</summary>
+            <p>Sí. El uso normal de SOPRO es completamente local. Internet solo se utiliza para descargar el instalador o revisar si hay nuevas versiones disponibles.</p>
+          </details>
+          <details class="reveal">
+            <summary>¿Puedo instalar SOPRO sin licencia?</summary>
+            <p>La instalación es libre, pero el uso del sistema requiere una licencia válida. Contacta al desarrollador para obtener la tuya.</p>
+          </details>
+          <details class="reveal">
+            <summary>¿Qué pasa si Windows muestra "Editor desconocido"?</summary>
+            <p>Es una advertencia normal en instaladores no firmados con certificado de código. Selecciona <strong>«Más información»</strong> y luego <strong>«Ejecutar de todas formas»</strong> para continuar.</p>
+          </details>
+          <details class="reveal">
+            <summary>¿Dónde se guardan mis proyectos?</summary>
+            <p>SOPRO trabaja con archivos de base de datos locales (.db) por proyecto. El usuario conserva control total de sus archivos y puede respaldarlos como cualquier otro archivo.</p>
+          </details>
+          <details class="reveal">
+            <summary>¿SOPRO es compatible con OPUS CMS?</summary>
+            <p>SOPRO tiene una herramienta complementaria de importación para proyectos OPUS CMS 2010 en formato .DBF, que permite migrar proyectos existentes al formato nativo de SOPRO.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CONTACTO ═══════════════════════════════════════ -->
+    <section id="contacto" class="contact-section">
+      <div class="container">
+        <span class="section-label reveal">Contacto</span>
+        <h2 class="reveal">¿Listo para empezar?</h2>
+        <p class="sub reveal">Para licencias, soporte técnico o implementación institucional.</p>
+        <div class="contact-card reveal">
+          <h3>SOPRO · Carlos Pérez</h3>
+          <div class="contact-row">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <div style="font-size:.8rem;color:var(--muted);margin-bottom:.1rem">Correo electrónico</div>
+              <a href="mailto:carlost.epm@gmail.com">carlost.epm@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">📱</div>
+            <div>
+              <div style="font-size:.8rem;color:var(--muted);margin-bottom:.1rem">Teléfono / WhatsApp</div>
+              <a href="tel:+526691429157">+52 669 142 9157</a>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div style="font-size:.8rem;color:var(--muted);margin-bottom:.1rem">Ubicación</div>
+              <span style="color:var(--ink-2)">Mazatlán, Sinaloa, México</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ FOOTER ═════════════════════════════════════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand">
+            <div class="footer-logo">S</div>
+            SOPRO
+          </div>
+          <div class="footer-copy">© <span id="year"></span> Carlos Pérez. Todos los derechos reservados.</div>
+        </div>
+        <div class="footer-links">
+          <a href="#caracteristicas">Características</a>
+          <a href="#flujo">Flujo</a>
+          <a href="#descargas">Descargar</a>
+          <a href="#licencia">Licencia</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // sticky nav
+    const nav = document.getElementById("nav");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 40);
+    }, { passive: true });
+
+    // scroll reveal
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target) } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+
+    // GitHub releases
+    async function loadRelease() {
+      const api = "https://api.github.com/repos/iCarlost/SOPRO-Releases/releases/latest";
+      const fallback = "https://github.com/iCarlost/SOPRO-Releases/releases/latest";
+      const versionEl = document.getElementById("latest-version");
+      const downloadBtn = document.getElementById("download-btn");
+      const mockVer = document.getElementById("mock-ver");
+      try {
+        const res = await fetch(api, { headers: { Accept: "application/vnd.github+json" } });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        const tag = data.tag_name || "disponible";
+        versionEl.textContent = "Última versión: " + tag;
+        if (mockVer) mockVer.textContent = tag;
+        const asset = (data.assets || []).find(a => (a.name || "").toLowerCase().endsWith(".exe"));
+        if (asset?.browser_download_url) {
+          downloadBtn.href = asset.browser_download_url;
+          downloadBtn.innerHTML = "⬇ Descargar " + asset.name;
+        } else {
+          downloadBtn.href = data.html_url || fallback;
+        }
+      } catch {
+        versionEl.textContent = "Última versión en GitHub Releases";
+        if (mockVer) mockVer.textContent = "—";
+        downloadBtn.href = fallback;
+      }
+    }
+    loadRelease();
+  </script>
+</body>
+</html>
