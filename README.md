@@ -1,8 +1,29 @@
-# SOPRO Web
+# 🌐 SOPRO — Sitio Oficial
 
-Página de presentación estática para SOPRO.
+Este repositorio contiene el sitio web oficial de SOPRO (Sistema de Presupuestación de Obra Pública).
 
-## Descargas
+## 🔗 Sitio en línea
 
-La página consulta automáticamente el último release del repo público:
-`iCarlost/SOPRO-Releases`.
+👉 https://icarlost.github.io/SOPRO-WEB/
+
+## 📦 Descarga del sistema
+
+👉 https://github.com/iCarlost/SOPRO/releases
+
+## 🔐 Política de privacidad
+
+👉 https://icarlost.github.io/SOPRO-WEB/privacy.html
+
+## 🧠 Descripción
+
+SOPRO es una aplicación de escritorio para:
+
+- Presupuestación de obra pública
+- Análisis de precios unitarios (APU)
+- Explosión de insumos
+- Programa de obra
+- Reportes PDF y Excel
+
+## 👤 Autor
+
+Carlos Pérez
