@@ -8,7 +8,7 @@ Este repositorio contiene el sitio web oficial de SOPRO (Sistema de Presupuestac
 
 ## 📦 Descarga del sistema
 
-👉 https://github.com/iCarlost/SOPRO/releases
+👉 https://github.com/iCarlost/SOPRO-Releases/releases
 
 ## 🔐 Política de privacidad
 
@@ -23,6 +23,10 @@ SOPRO es una aplicación de escritorio para:
 - Explosión de insumos
 - Programa de obra
 - Reportes PDF y Excel
+
+## ⚖️ Licencia
+
+SOPRO es código abierto distribuido bajo licencia **MIT**. Código fuente en [iCarlost/SOPRO](https://github.com/iCarlost/SOPRO).
 
 ## 👤 Autor
 
