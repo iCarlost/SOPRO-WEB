@@ -76,6 +76,7 @@
     nav {
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 0;
+      position: relative;
     }
     .brand {
       display: flex; align-items: center; gap: .65rem;
@@ -105,6 +106,26 @@
       padding: .5rem 1rem; border-radius: 9px; margin-left: .25rem;
     }
     .menu .btn-nav:hover { background: var(--brand-lt); }
+
+    /* mobile menu toggle */
+    .nav-toggle {
+      display: none;
+      flex-direction: column; justify-content: center; gap: 5px;
+      width: 42px; height: 42px; padding: 11px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 9px; cursor: pointer;
+    }
+    .nav-toggle:hover { background: rgba(255,255,255,.08); }
+    .nav-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .nav-toggle span {
+      display: block; height: 2px; width: 100%;
+      background: #fff; border-radius: 2px;
+      transition: transform .25s ease, opacity .25s ease;
+    }
+    .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg) }
+    .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0 }
+    .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg) }
 
     /* ─── hero ────────────────────────────────────────────── */
     .hero {
@@ -532,7 +553,26 @@
       .grid-2 { grid-template-columns: 1fr }
       .download-card { grid-template-columns: 1fr }
       .steps-grid::before { display: none }
-      .menu { display: none }
+      .nav-toggle { display: flex }
+      .menu {
+        position: absolute; top: calc(100% + .6rem); left: 0; right: 0;
+        flex-direction: column; align-items: stretch; gap: .1rem;
+        background: rgba(6,13,31,.97);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: var(--radius);
+        padding: .5rem;
+        box-shadow: 0 24px 60px rgba(0,0,0,.5);
+        opacity: 0; visibility: hidden; transform: translateY(-8px);
+        transition: opacity .25s ease, transform .25s ease, visibility .25s;
+        pointer-events: none;
+      }
+      .menu.open {
+        opacity: 1; visibility: visible; transform: none; pointer-events: auto;
+      }
+      .menu a { padding: .7rem .9rem; font-size: .95rem; border-radius: var(--radius-sm) }
+      .menu .btn-nav { margin-left: 0; margin-top: .35rem; text-align: center; padding: .7rem .9rem }
       .hero-stats { gap: 1.2rem }
       .footer-inner { flex-direction: column; align-items: flex-start }
     }
@@ -548,7 +588,11 @@
           <div class="logo-mark">S</div>
           SOPRO
         </a>
-        <div class="menu">
+        <button class="nav-toggle" id="nav-toggle" type="button"
+                aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="menu" id="menu">
           <a href="#caracteristicas">Características</a>
           <a href="#flujo">Flujo</a>
           <a href="#opensource">Código abierto</a>
@@ -908,6 +952,19 @@
     window.addEventListener("scroll", () => {
       nav.classList.toggle("scrolled", window.scrollY > 40);
     }, { passive: true });
+
+    // mobile menu
+    const navToggle = document.getElementById("nav-toggle");
+    const menu = document.getElementById("menu");
+    function setMenu(open) {
+      menu.classList.toggle("open", open);
+      navToggle.setAttribute("aria-expanded", String(open));
+      navToggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    }
+    navToggle.addEventListener("click", () => setMenu(!menu.classList.contains("open")));
+    menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => setMenu(false)));
+    document.addEventListener("keydown", e => { if (e.key === "Escape") setMenu(false); });
+    window.addEventListener("scroll", () => setMenu(false), { passive: true });
 
     // scroll reveal
     const obs = new IntersectionObserver((entries) => {
