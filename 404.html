@@ -1,20 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es-MX">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Política de Privacidad — SOPRO</title>
-  <meta name="description" content="Política de privacidad de SOPRO: aplicación de escritorio que opera localmente, sin recopilar datos personales ni transmitir información a servidores externos.">
-  <link rel="canonical" href="https://icarlost.github.io/SOPRO-WEB/privacy.html" />
-  <meta name="robots" content="index, follow" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Página no encontrada — SOPRO</title>
+  <meta name="description" content="La página que buscas no existe o fue movida. Vuelve al inicio de SOPRO o consulta las descargas y el repositorio en GitHub." />
+  <meta name="robots" content="noindex, follow" />
   <meta name="theme-color" content="#060d1f" />
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <meta property="og:title" content="Política de Privacidad — SOPRO" />
-  <meta property="og:description" content="SOPRO opera localmente sin recopilar datos personales ni transmitir información a servidores externos." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://icarlost.github.io/SOPRO-WEB/privacy.html" />
-  <meta property="og:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image.png" />
-  <meta name="twitter:card" content="summary" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="canonical" href="https://icarlost.github.io/SOPRO-WEB/" />
   <link rel="stylesheet" href="assets/styles.css" />
   <style>
     /* Nav oscuro siempre en páginas interiores (fondo claro): los links
@@ -24,6 +18,64 @@
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       box-shadow: 0 1px 0 rgba(255,255,255,.07);
+    }
+    /* ─── 404 · específico de esta página ──────────────────── */
+    .err-code {
+      font-family: var(--mono);
+      font-size: clamp(5rem, 18vw, 9rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -.04em;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-lt) 60%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .err-title { text-align: center }
+    .err-desc {
+      text-align: center;
+      color: var(--muted) !important;
+      max-width: 440px;
+      margin: 0 auto 1.8rem !important;
+    }
+    .err-cta {
+      display: flex; flex-wrap: wrap; gap: .75rem;
+      justify-content: center; margin-bottom: 1.6rem;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      border: none; border-radius: var(--radius-sm);
+      padding: .8rem 1.3rem; font-weight: 700; font-size: .95rem;
+      cursor: pointer; text-decoration: none;
+      font-family: var(--font);
+      transition: transform .15s, box-shadow .15s, background .2s;
+    }
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--brand-md); color: #fff;
+      box-shadow: 0 4px 18px rgba(29,100,216,.4);
+    }
+    /* Mayor especificidad que `.page-container a` (styles.css) para que el
+       texto del CTA no herede el color de enlace (azul sobre azul). */
+    .page-container a.btn-primary { color: #fff; }
+    .btn-primary:hover {
+      background: var(--brand-lt);
+      box-shadow: 0 6px 24px rgba(29,100,216,.55);
+    }
+    .btn-outline {
+      background: #fff; color: var(--ink-2);
+      border: 1px solid var(--line);
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+    .btn-outline:hover { background: var(--surface); }
+    .err-links {
+      display: flex; flex-wrap: wrap; gap: 1.25rem;
+      justify-content: center;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--line);
+      font-size: .9rem; font-weight: 600;
     }
   </style>
 </head>
@@ -56,24 +108,21 @@
     </div>
   </div>
 
-  <!-- ═══ CONTENIDO ════════════════════════════════════════ -->
+  <!-- ═══ CONTENIDO 404 ════════════════════════════════════ -->
   <main class="page-main">
-    <div class="container">
-      <div class="page-container">
-        <a class="page-back" href="index.html">← Volver al inicio</a>
-        <div class="page-card">
-          <h1>Política de Privacidad — SOPRO</h1>
-          <p>SOPRO (Sistema de Presupuestación de Obra Pública) es una aplicación de escritorio diseñada para operar de manera local en el equipo del usuario.</p>
-          <h2>Recolección de información</h2>
-          <p>SOPRO no recopila datos personales, no solicita información del usuario ni transmite datos a servidores externos.</p>
-          <h2>Uso de la información</h2>
-          <p>Toda la información generada en el sistema se almacena localmente en archivos .db bajo control exclusivo del usuario.</p>
-          <h2>Conectividad</h2>
-          <p>SOPRO no requiere conexión a internet para su funcionamiento y sus datos nunca se transmiten a servidores externos. La aplicación consulta únicamente el repositorio público de releases en GitHub para notificar al usuario cuando hay una versión nueva disponible.</p>
-          <h2>Seguridad</h2>
-          <p>La seguridad de la información depende del control de acceso al equipo del usuario y del resguardo de los archivos del sistema.</p>
-          <h2>Responsabilidad del usuario</h2>
-          <p>El usuario es responsable de proteger sus datos, realizar respaldos y controlar el acceso a su equipo.</p>
+    <div class="page-container">
+      <div class="page-card">
+        <div class="err-code">404</div>
+        <h1 class="err-title">Página no encontrada</h1>
+        <p class="err-desc">La página que buscas no existe o fue movida.</p>
+
+        <div class="err-cta">
+          <a class="btn btn-primary" href="index.html">← Volver al inicio</a>
+        </div>
+
+        <div class="err-links">
+          <a href="index.html#descargas">Descargar SOPRO</a>
+          <a href="https://github.com/iCarlost/SOPRO" target="_blank" rel="noopener">Ver en GitHub</a>
         </div>
       </div>
     </div>
@@ -93,9 +142,6 @@
         <div class="footer-links">
           <a href="index.html#caracteristicas">Características</a>
           <a href="index.html#flujo">Flujo</a>
-          <a href="index.html#vista">Vista</a>
-          <a href="index.html#comparativa">Comparativa</a>
-          <a href="index.html#casos">Casos de uso</a>
           <a href="index.html#descargas">Descargar</a>
           <a href="index.html#opensource">Código abierto</a>
           <a href="index.html#faq">FAQ</a>

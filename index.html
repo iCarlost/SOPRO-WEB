@@ -1,20 +1,33 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-MX">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script>document.documentElement.classList.add('js');</script>
   <title>SOPRO · Sistema de Presupuestación de Obra Pública</title>
-  <meta name="description" content="SOPRO es una aplicación de escritorio para presupuestación de obra pública: presupuestos, APUs, explosión de insumos, programa de obra, reportes PDF/Excel. Código abierto bajo licencia MIT." />
+  <meta name="description" content="App de escritorio Windows para presupuestar obra pública: APUs, explosión de insumos, programa de obra y reportes PDF/Excel. Código abierto MIT." />
   <meta name="author" content="Carlos Pérez" />
   <meta name="application-name" content="SOPRO — Sistema de Presupuestación de Obra Pública" />
   <meta name="keywords" content="SOPRO, presupuesto de obra pública, análisis de precios unitarios, APU, programa de obra, explosión de insumos, software de presupuestos" />
   <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#060d1f" />
+  <link rel="canonical" href="https://icarlost.github.io/SOPRO-WEB/" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <noscript><style>.reveal { opacity: 1; transform: none }</style></noscript>
   <meta property="og:title" content="SOPRO · Sistema de Presupuestación de Obra Pública" />
   <meta property="og:description" content="Presupuestos, APUs, explosión de insumos, programa de obra y reportes PDF/Excel en una aplicación de escritorio para Windows." />
   <meta property="og:type" content="website" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <meta property="og:url" content="https://icarlost.github.io/SOPRO-WEB/" />
+  <meta property="og:site_name" content="SOPRO" />
+  <meta property="og:locale" content="es_MX" />
+  <meta property="og:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SOPRO · Sistema de Presupuestación de Obra Pública" />
+  <meta name="twitter:description" content="Presupuestos, APUs, explosión de insumos, programa de obra y reportes PDF/Excel en una aplicación de escritorio para Windows." />
+  <meta name="twitter:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image.png" />
   <style>
     /* ─── tokens ─────────────────────────────────────────── */
     :root {
@@ -41,8 +54,8 @@
 
       --radius:   14px;
       --radius-sm:8px;
-      --font:     'Sora', sans-serif;
-      --mono:     'JetBrains Mono', monospace;
+      --font:     'Sora', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --mono:     'JetBrains Mono', ui-monospace, SFMono-Regular, 'Cascadia Code', Consolas, monospace;
     }
 
     /* ─── reset ───────────────────────────────────────────── */
@@ -143,6 +156,7 @@
         linear-gradient(var(--hero-line) 1px, transparent 1px),
         linear-gradient(90deg, var(--hero-line) 1px, transparent 1px);
       background-size: 56px 56px;
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
       mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
     }
     /* glow orb */
@@ -241,7 +255,7 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .stat-lbl { color: #64748b; font-size: .8rem; margin-top: .1rem }
+    .stat-lbl { color: #94a3b8; font-size: .8rem; margin-top: .1rem }
 
     /* ─── app mockup ──────────────────────────────────────── */
     .mock-wrap {
@@ -410,6 +424,7 @@
       border: 1px solid rgba(255,255,255,.1);
       border-radius: 20px;
       padding: 2rem;
+      -webkit-backdrop-filter: blur(8px);
       backdrop-filter: blur(8px);
       display: grid;
       grid-template-columns: 1.3fr .7fr;
@@ -532,21 +547,39 @@
       display: grid; place-items: center; font-size: .75rem; font-weight: 900; color: #fff;
     }
     .footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap }
-    .footer-links a { color: #64748b; font-size: .88rem; transition: color .2s }
+    .footer-links a { color: #94a3b8; font-size: .88rem; transition: color .2s }
     .footer-links a:hover { color: #93c5fd; text-decoration: none }
-    .footer-copy { font-size: .82rem; color: #334155; margin-top: .4rem }
+    .footer-copy { font-size: .82rem; color: #94a3b8; margin-top: .4rem }
 
     /* ─── scroll reveal ───────────────────────────────────── */
-    .reveal {
+    .js .reveal {
       opacity: 0; transform: translateY(22px);
       transition: opacity .55s ease, transform .55s ease;
     }
     .reveal.visible { opacity: 1; transform: none }
 
+    /* ─── reglas base (deben preceder a las media queries) ── */
+    .split-2 {
+      display: grid; grid-template-columns: 1.05fr .95fr;
+      gap: 3rem; align-items: center;
+    }
+    .split-2 > * { min-width: 0 }
+    .scroll-hint {
+      font-size: .78rem; color: var(--muted-lt); text-align: center;
+      margin-top: .6rem; font-family: var(--mono); display: none;
+    }
+
     /* ─── responsive ──────────────────────────────────────── */
     @media (max-width: 860px) {
       .hero-inner { grid-template-columns: 1fr }
-      .mock-wrap { max-width: 520px; margin: 0 auto }
+      .hero-inner > *, .split-2 > * { min-width: 0 }
+      .split-2 { grid-template-columns: 1fr }
+      .mock-wrap { width: 100%; max-width: 520px; margin: 0 auto; min-width: 0 }
+      .main-area { min-width: 0 }
+      table.preview { table-layout: fixed; width: 100% }
+      table.preview th, table.preview td { padding: .4rem .5rem; font-size: .72rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+      table.preview th:last-child, table.preview td:last-child { width: 104px }
+      .scroll-hint { display: block }
       .app-body { grid-template-columns: 1fr }
       .sidebar { border-right: none; border-bottom: 1px solid #e5e7eb; display: none }
       .grid-3, .steps-grid { grid-template-columns: 1fr }
@@ -576,7 +609,185 @@
       .hero-stats { gap: 1.2rem }
       .footer-inner { flex-direction: column; align-items: flex-start }
     }
+
+    /* ─── nav · ancho intermedio (tablet) ─────────────────── */
+    @media (max-width: 1080px) and (min-width: 861px) {
+      .menu a { padding: .45rem .5rem; font-size: .84rem }
+      .menu { gap: 0 }
+    }
+
+    /* ─── vista ilustrativa ───────────────────────────────── */
+    .illus-pill {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(245,158,11,.1);
+      border: 1px dashed rgba(245,158,11,.45);
+      color: #b45309; border-radius: 999px;
+      padding: .35rem .85rem; font-size: .8rem; font-weight: 600;
+      letter-spacing: .4px; text-transform: uppercase; margin-bottom: 1.1rem;
+    }
+    .mock-light {
+      box-shadow: 0 0 0 1px rgba(0,0,0,.05), 0 24px 60px rgba(15,23,42,.14), 0 0 50px rgba(29,100,216,.08);
+      border: 1px solid var(--line);
+    }
+    .mock-caption {
+      font-size: .8rem; color: var(--muted-lt); text-align: center;
+      margin-top: .8rem; font-family: var(--mono);
+    }
+    .vista-list {
+      list-style: none; display: grid; gap: .75rem;
+      margin-top: 1.5rem; max-width: 480px;
+    }
+    .vista-list li {
+      padding-left: 1.5rem; position: relative;
+      color: var(--muted); font-size: .95rem; line-height: 1.65;
+    }
+    .vista-list li::before { content: '✓'; position: absolute; left: 0; color: var(--ok); font-weight: 700 }
+    .vista-list li strong { color: var(--ink) }
+
+    /* ─── comparativa ─────────────────────────────────────── */
+    .table-scroll {
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--card);
+    }
+    .comp-table { min-width: 560px; width: 100%; border-collapse: collapse; font-size: .9rem }
+    .comp-table th {
+      background: #f1f5f9; color: var(--ink-2); text-align: left;
+      padding: .7rem .9rem; font-weight: 700;
+    }
+    .comp-table td { padding: .6rem .9rem; border-bottom: 1px solid #f1f5f9; color: #334155 }
+    .comp-table tr:nth-child(even) td { background: #f8fafc }
+    .comp-table th:nth-child(2), .comp-table th:nth-child(3),
+    .comp-table td:nth-child(2), .comp-table td:nth-child(3) { text-align: center }
+    .col-sopro { background: #eff6ff !important }
+    .mark-yes { color: var(--ok); font-weight: 800 }
+    .mark-no { color: var(--muted-lt) }
+    .comp-summary { color: var(--muted); font-size: .9rem; margin-top: 1.2rem; max-width: 720px; line-height: 1.6 }
+    .legal-note {
+      font-size: .78rem; color: var(--muted-lt); line-height: 1.6;
+      margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line);
+    }
+
+    /* ─── casos de uso ────────────────────────────────────── */
+    .role-badge {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-md));
+      color: #fff; font-weight: 800; font-size: .95rem;
+      display: grid; place-items: center; margin-bottom: .9rem;
+    }
+    .caso-list { list-style: none; margin-top: .5rem; display: grid; gap: .5rem }
+    .caso-list li {
+      font-size: .88rem; color: var(--muted); line-height: 1.55;
+      padding-left: 1.15rem; position: relative;
+    }
+    .caso-list li::before { content: '›'; position: absolute; left: 0; color: var(--brand-lt); font-weight: 700 }
+
+    /* ─── accesibilidad · movimiento reducido ─────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal, .js .reveal { opacity: 1 !important; transform: none !important }
+    }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://icarlost.github.io/SOPRO-WEB/#org",
+        "name": "SOPRO",
+        "url": "https://icarlost.github.io/SOPRO-WEB/",
+        "logo": "https://icarlost.github.io/SOPRO-WEB/assets/favicon.svg",
+        "sameAs": ["https://github.com/iCarlost/SOPRO"]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://icarlost.github.io/SOPRO-WEB/#software",
+        "name": "SOPRO",
+        "alternateName": "Sistema de Presupuestación de Obra Pública",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Presupuestación de obra pública (APU)",
+        "operatingSystem": "Windows 10, Windows 11",
+        "softwareVersion": "1.6.0",
+        "inLanguage": "es-MX",
+        "license": "https://opensource.org/licenses/MIT",
+        "isAccessibleForFree": true,
+        "url": "https://icarlost.github.io/SOPRO-WEB/",
+        "downloadUrl": "https://github.com/iCarlost/SOPRO-Releases/releases/latest",
+        "description": "Aplicación de escritorio para Windows para presupuestación de obra pública: presupuestos, análisis de precios unitarios (APU), explosión de insumos, programa de obra con Gantt y curva S, y reportes PDF/Excel. Código abierto bajo licencia MIT.",
+        "featureList": [
+          "Presupuestos por capítulos y subcapítulos",
+          "Análisis de precios unitarios (APU)",
+          "Explosión de insumos",
+          "Programa de obra con Gantt y curva S",
+          "Reportes en PDF y Excel",
+          "Formatos FSR y FASAR",
+          "Costo horario de maquinaria"
+        ],
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "MXN",
+          "availability": "https://schema.org/InStock"
+        },
+        "author": { "@type": "Person", "name": "Carlos Pérez" },
+        "publisher": { "@id": "https://icarlost.github.io/SOPRO-WEB/#org" },
+        "sameAs": ["https://github.com/iCarlost/SOPRO"]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿SOPRO funciona sin internet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sí. El uso normal de SOPRO es completamente local. Internet solo se utiliza para descargar el instalador o revisar si hay nuevas versiones disponibles."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿SOPRO requiere licencia o activación?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Desde la versión 1.6.0, SOPRO es código abierto bajo licencia MIT. Instálalo, úsalo y compártelo libremente, sin registros ni vigencia."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué pasa si Windows muestra \"Editor desconocido\"?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Es una advertencia normal en instaladores no firmados con certificado de código. Selecciona «Más información» y luego «Ejecutar de todas formas» para continuar."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Dónde se guardan mis proyectos?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SOPRO trabaja con archivos de base de datos locales (.db) por proyecto. El usuario conserva control total de sus archivos y puede respaldarlos como cualquier otro archivo."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿SOPRO es compatible con OPUS CMS?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SOPRO es un producto independiente, sin afiliación con ECOSOFT. Comparte con OPUS CMS las capacidades centrales de presupuestación (presupuestos, APUs, explosión de insumos, programa de obra y reportes). Para la comparación detallada, consulta la sección SOPRO vs OPUS CMS."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -595,6 +806,9 @@
         <div class="menu" id="menu">
           <a href="#caracteristicas">Características</a>
           <a href="#flujo">Flujo</a>
+          <a href="#vista">Vista</a>
+          <a href="#comparativa">Comparativa</a>
+          <a href="#casos">Casos de uso</a>
           <a href="#opensource">Código abierto</a>
           <a href="#faq">FAQ</a>
           <a href="#contacto">Contacto</a>
@@ -702,7 +916,7 @@
                 </tbody>
               </table>
               <div class="statusbar">
-                <span v<span id="mock-ver">—</span></span>
+                <span>v<span id="mock-ver">—</span></span>
                 <span class="status-ok"><span class="status-dot"></span>Código abierto · MIT</span>
               </div>
             </div>
@@ -791,6 +1005,165 @@
             <div class="step-num">6</div>
             <h3>Exportar reportes</h3>
             <p>Genera reportes técnicos en PDF y Excel para revisión o integración de expediente.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ VISTA ILUSTRATIVA ══════════════════════════════ -->
+    <section id="vista">
+      <div class="container">
+        <div class="split-2">
+          <div>
+            <div class="illus-pill">◻ Vista ilustrativa</div>
+            <h2>Así se ve tu trabajo diario en SOPRO</h2>
+            <p class="sub">Representación esquemática de la interfaz, creada con fines ilustrativos. No es una captura de pantalla de la aplicación; el aspecto real puede variar según la versión instalada.</p>
+            <ul class="vista-list">
+              <li><strong>Presupuesto por capítulos:</strong> conceptos con clave, descripción, unidad e importe, organizados en capítulos y subcapítulos con totales calculados.</li>
+              <li><strong>Matrices APU:</strong> integración de materiales, mano de obra, herramienta, maquinaria, básicos y cuadrillas dentro del propio proyecto.</li>
+              <li><strong>Explosión de insumos:</strong> consolidado de cantidades e importes de todos los insumos del presupuesto.</li>
+              <li><strong>Programa de obra:</strong> actividades, periodos, Gantt y curva S para planeación y seguimiento.</li>
+            </ul>
+          </div>
+          <div class="mock-wrap mock-light" role="img" aria-label="Vista ilustrativa: interfaz simulada de SOPRO. No es una captura de pantalla real.">
+            <div class="titlebar">
+              <div class="dot dot-r"></div>
+              <div class="dot dot-y"></div>
+              <div class="dot dot-g"></div>
+              <span class="titlebar-title">SOPRO · Presupuesto de obra (ilustrativo)</span>
+            </div>
+            <div class="app-body">
+              <div class="sidebar">
+                <div class="side-label">Módulos</div>
+                <div class="side-item active"><span class="side-icon">📊</span>Presupuesto</div>
+                <div class="side-item"><span class="side-icon">🧩</span>Matrices APU</div>
+                <div class="side-item"><span class="side-icon">⚗️</span>Explosión</div>
+                <div class="side-item"><span class="side-icon">🗓</span>Programa</div>
+                <div class="side-item"><span class="side-icon">📑</span>Reportes</div>
+              </div>
+              <div class="main-area">
+                <div class="toolbar-row">
+                  <span class="tb-btn">Recalcular</span>
+                  <div class="tb-sep"></div>
+                  <span class="tb-btn" style="background:#fef3c7;color:#92400e">Exportar PDF</span>
+                  <div class="tb-sep"></div>
+                  <span class="tb-btn" style="background:#dcfce7;color:#166534">Excel</span>
+                </div>
+                <table class="preview">
+                  <thead>
+                    <tr>
+                      <th>Clave</th>
+                      <th>Descripción</th>
+                      <th>Unidad</th>
+                      <th>Importe</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="clave">1.01</td>
+                      <td>Trazo y nivelación</td>
+                      <td>m²</td>
+                      <td class="importe">$12,450.00</td>
+                    </tr>
+                    <tr>
+                      <td class="clave">2.03</td>
+                      <td>Base hidráulica compactada</td>
+                      <td>m³</td>
+                      <td class="importe">$85,320.00</td>
+                    </tr>
+                    <tr>
+                      <td class="clave">3.02</td>
+                      <td>Carpeta asfáltica</td>
+                      <td>m²</td>
+                      <td class="importe">$214,980.00</td>
+                    </tr>
+                    <tr class="total-row">
+                      <td colspan="3" style="font-weight:700">Total presupuesto</td>
+                      <td class="importe">$312,750.00</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="statusbar">
+                  <span>SOPRO · local (.db)</span>
+                  <span class="status-ok"><span class="status-dot"></span>Código abierto · MIT</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mock-caption" style="max-width:520px;margin:1rem auto 0">Figura ilustrativa generada en HTML · no representa píxeles de la aplicación</p>
+      </div>
+    </section>
+
+    <!-- ═══ COMPARATIVA ════════════════════════════════════ -->
+    <section id="comparativa" style="background:#fff">
+      <div class="container">
+        <span class="section-label reveal">Comparativa</span>
+        <h2 class="reveal">SOPRO vs OPUS CMS</h2>
+        <p class="sub reveal">Comparación de capacidades centrales de presupuestación, con información públicamente documentada.</p>
+        <div class="table-scroll reveal">
+          <table class="comp-table">
+            <thead><tr><th>Capacidad</th><th class="col-sopro">SOPRO</th><th>OPUS CMS</th></tr></thead>
+            <tbody>
+              <tr><td>Presupuestos con capítulos y subcapítulos</td><td class="mark-yes col-sopro" aria-label="Disponible en SOPRO">✓</td><td class="mark-yes" aria-label="Disponible en OPUS CMS">✓</td></tr>
+              <tr><td>Análisis de precios unitarios (APU)</td><td class="mark-yes col-sopro">✓</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Explosión de insumos</td><td class="mark-yes col-sopro">✓</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Formatos FSR y FASAR</td><td class="mark-yes col-sopro">✓</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Costo horario de maquinaria</td><td class="mark-yes col-sopro">✓</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Indirectos, financiamiento y utilidad</td><td class="mark-yes col-sopro">✓</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Programa de obra con Gantt</td><td class="mark-yes col-sopro">✓</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Ruta crítica</td><td class="mark-yes col-sopro">✓</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Curva S</td><td class="mark-yes col-sopro">✓</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Reportes PDF</td><td class="mark-yes col-sopro">✓</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Exportación a Excel</td><td class="mark-yes col-sopro">✓</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Importación desde Excel</td><td class="mark-yes col-sopro">✓</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Persistencia local por proyecto</td><td class="col-sopro">✓ · archivo .db por proyecto</td><td>— · SQL Server (.bak/.dbf)</td></tr>
+              <tr><td>CAD 2D / 3D</td><td class="mark-no col-sopro" aria-label="No disponible en SOPRO">—</td><td class="mark-yes">✓</td></tr>
+              <tr><td>BIM</td><td class="mark-no col-sopro">—</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Módulo de compras</td><td class="mark-no col-sopro">—</td><td class="mark-yes">✓</td></tr>
+              <tr><td>Licitaciones (Carátula)</td><td class="mark-no col-sopro">—</td><td class="mark-yes">✓</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="scroll-hint">← Desliza para ver la tabla completa →</p>
+        <p class="comp-summary">En presupuestación de obra pública —presupuestos, APUs, explosión de insumos, programa de obra y reportes— ambas herramientas cubren las mismas tareas centrales. OPUS CMS agrega alcance en CAD, BIM, compras y licitaciones; SOPRO se enfoca en la presupuestación con persistencia local por proyecto y distribución libre bajo licencia MIT.</p>
+        <p class="legal-note">OPUS y OPUS CMS son marcas registradas de ECOSOFT S.A. de C.V. SOPRO es un proyecto independiente y no está afiliado, patrocinado ni avalado por ECOSOFT. Esta comparativa se elaboró con información públicamente documentada de ambos productos y puede cambiar con futuras versiones.</p>
+      </div>
+    </section>
+
+    <!-- ═══ CASOS DE USO ═══════════════════════════════════ -->
+    <section id="casos">
+      <div class="container">
+        <span class="section-label reveal">Quién lo usa</span>
+        <h2 class="reveal">Casos de uso</h2>
+        <p class="sub reveal">Escenarios típicos donde SOPRO apoya el trabajo técnico de presupuestación. Descripciones genéricas: no son testimonios ni referencias verificadas de clientes.</p>
+        <div class="grid-3">
+          <div class="feat-card reveal">
+            <div class="role-badge">ING</div>
+            <h3>Despacho de ingeniería civil</h3>
+            <ul class="caso-list">
+              <li>Integración de presupuestos para licitaciones de obra pública con capítulos y claves propias.</li>
+              <li>Elaboración y recálculo de matrices APU con bases de costos internas.</li>
+              <li>Entrega de expediente técnico en PDF y Excel.</li>
+            </ul>
+          </div>
+          <div class="feat-card reveal">
+            <div class="role-badge">MUN</div>
+            <h3>Dependencia municipal</h3>
+            <ul class="caso-list">
+              <li>Revisión y validación de presupuestos de proyectos financiados con recursos públicos.</li>
+              <li>Seguimiento de programa de obra con Gantt y curva S.</li>
+              <li>Archivos locales por proyecto, sin depender de servidores o suscripciones.</li>
+            </ul>
+          </div>
+          <div class="feat-card reveal">
+            <div class="role-badge">CONS</div>
+            <h3>Constructor contratista</h3>
+            <ul class="caso-list">
+              <li>Cálculo de costos directos e indirectos para propuestas de ejecución de obra.</li>
+              <li>Explosión de insumos para compras y estimaciones.</li>
+              <li>Comparación de alternativas de costo mediante recálculo inmediato.</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -891,7 +1264,7 @@
           </details>
           <details class="reveal">
             <summary>¿SOPRO es compatible con OPUS CMS?</summary>
-            <p>SOPRO tiene una herramienta complementaria de importación para proyectos OPUS CMS 2010 en formato .DBF, que permite migrar proyectos existentes al formato nativo de SOPRO.</p>
+            <p>SOPRO es un producto independiente, sin afiliación con ECOSOFT. Comparte con OPUS CMS las capacidades centrales de presupuestación (presupuestos, APUs, explosión de insumos, programa de obra y reportes). Para la comparación detallada, consulta la sección <a href="#comparativa">SOPRO vs OPUS CMS</a>.</p>
           </details>
         </div>
       </div>
@@ -932,6 +1305,9 @@
         <div class="footer-links">
           <a href="#caracteristicas">Características</a>
           <a href="#flujo">Flujo</a>
+          <a href="#vista">Vista</a>
+          <a href="#comparativa">Comparativa</a>
+          <a href="#casos">Casos de uso</a>
           <a href="#descargas">Descargar</a>
           <a href="#opensource">Código abierto</a>
           <a href="#faq">FAQ</a>
@@ -967,36 +1343,89 @@
     window.addEventListener("scroll", () => setMenu(false), { passive: true });
 
     // scroll reveal
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target) } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+    const revealEls = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target) } });
+      }, { threshold: 0.12 });
+      revealEls.forEach(el => obs.observe(el));
+    } else {
+      revealEls.forEach(el => el.classList.add("visible"));
+    }
 
     // GitHub releases
     async function loadRelease() {
       const api = "https://api.github.com/repos/iCarlost/SOPRO-Releases/releases/latest";
       const fallback = "https://github.com/iCarlost/SOPRO-Releases/releases/latest";
-      const versionEl = document.getElementById("latest-version");
-      const downloadBtn = document.getElementById("download-btn");
-      const mockVer = document.getElementById("mock-ver");
+      const CACHE_KEY = "sopro-release-v1";
+      const TTL = 3600000; // 1 hora
+
+      function readCache() {
+        try {
+          const raw = sessionStorage.getItem(CACHE_KEY);
+          if (!raw) return null;
+          const cached = JSON.parse(raw);
+          if (!cached || typeof cached.ts !== "number") return null;
+          if (Date.now() - cached.ts > TTL) return null;
+          return cached.data || null;
+        } catch { return null; }
+      }
+      function writeCache(data) {
+        try {
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
+        } catch { /* almacenamiento no disponible */ }
+      }
+
+      // separa renderizado de la red
+      function render(info) {
+        const versionEl = document.getElementById("latest-version");
+        const downloadBtn = document.getElementById("download-btn");
+        const mockVer = document.getElementById("mock-ver");
+        if (info && info.tag) {
+          versionEl.textContent = "Última versión: " + info.tag;
+          if (mockVer) mockVer.textContent = info.tag;
+          if (info.assetUrl) {
+            downloadBtn.href = info.assetUrl;
+            downloadBtn.textContent = "⬇ Descargar " + info.assetName;
+          } else {
+            downloadBtn.href = info.htmlUrl || fallback;
+            downloadBtn.textContent = "⬇ Descargar instalador";
+          }
+        } else {
+          versionEl.textContent = "Última versión en GitHub Releases";
+          if (mockVer) mockVer.textContent = "—";
+          downloadBtn.href = fallback;
+          downloadBtn.textContent = "⬇ Descargar instalador";
+        }
+      }
+
+      // reutiliza caché válida sin fetch
+      const cached = readCache();
+      if (cached) { render(cached); return; }
+
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 8000);
       try {
-        const res = await fetch(api, { headers: { Accept: "application/vnd.github+json" } });
-        if (!res.ok) throw new Error();
+        const res = await fetch(api, {
+          headers: { Accept: "application/vnd.github+json" },
+          signal: controller.signal
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
         const data = await res.json();
         const tag = data.tag_name || "disponible";
-        versionEl.textContent = "Última versión: " + tag;
-        if (mockVer) mockVer.textContent = tag;
         const asset = (data.assets || []).find(a => (a.name || "").toLowerCase().endsWith(".exe"));
-        if (asset?.browser_download_url) {
-          downloadBtn.href = asset.browser_download_url;
-          downloadBtn.innerHTML = "⬇ Descargar " + asset.name;
-        } else {
-          downloadBtn.href = data.html_url || fallback;
-        }
+        const info = {
+          tag,
+          assetUrl: asset?.browser_download_url || null,
+          assetName: asset?.name || null,
+          htmlUrl: data.html_url || null
+        };
+        writeCache(info); // solo se cachean respuestas correctas
+        render(info);
       } catch {
-        versionEl.textContent = "Última versión en GitHub Releases";
-        if (mockVer) mockVer.textContent = "—";
-        downloadBtn.href = fallback;
+        render(null); // fallback al repositorio de Releases
+      } finally {
+        clearTimeout(timer);
       }
     }
     loadRelease();
