@@ -391,14 +391,7 @@
       display: grid; grid-template-columns: repeat(3,1fr);
       gap: 0; position: relative;
     }
-    .steps-grid::before {
-      content: '';
-      position: absolute; top: 26px; left: calc(16.66% + 16px);
-      right: calc(16.66% + 16px);
-      height: 2px;
-      background: linear-gradient(90deg, var(--brand-md), var(--accent));
-      opacity: .3;
-    }
+    .steps-grid::before { display: none; }
     .step-card {
       background: var(--card); border: 1px solid var(--line);
       border-radius: var(--radius); padding: 1.3rem;
