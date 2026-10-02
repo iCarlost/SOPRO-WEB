@@ -641,7 +641,7 @@
       margin-top: .6rem; font-family: var(--mono); display: none;
     }
 
-    /* ─── vista ilustrativa ──────────────────────────────────────────────── */
+    /* ─── vista real (captura) ───────────────────────────────────────────── */
     .illus-pill {
       display: inline-flex; align-items: center; gap: .5rem;
       background: rgba(245,158,11,.14);
@@ -650,13 +650,6 @@
       border-radius: 999px;
       padding: .35rem .85rem; font-size: .8rem; font-weight: 600;
       letter-spacing: .4px; text-transform: uppercase; margin-bottom: 1.1rem;
-    }
-    .mock-light {
-      box-shadow: var(--glass-shadow), 0 0 0 1px rgba(30,64,175,.04);
-    }
-    .mock-caption {
-      font-size: .8rem; color: var(--muted-2); text-align: center;
-      margin-top: .8rem; font-family: var(--mono);
     }
     .vista-list {
       list-style: none; display: grid; gap: .75rem;
@@ -668,6 +661,21 @@
     }
     .vista-list li::before { content: '✓'; position: absolute; left: 0; color: var(--ok); font-weight: 700 }
     .vista-list li strong { color: var(--ink) }
+    .shot-wrap {
+      margin: 0;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.75);
+      box-shadow: var(--glass-shadow), 0 0 70px rgba(34,211,238,.16), inset 0 1px 0 rgba(255,255,255,.9);
+      background: rgba(255,255,255,.42);
+      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+      padding: 10px;
+    }
+    .shot-wrap img { width: 100%; height: auto; display: block; border-radius: 12px; }
+    .shot-caption {
+      font-size: .78rem; color: var(--muted-2); text-align: center;
+      margin-top: .6rem; font-family: var(--mono);
+    }
 
     /* ─── comparativa ────────────────────────────────────────────────────── */
     .table-scroll {
@@ -1091,14 +1099,14 @@
       </div>
     </section>
 
-    <!-- ═══ VISTA ILUSTRATIVA ══════════════════════════════ -->
+    <!-- ═══ VISTA REAL (CAPTURA) ═══════════════════════════ -->
     <section id="vista">
       <div class="container">
         <div class="split-2">
           <div>
-            <div class="illus-pill">◻ Vista ilustrativa</div>
+            <div class="illus-pill">◉ Captura real</div>
             <h2>Así se ve tu trabajo diario en SOPRO</h2>
-            <p class="sub">Representación esquemática de la interfaz, creada con fines ilustrativos. No es una captura de pantalla de la aplicación; el aspecto real puede variar según la versión instalada.</p>
+            <p class="sub">Vista del módulo de Presupuesto con la jerarquía de capítulos, subcapítulos y conceptos, cantidades, precios unitarios e importes.</p>
             <ul class="vista-list">
               <li><strong>Presupuesto por capítulos:</strong> conceptos con clave, descripción, unidad e importe, organizados en capítulos y subcapítulos con totales calculados.</li>
               <li><strong>Matrices APU:</strong> integración de materiales, mano de obra, herramienta, maquinaria, básicos y cuadrillas dentro del propio proyecto.</li>
@@ -1106,73 +1114,13 @@
               <li><strong>Programa de obra:</strong> actividades, periodos, Gantt y curva S para planeación y seguimiento.</li>
             </ul>
           </div>
-          <div class="mock-wrap mock-light" role="img" aria-label="Vista ilustrativa: interfaz simulada de SOPRO. No es una captura de pantalla real.">
-            <div class="titlebar">
-              <div class="dot dot-r"></div>
-              <div class="dot dot-y"></div>
-              <div class="dot dot-g"></div>
-              <span class="titlebar-title">SOPRO · Presupuesto de obra (ilustrativo)</span>
-            </div>
-            <div class="app-body">
-              <div class="sidebar">
-                <div class="side-label">Módulos</div>
-                <div class="side-item active"><span class="side-icon">📊</span>Presupuesto</div>
-                <div class="side-item"><span class="side-icon">🧩</span>Matrices APU</div>
-                <div class="side-item"><span class="side-icon">⚗️</span>Explosión</div>
-                <div class="side-item"><span class="side-icon">🗓</span>Programa</div>
-                <div class="side-item"><span class="side-icon">📑</span>Reportes</div>
-              </div>
-              <div class="main-area">
-                <div class="toolbar-row">
-                  <span class="tb-btn">Recalcular</span>
-                  <div class="tb-sep"></div>
-                  <span class="tb-btn" style="background:#fef3c7;color:#92400e">Exportar PDF</span>
-                  <div class="tb-sep"></div>
-                  <span class="tb-btn" style="background:#dcfce7;color:#166534">Excel</span>
-                </div>
-                <table class="preview">
-                  <thead>
-                    <tr>
-                      <th>Clave</th>
-                      <th>Descripción</th>
-                      <th>Unidad</th>
-                      <th>Importe</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="clave">1.01</td>
-                      <td>Trazo y nivelación</td>
-                      <td>m²</td>
-                      <td class="importe">$12,450.00</td>
-                    </tr>
-                    <tr>
-                      <td class="clave">2.03</td>
-                      <td>Base hidráulica compactada</td>
-                      <td>m³</td>
-                      <td class="importe">$85,320.00</td>
-                    </tr>
-                    <tr>
-                      <td class="clave">3.02</td>
-                      <td>Carpeta asfáltica</td>
-                      <td>m²</td>
-                      <td class="importe">$214,980.00</td>
-                    </tr>
-                    <tr class="total-row">
-                      <td colspan="3" style="font-weight:700">Total presupuesto</td>
-                      <td class="importe">$312,750.00</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div class="statusbar">
-                  <span>SOPRO · local (.db)</span>
-                  <span class="status-ok"><span class="status-dot"></span>Código abierto · MIT</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <figure class="shot-wrap">
+            <img src="assets/screenshots/presupuesto.webp"
+                 alt="Captura real del módulo de Presupuesto de SOPRO: hoja de presupuesto con capítulos, subcapítulos y conceptos"
+                 width="1200" height="630" loading="lazy" />
+            <figcaption class="shot-caption">Captura real de la aplicación · módulo Presupuesto</figcaption>
+          </figure>
         </div>
-        <p class="mock-caption" style="max-width:520px;margin:1rem auto 0">Figura ilustrativa generada en HTML · no representa píxeles de la aplicación</p>
       </div>
     </section>
 
