@@ -557,6 +557,31 @@
       backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     }
 
+    /* ─── apoyo (ko-fi) ──────────────────────────────────────────────────── */
+    .support-card {
+      max-width: 640px; margin: 0 auto; text-align: center;
+      background: var(--glass-bg-strong);
+      background-image: var(--glass-highlight);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,.9);
+      padding: 2.75rem 2.5rem;
+    }
+    .support-card h2 { margin-bottom: .7rem }
+    .support-card p {
+      color: var(--muted); line-height: 1.7; font-size: 1rem;
+      max-width: 500px; margin: 0 auto 1.75rem;
+    }
+    .btn-kofi {
+      background: #FF5E5B; color: #fff;
+      box-shadow: 0 6px 22px rgba(255,94,91,.42), inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    .btn-kofi:hover {
+      background: #e94b48;
+      box-shadow: 0 10px 30px rgba(255,94,91,.52), inset 0 1px 0 rgba(255,255,255,.40);
+    }
+
     /* ─── faq ────────────────────────────────────────────────────────────── */
     .faq-section { background: transparent; }
     details {
@@ -736,6 +761,8 @@
       .grid-3, .steps-grid { grid-template-columns: 1fr }
       .grid-2 { grid-template-columns: 1fr }
       .download-card { grid-template-columns: 1fr }
+      .support-card { padding: 1.6rem 1.25rem }
+      .support-card .btn-kofi { width: 100%; justify-content: center; white-space: normal; text-align: center }
       .steps-grid::before { display: none }
       .nav-toggle { display: flex }
       .menu {
@@ -1269,6 +1296,18 @@
       </div>
     </section>
 
+    <!-- ═══ APOYO (KO-FI) ══════════════════════════════════ -->
+    <section id="apoyar" class="band">
+      <div class="container">
+        <div class="support-card reveal">
+          <span class="section-label">Apoyo</span>
+          <h2>Apoya el proyecto</h2>
+          <p>SOPRO es libre, gratuito y de código abierto. Si te ahorra tiempo en tus presupuestos, puedes invitarme un café para apoyar su desarrollo.</p>
+          <a class="btn btn-kofi" href="https://ko-fi.com/icarlost" target="_blank" rel="noopener noreferrer">☕ Invítame un café en Ko-fi</a>
+        </div>
+      </div>
+    </section>
+
     <!-- ═══ FAQ ════════════════════════════════════════════ -->
     <section id="faq" class="faq-section">
       <div class="container">
@@ -1343,6 +1382,7 @@
           <a href="#contacto">Contacto</a>
           <a href="privacy.html">Política de Privacidad</a>
           <a href="https://github.com/iCarlost/SOPRO" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://ko-fi.com/icarlost" target="_blank" rel="noopener noreferrer">☕ Apoya el proyecto</a>
         </div>
       </div>
     </div>
