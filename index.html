@@ -10,7 +10,7 @@
   <meta name="application-name" content="SOPRO — Sistema de Presupuestación de Obra Pública" />
   <meta name="keywords" content="SOPRO, presupuesto de obra pública, análisis de precios unitarios, APU, programa de obra, explosión de insumos, software de presupuestos" />
   <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#dbeafe" />
+  <meta name="theme-color" content="#F5F7FA" />
   <link rel="canonical" href="https://icarlost.github.io/SOPRO-WEB/" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <noscript><style>.reveal { opacity: 1; transform: none }</style></noscript>
@@ -29,11 +29,11 @@
   <meta name="twitter:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image.png" />
   <style>
     /* ======================================================================
-       glass.html · variante LOCAL con diseño glassmorphism claro.
+       index.html · dirección visual «Expediente Técnico».
        Archivo 100% self-contained: NO enlaza assets/styles.css.
-       Las rutas de fuentes se reescriben a 'assets/fonts/...' porque este
-       archivo vive en la raíz del sitio.
-       ====================================================================== */
+       Paleta derivada de la aplicación real (ribbon navy, selección de fila
+       cian). Fuentes autohospedadas en 'assets/fonts/...' (SIL OFL).
+       ==================================================================== */
 
     /* ─── 1 · @font-face · fuentes autohospedadas (variable wght 100..800) ── */
 
@@ -77,728 +77,625 @@
       unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
     }
 
-    /* ─── 2 · reset / base / layout ──────────────────────────────────────── */
+    /* ─── 2 · tokens del sistema «Expediente Técnico» ───────────────────── */
+    :root {
+      color-scheme: light;
+
+      /* Papel y tinta */
+      --paper:      #F5F7FA;
+      --surface:    #FFFFFF;
+      --surface-2:  #EEF2F6;
+      --ink:        #182532;
+      --ink-2:      #2E4152;
+      --muted:      #5D6E7E;
+      --muted-2:    #8496A5;
+
+      /* Paleta de la app */
+      --navy:       #22384F;
+      --navy-2:     #1B2D40;
+      --navy-3:     #2C435E;
+      --selection:  #CDE7F3;
+      --selection-2:#EAF5FA;
+
+      /* Acento único */
+      --accent:     #1F6FB2;
+      --accent-ink: #175A94;
+      --accent-soft:#E4F0F8;
+
+      /* Semánticos */
+      --ok:         #2F7D57;
+      --warn:       #9A5B10;
+      --warn-bg:    #FBF4E8;
+      --kofi:       #E85B5A;
+
+      /* Geometría */
+      --line:       #D9E1E8;
+      --line-soft:  #E8EDF2;
+      --radius:     8px;
+      --radius-sm:  5px;
+
+      /* Sombra contenida, monocroma */
+      --shadow-card:  0 1px 2px rgba(24,37,50,.06), 0 10px 30px rgba(24,37,50,.07);
+      --shadow-soft:  0 1px 2px rgba(24,37,50,.05);
+
+      /* Tipografía */
+      --font: 'Sora', system-ui, 'Segoe UI', sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+    }
+
+    /* ─── 3 · base ──────────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
-    html { scroll-behavior: smooth; scroll-padding-top: 84px }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px }
     body {
       font-family: var(--font);
       color: var(--ink);
+      background: var(--paper);
       -webkit-font-smoothing: antialiased;
-      background:
-        radial-gradient(860px 860px at 8% -6%,   rgba(59,130,246,.35), transparent 62%),
-        radial-gradient(900px 900px at 94% 30%,  rgba(14,165,233,.30), transparent 62%),
-        radial-gradient(760px 760px at 30% 106%, rgba(99,102,241,.25), transparent 60%),
-        linear-gradient(150deg, #dbeafe 0%, #cffafe 48%, #e0e7ff 100%);
-      background-attachment: fixed;
-      min-height: 100vh;
+      line-height: 1.55;
     }
-    a { color: var(--brand-md); text-decoration: none }
-    a:hover { text-decoration: underline }
+    a { color: var(--accent-ink); text-decoration: none }
+    a:hover { text-decoration: underline; text-underline-offset: 3px }
     img, svg { display: block }
-    section[id] { scroll-margin-top: 84px }
-    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.4rem }
-    section { padding: 5rem 0 }
-
-    /* ─── 3 · tokens glass ───────────────────────────────────────────────── */
-    :root {
-      color-scheme: light;
-      --ink:       #0a0f1e;
-      --ink-2:     #1e293b;
-      --muted:     #4b5a72;
-      --muted-2:   #55637a;
-      --on-glass-dim: rgba(10,15,30,.72);
-      --brand:    #1e40af;
-      --brand-md: #1d4ed8;
-      --brand-lt: #3b82f6;
-      --accent:   #0891b2;
-      --accent-lt:#22d3ee;
-      --indigo:   #6366f1;
-      --ok:       #10b981;
-      --amber:    #f59e0b;
-      --bg-base:  #dbeafe;
-      --glass-bg:         rgba(255,255,255,.38);
-      --glass-bg-strong:  rgba(255,255,255,.42);
-      --glass-bg-soft:    rgba(255,255,255,.24);
-      --glass-border:     rgba(255,255,255,.70);
-      --glass-border-sub: rgba(255,255,255,.50);
-      --glass-edge:       rgba(34,211,238,.55);
-      --glass-blur:       blur(18px) saturate(180%);
-      --glass-blur-sm:    blur(16px) saturate(175%);
-      --glass-shadow:       0 8px 32px rgba(37,99,235,.16), 0 2px 10px rgba(8,145,178,.10);
-      --glass-shadow-lt:    0 4px 18px rgba(37,99,235,.12);
-      --glass-shadow-hover: 0 18px 48px rgba(37,99,235,.24), 0 4px 16px rgba(34,211,238,.20);
-      --glass-highlight: linear-gradient(135deg, rgba(255,255,255,.95), rgba(255,255,255,0) 46%);
-      --glass-tint:      rgba(34,211,238,.12);
-      --radius:    16px;
-      --radius-sm: 10px;
-      --font: 'Sora', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'Cascadia Code', Consolas, monospace;
+    section[id] { scroll-margin-top: 92px }
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 1.4rem }
+    section { padding: 5.5rem 0 }
+    section + section { border-top: 1px solid var(--line-soft) }
+    .skip-link {
+      position: absolute; left: -999px; top: 0; z-index: 200;
+      background: var(--navy); color: #fff; padding: .6rem 1rem;
+      border-radius: 0 0 var(--radius-sm) 0; font-size: .9rem;
+    }
+    .skip-link:focus { left: 0 }
+    :is(a, button, summary):focus-visible {
+      outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-sm);
     }
 
-    /* ─── bandas de sección ──────────────────────────────────────────────── */
-    .band {
-      background: linear-gradient(rgba(255,255,255,.28), rgba(255,255,255,.10));
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid var(--glass-border-sub);
-      border-bottom: 1px solid var(--glass-border-sub);
+    /* ─── 4 · nav · barra sólida como el ribbon de la app ───────────────── */
+    .nav-wrap {
+      position: fixed; inset: 0 0 auto 0; z-index: 100;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--line);
+      transition: box-shadow .25s ease;
     }
-
-    /* ─── nav ────────────────────────────────────────────────────────────── */
-    .nav-wrap { position: fixed; inset: 0 0 auto 0; z-index: 100; transition: background .3s, box-shadow .3s, border-color .3s; border-bottom: 1px solid transparent; }
-    .nav-wrap.scrolled {
-      background: rgba(255,255,255,.55);
-      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-      border-bottom-color: rgba(255,255,255,.75);
-      box-shadow: 0 4px 24px rgba(37,99,235,.14);
-    }
-    nav {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 0;
-      position: relative;
-    }
+    .nav-wrap.scrolled { box-shadow: 0 2px 12px rgba(24,37,50,.08) }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: .8rem 0 }
     .brand {
-      display: flex; align-items: center; gap: .65rem;
-      font-weight: 800; font-size: 1.18rem;
-      color: var(--ink); letter-spacing: -.3px;
+      display: flex; align-items: center; gap: .6rem;
+      font-weight: 700; font-size: 1.1rem; color: var(--ink); letter-spacing: -.02em;
     }
     .logo-mark {
-      width: 36px; height: 36px; border-radius: 10px;
-      background: linear-gradient(135deg, var(--brand-md), var(--accent-lt));
+      width: 34px; height: 34px; border-radius: var(--radius-sm);
+      background: var(--navy); color: #fff;
       display: grid; place-items: center;
-      font-size: .95rem; font-weight: 900; color: #fff;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 6px 20px rgba(8,145,178,.4);
+      font-family: var(--mono); font-weight: 700; font-size: .95rem;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.14);
     }
-    .menu {
-      display: flex; gap: .25rem; align-items: center;
-    }
+    .menu { display: flex; gap: .15rem; align-items: center }
     .menu a {
-      color: var(--on-glass-dim); font-size: .9rem; font-weight: 500;
-      padding: .45rem .75rem; border-radius: 8px;
-      transition: color .2s, background .2s;
+      color: var(--ink-2); font-size: .88rem; font-weight: 500;
+      padding: .45rem .65rem; border-radius: var(--radius-sm);
+      transition: color .15s, background .15s;
     }
-    .menu a:hover {
-      color: var(--ink); background: rgba(29,78,216,.10); text-decoration: none;
-    }
+    .menu a:hover { color: var(--ink); background: var(--surface-2); text-decoration: none }
     .menu .btn-nav {
-      background: linear-gradient(135deg, var(--brand-md), var(--accent));
-      color: #fff; font-weight: 700;
-      padding: .5rem 1rem; border-radius: 9px; margin-left: .25rem;
-      box-shadow: 0 4px 16px rgba(29,78,216,.4);
+      background: var(--navy); color: #fff; font-weight: 600;
+      padding: .5rem .95rem; margin-left: .35rem;
     }
-    .menu .btn-nav:hover { box-shadow: 0 6px 20px rgba(29,78,216,.45); }
+    .menu .btn-nav:hover { background: var(--navy-3); color: #fff }
 
-    /* mobile menu toggle */
     .nav-toggle {
-      display: none;
-      flex-direction: column; justify-content: center; gap: 5px;
-      width: 42px; height: 42px; padding: 11px;
-      background: transparent;
-      border: 1px solid rgba(10,15,30,.22);
-      border-radius: 9px; cursor: pointer;
+      display: none; flex-direction: column; justify-content: center; gap: 5px;
+      width: 40px; height: 40px; padding: 10px;
+      background: transparent; border: 1px solid var(--line);
+      border-radius: var(--radius-sm); cursor: pointer;
     }
-    .nav-toggle:hover { background: rgba(29,100,216,.08); }
-    .nav-toggle:focus-visible { outline: 2px solid var(--brand-md); outline-offset: 2px; }
+    .nav-toggle:hover { background: var(--surface-2) }
     .nav-toggle span {
-      display: block; height: 2px; width: 100%;
-      background: var(--ink); border-radius: 2px;
-      transition: transform .25s ease, opacity .25s ease;
+      display: block; height: 2px; width: 100%; background: var(--ink);
+      border-radius: 2px; transition: transform .22s ease, opacity .22s ease;
     }
     .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg) }
     .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0 }
     .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg) }
 
-    /* ─── hero (claro) ───────────────────────────────────────────────────── */
+    /* ─── 5 · hero · papel de dibujo técnico ────────────────────────────── */
     .hero {
-      background: transparent;
-      color: var(--ink);
-      padding: 7rem 0 5.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-    /* grid lines background */
-    .hero::before {
-      content: ''; position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(8,145,178,.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(8,145,178,.07) 1px, transparent 1px);
-      background-size: 56px 56px;
-      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
-    }
-    /* glow orb */
-    .hero::after {
-      content: ''; position: absolute; top: -220px; left: 50%; transform: translateX(-50%);
-      width: 1100px; height: 640px; border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(34,211,238,.40) 0%, rgba(59,130,246,.28) 45%, transparent 72%);
-      filter: blur(50px); pointer-events: none;
+      position: relative; overflow: hidden;
+      padding: 8rem 0 5.5rem;
+      background:
+        linear-gradient(rgba(31,111,178,.045) 1px, transparent 1px) 0 0 / 100% 48px,
+        linear-gradient(90deg, rgba(31,111,178,.045) 1px, transparent 1px) 0 0 / 48px 100%,
+        var(--paper);
+      border-bottom: 1px solid var(--line);
     }
     .hero-inner {
       position: relative; z-index: 1;
-      display: grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 3rem;
-      align-items: center;
+      display: grid; grid-template-columns: 1.02fr .98fr;
+      gap: 3.5rem; align-items: center;
     }
     .eyebrow {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: rgba(255,255,255,.45); border: 1px solid rgba(255,255,255,.8);
-      -webkit-backdrop-filter: var(--glass-blur-sm); backdrop-filter: var(--glass-blur-sm);
-      color: var(--brand-md);
-      border-radius: 999px; padding: .35rem .85rem;
-      font-size: .82rem; font-weight: 600; letter-spacing: .4px; text-transform: uppercase;
-      margin-bottom: 1.1rem;
+      display: inline-flex; align-items: center; gap: .55rem;
+      font-family: var(--mono); font-size: .74rem; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--accent-ink);
+      border: 1px solid var(--line); background: var(--surface);
+      border-radius: 999px; padding: .4rem .85rem;
+      margin-bottom: 1.3rem;
     }
-    .eyebrow-dot {
-      width: 6px; height: 6px; border-radius: 999px;
-      background: var(--accent-lt);
-      box-shadow: 0 0 10px var(--accent-lt);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { opacity: 1 }
-      50% { opacity: .4 }
-    }
+    .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent) }
     h1 {
-      color: var(--ink);
-      font-size: clamp(2rem, 4vw, 2.8rem);
-      font-weight: 800; line-height: 1.1;
-      letter-spacing: -.5px;
-      margin-bottom: .9rem;
+      font-size: clamp(2.1rem, 4.4vw, 3.05rem);
+      font-weight: 700; line-height: 1.12;
+      letter-spacing: -.025em;
+      margin-bottom: 1rem;
     }
     h1 em {
       font-style: normal;
-      background: linear-gradient(90deg, var(--brand-md), var(--accent), #6366f1);
-      -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--accent-ink);
+      border-bottom: 3px solid var(--selection);
     }
     .hero-desc {
-      color: var(--muted); font-size: 1.05rem; line-height: 1.7;
-      margin-bottom: 1.7rem; max-width: 480px;
+      color: var(--muted); font-size: 1.04rem; line-height: 1.7;
+      margin-bottom: 1.8rem; max-width: 480px;
     }
-    .cta { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .cta { display: flex; flex-wrap: wrap; gap: .7rem }
     .btn {
       display: inline-flex; align-items: center; gap: .5rem;
-      border: none; border-radius: var(--radius-sm);
-      padding: .8rem 1.3rem; font-weight: 700; font-size: .95rem;
-      cursor: pointer; text-decoration: none;
-      font-family: var(--font);
-      transition: transform .15s, box-shadow .15s, background .2s;
+      border: 1px solid transparent; border-radius: var(--radius-sm);
+      padding: .78rem 1.25rem; font-weight: 600; font-size: .95rem;
+      cursor: pointer; text-decoration: none; font-family: var(--font);
+      transition: background .15s, border-color .15s, transform .15s;
     }
-    .btn:hover { text-decoration: none; transform: translateY(-1px); }
-    .btn-primary {
-      background: linear-gradient(135deg, #1d4ed8, #0891b2);
-      color: #fff; box-shadow: 0 4px 20px rgba(29,78,216,.40), 0 2px 8px rgba(8,145,178,.30), inset 0 1px 0 rgba(255,255,255,.30);
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      box-shadow: 0 10px 30px rgba(29,78,216,.50), 0 4px 12px rgba(6,182,212,.35), inset 0 1px 0 rgba(255,255,255,.35);
-    }
+    .btn:hover { text-decoration: none }
+    .btn-primary { background: var(--navy); color: #fff }
+    .btn-primary:hover { background: var(--navy-3); transform: translateY(-1px) }
     .btn-ghost {
-      background: rgba(255,255,255,.40); color: var(--ink-2);
-      border: 1px solid rgba(255,255,255,.75);
-      -webkit-backdrop-filter: var(--glass-blur-sm); backdrop-filter: var(--glass-blur-sm);
-      box-shadow: var(--glass-shadow-lt);
+      background: var(--surface); color: var(--ink-2); border-color: var(--line);
     }
-    .btn-ghost:hover { background: rgba(255,255,255,.62); border-color: var(--glass-edge); color: var(--brand-md); }
-    .btn-outline {
-      background: rgba(255,255,255,.40); color: var(--ink-2);
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--glass-shadow-lt);
-    }
-    .btn-outline:hover { background: rgba(255,255,255,.62); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent-ink) }
+    .btn-accent { background: var(--accent); color: #fff }
+    .btn-accent:hover { background: var(--accent-ink); transform: translateY(-1px) }
 
-    /* hero stats row */
     .hero-stats {
-      display: flex; gap: 2rem; margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(10,15,30,.10);
+      display: flex; gap: 2.4rem; margin-top: 2.2rem;
+      padding-top: 1.4rem; border-top: 1px solid var(--line);
     }
     .stat-val {
-      font-size: 1.5rem; font-weight: 800;
-      background: linear-gradient(90deg, var(--brand-md), var(--accent));
-      -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-family: var(--mono); font-size: 1.35rem; font-weight: 700;
+      color: var(--ink); font-variant-numeric: tabular-nums;
     }
-    .stat-lbl { color: var(--muted); font-size: .8rem; margin-top: .1rem }
+    .stat-lbl { color: var(--muted); font-size: .8rem; margin-top: .15rem }
 
-    /* ─── app mockup (marco cristal, app opaca) ─────────────────────────── */
+    /* ─── 6 · ventana de app · chrome fiel a la aplicación real ─────────── */
     .mock-wrap {
-      background: rgba(255,255,255,.42);
-      border: 1px solid rgba(255,255,255,.75);
-      border-radius: 24px; padding: 10px;
-      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-      box-shadow: var(--glass-shadow), 0 0 70px rgba(34,211,238,.16), inset 0 1px 0 rgba(255,255,255,.9);
-      overflow: hidden;
+      border: 1px solid var(--line); border-radius: 10px;
+      background: var(--surface);
+      box-shadow: var(--shadow-card);
+      overflow: hidden; font-size: .78rem;
     }
-    .titlebar {
-      display: flex; align-items: center; gap: .4rem;
-      background: linear-gradient(#f6f9fe, #eef2f8);
-      border-radius: 14px 14px 0 0;
-      border-bottom: 1px solid #e2e8f0;
-      padding: .65rem .9rem;
+    .app-titlebar {
+      display: flex; align-items: center; gap: .8rem;
+      background: var(--navy); color: rgba(255,255,255,.92);
+      padding: .5rem .8rem;
     }
-    .dot { width: 11px; height: 11px; border-radius: 999px; }
-    .dot-r { background: #ff5f57 }
-    .dot-y { background: #febc2e }
-    .dot-g { background: #28c840 }
-    .titlebar-title {
-      margin-left: .4rem; color: #64748b;
-      font-size: .8rem; font-weight: 500;
-      font-family: var(--mono);
+    .app-titlebar .app-name { font-weight: 700; font-size: .82rem; letter-spacing: .02em }
+    .app-titlebar .app-sub { color: rgba(255,255,255,.55); font-family: var(--mono); font-size: .68rem }
+    .app-ribbon {
+      display: flex; align-items: center; gap: .35rem; flex-wrap: wrap;
+      background: var(--navy-2); color: rgba(255,255,255,.75);
+      padding: .35rem .8rem; font-family: var(--mono); font-size: .66rem;
+      border-top: 1px solid rgba(255,255,255,.08);
     }
-    .app-body {
-      display: grid; grid-template-columns: 148px 1fr;
-      min-height: 300px; color: var(--ink);
-      background: #fff; border-radius: 0 0 14px 14px;
-    }
-    .sidebar {
-      background: #f8fafc;
-      border-right: 1px solid #e5e7eb;
-      padding: .85rem .6rem;
-    }
-    .side-label {
-      font-size: .68rem; font-weight: 700; letter-spacing: .8px;
-      text-transform: uppercase; color: #94a3b8;
-      padding: .3rem .5rem; margin-bottom: .25rem;
+    .rb { padding: .12rem .5rem; border-radius: 3px; background: rgba(255,255,255,.09) }
+    .rb-sep { width: 1px; height: 12px; background: rgba(255,255,255,.15) }
+    .app-body { display: grid; grid-template-columns: 168px 1fr; min-height: 320px }
+    .app-side {
+      background: #FBFCFD; border-right: 1px solid var(--line);
+      padding: .7rem .5rem; font-size: .76rem;
     }
     .side-item {
-      display: flex; align-items: center; gap: .5rem;
-      font-size: .82rem; color: #475569;
-      padding: .48rem .6rem; border-radius: 7px;
-      margin: .1rem 0; cursor: default;
-      transition: background .15s;
+      display: flex; align-items: center; gap: .45rem;
+      color: var(--ink-2); padding: .42rem .55rem; border-radius: 4px;
     }
+    .side-item svg { width: 13px; height: 13px; flex: none; color: var(--muted-2) }
     .side-item.active {
-      background: #dbeafe; color: #1d4ed8; font-weight: 700;
+      background: var(--selection); color: var(--ink); font-weight: 600;
+      border-left: 2px solid var(--accent); border-radius: 0 4px 4px 0;
     }
-    .side-item:not(.active):hover { background: #f1f5f9 }
-    .side-icon { font-size: .95rem }
-
-    .main-area { padding: .85rem; background: #fff; min-width: 0; }
-    .toolbar-row {
-      display: flex; align-items: center; gap: .5rem;
-      background: #f8fafc; border: 1px solid #e2e8f0;
-      border-radius: 8px; padding: .5rem .75rem;
-      margin-bottom: .75rem; font-size: .78rem; color: #64748b;
+    .side-item.sub { padding-left: 1.55rem; color: var(--muted); font-size: .72rem }
+    .app-main { min-width: 0; background: var(--surface) }
+    .app-banner {
+      background: var(--navy); color: #fff;
+      padding: .55rem .8rem; margin: .6rem;
+      border-radius: 4px;
     }
-    .tb-btn {
-      background: #e0e7ff; color: #3730a3; border-radius: 5px;
-      padding: .2rem .55rem; font-size: .74rem; font-weight: 600;
+    .app-banner .b-title { font-size: .8rem; font-weight: 700; letter-spacing: .04em }
+    .app-banner .b-meta {
+      display: flex; justify-content: space-between; gap: .5rem 1rem; flex-wrap: wrap;
+      font-family: var(--mono); font-size: .62rem; color: rgba(255,255,255,.65); margin-top: .2rem;
     }
-    .tb-sep { width: 1px; height: 14px; background: #e2e8f0; margin: 0 .15rem }
-
-    table.preview {
-      width: 100%; border-collapse: collapse; font-size: .78rem;
+    table.grid { width: 100%; border-collapse: collapse; font-size: .74rem }
+    table.grid th {
+      background: var(--surface-2); color: var(--muted);
+      font-family: var(--mono); font-size: .64rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .06em;
+      text-align: left; padding: .42rem .55rem;
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
     }
-    table.preview th {
-      background: #1447a0; color: #fff; text-align: left;
-      padding: .5rem .7rem; font-weight: 600; font-size: .74rem;
-      letter-spacing: .2px;
+    table.grid td {
+      padding: .4rem .55rem; border-bottom: 1px solid var(--line-soft);
+      color: var(--ink-2); white-space: nowrap;
     }
-    table.preview th:last-child, table.preview td:last-child { text-align: right }
-    table.preview td {
-      padding: .45rem .7rem; border-bottom: 1px solid #f1f5f9; color: #334155;
+    table.grid td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums }
+    .row-type { color: var(--muted-2); font-size: .68rem }
+    tr.grp td { background: var(--selection-2); font-weight: 600; color: var(--ink) }
+    .imp { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink) }
+    .app-statusbar {
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+      padding: .5rem .8rem; border-top: 1px solid var(--line);
+      font-family: var(--mono); font-size: .66rem; color: var(--muted);
+      background: var(--surface);
     }
-    table.preview tr:hover td { background: #f8fafc }
-    .clave { font-family: var(--mono); font-size: .72rem; color: #64748b }
-    .importe { font-family: var(--mono); font-weight: 600; color: #1447a0 }
-    .total-row td { background: #f0f9ff; font-weight: 700 }
-
-    .statusbar {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-top: .65rem; padding-top: .6rem;
-      border-top: 1px solid #f1f5f9;
-      font-size: .72rem; color: #94a3b8; font-family: var(--mono);
-    }
-    .status-ok {
-      display: inline-flex; align-items: center; gap: .3rem;
-      color: var(--ok); font-weight: 600;
-    }
+    .status-ok { display: inline-flex; align-items: center; gap: .35rem; color: var(--ok); font-weight: 600 }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor }
-    /* ─── section headings ───────────────────────────────────────────────── */
+    .mock-caption {
+      margin-top: .8rem; text-align: center;
+      font-family: var(--mono); font-size: .7rem; color: var(--muted-2);
+    }
+
+    /* ─── 7 · encabezados de sección · estilo expediente ────────────────── */
+    .section-head { max-width: 640px; margin-bottom: 2.6rem }
     .section-label {
-      display: inline-block; font-size: .75rem; font-weight: 700;
-      letter-spacing: .8px; text-transform: uppercase;
-      color: var(--accent); margin-bottom: .5rem;
+      display: inline-flex; align-items: center; gap: .7rem;
+      font-family: var(--mono); font-size: .72rem; font-weight: 600;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--accent-ink); margin-bottom: .8rem;
     }
-    h2 { font-size: clamp(1.5rem,3vw,2rem); font-weight: 800; letter-spacing: -.3px; margin-bottom: .5rem }
-    .sub { color: var(--muted); margin-bottom: 2rem; line-height: 1.6; max-width: 560px }
+    .section-label::before { content: ''; width: 26px; height: 2px; background: var(--accent) }
+    h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: .55rem }
+    .sub { color: var(--muted); line-height: 1.65 }
 
-    /* ─── feature cards ──────────────────────────────────────────────────── */
-    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem }
-    .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem }
-
-    .feat-card, .step-card, .lic-card, .contact-card {
-      background: var(--glass-bg);
-      background-image: var(--glass-highlight);
-      border: 1px solid var(--glass-border);
+    /* ─── 8 · tarjetas · plano con hairline ─────────────────────────────── */
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
       border-radius: var(--radius);
-      -webkit-backdrop-filter: var(--glass-blur-sm); backdrop-filter: var(--glass-blur-sm);
-      box-shadow: var(--glass-shadow);
-      transition: transform .2s, box-shadow .2s, border-color .2s;
+      box-shadow: var(--shadow-soft);
+      padding: 1.35rem;
+      transition: border-color .18s, box-shadow .18s, transform .18s;
     }
-    .feat-card:hover, .step-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--glass-edge);
-      box-shadow: var(--glass-shadow-hover);
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-card);
+      transform: translateY(-2px);
     }
-    .feat-icon, .contact-icon {
-      background: linear-gradient(135deg, rgba(29,78,216,.20), rgba(6,182,212,.18));
-      border: 1px solid rgba(255,255,255,.85);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 4px 14px rgba(37,99,235,.15);
-    }
-    .role-badge, .step-num { box-shadow: 0 6px 18px rgba(29,78,216,.4), inset 0 1px 0 rgba(255,255,255,.35); }
-
-    .feat-card { padding: 1.4rem; }
     .feat-icon {
-      width: 42px; height: 42px; border-radius: 10px;
-      display: grid; place-items: center;
-      font-size: 1.2rem; margin-bottom: .9rem;
+      width: 38px; height: 38px; border-radius: var(--radius-sm);
+      background: var(--accent-soft); color: var(--accent-ink);
+      display: grid; place-items: center; margin-bottom: .9rem;
     }
-    .feat-card h3 { font-size: 1.02rem; font-weight: 700; margin-bottom: .4rem }
-    .feat-card p { color: var(--muted); font-size: .9rem; line-height: 1.6 }
+    .feat-icon svg { width: 18px; height: 18px }
+    .card h3 { font-size: .98rem; font-weight: 700; margin-bottom: .4rem }
+    .card p { color: var(--muted); font-size: .88rem; line-height: 1.6 }
 
-    /* ─── flow steps ─────────────────────────────────────────────────────── */
+    /* ─── 9 · flujo · línea de proceso numerada ─────────────────────────── */
     .steps-grid {
-      display: grid; grid-template-columns: repeat(3,1fr);
-      gap: 0; position: relative;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: var(--shadow-soft);
     }
-    .steps-grid::before { display: none; }
     .step-card {
-      padding: 1.3rem;
-      margin: .5rem;
+      padding: 1.5rem 1.4rem;
+      border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      transition: background .18s;
     }
+    .step-card:hover { background: var(--selection-2) }
     .step-num {
-      width: 32px; height: 32px; border-radius: 999px;
-      background: linear-gradient(135deg, var(--brand-md), var(--accent));
-      color: #fff; font-weight: 800; font-size: .88rem;
-      display: grid; place-items: center; margin-bottom: .8rem;
-    }
-    .step-card h3 { font-size: .98rem; font-weight: 700; margin-bottom: .35rem }
-    .step-card p { color: var(--muted); font-size: .87rem; line-height: 1.55 }
-
-    /* ─── download (banda clara) ─────────────────────────────────────────── */
-    .download-section {
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(rgba(191,219,254,.55), rgba(165,243,252,.45));
-      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-      border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border);
-      color: var(--ink);
-    }
-    .download-section::before {
-      content: ''; position: absolute; right: -120px; top: -80px;
-      width: 420px; height: 420px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(99,102,241,.28), transparent 68%);
-      filter: blur(40px); pointer-events: none;
-    }
-    .download-section h2 { color: var(--ink); }
-    .download-section .section-label { color: var(--brand-md); }
-
-    .download-card {
-      background: rgba(255,255,255,.42); border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,.9);
-      padding: 2rem;
-      display: grid;
-      grid-template-columns: 1.3fr .7fr;
-      gap: 2rem;
-      align-items: center;
-    }
-    .download-card h3 { color: var(--ink); }
-    .version-pill {
-      display: inline-flex; align-items: center; gap: .4rem;
-      background: rgba(16,185,129,.14); border: 1px solid rgba(16,185,129,.45);
-      color: #047857;
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border-radius: 999px; padding: .3rem .75rem;
-      font-size: .82rem; font-weight: 700; font-family: var(--mono);
-      margin-bottom: 1rem;
-    }
-    .version-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok) }
-
-    .req-box {
-      background: rgba(255,255,255,.34); border: 1px solid var(--glass-border);
-      border-radius: var(--radius);
-      padding: 1.1rem 1.2rem;
-    }
-    .req-title {
-      font-size: .72rem; letter-spacing: .7px; text-transform: uppercase;
-      font-weight: 700; color: var(--muted); margin-bottom: .75rem;
-      font-family: var(--mono);
-    }
-    .req-item {
+      font-family: var(--mono); font-size: .72rem; font-weight: 700;
+      color: var(--accent-ink); letter-spacing: .1em; margin-bottom: .7rem;
       display: flex; align-items: center; gap: .55rem;
-      font-size: .87rem; color: var(--ink-2); margin: .5rem 0;
-      font-family: var(--mono);
     }
-    .req-item::before { content: '›'; color: var(--brand-md); font-weight: 700 }
+    .step-num::after { content: ''; flex: 1; height: 1px; background: var(--line-soft) }
+    .step-card h3 { font-size: .95rem; font-weight: 700; margin-bottom: .35rem }
+    .step-card p { color: var(--muted); font-size: .85rem; line-height: 1.55 }
 
-    .smartscreen-note {
-      background: rgba(245,158,11,.14); border: 1px solid rgba(245,158,11,.45);
-      border-radius: var(--radius-sm);
-      padding: .75rem 1rem;
-      color: #92400e; font-size: .83rem; line-height: 1.55;
-      margin-top: 1.1rem;
-    }
-
-    /* ─── license ────────────────────────────────────────────────────────── */
-    .lic-card { padding: 1.3rem; }
-    .lic-card h3 { font-size: .98rem; font-weight: 700; margin-bottom: .4rem }
-    .lic-card p { color: var(--muted); font-size: .9rem; line-height: 1.6 }
-    .notice {
-      background: rgba(254,243,199,.62); border: 1px solid rgba(253,230,138,.8);
-      color: #92400e; border-radius: var(--radius);
-      padding: 1rem 1.2rem; font-size: .9rem; line-height: 1.6;
-      margin-top: 1.5rem;
-      display: flex; gap: .6rem; align-items: flex-start;
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    }
-
-    /* ─── apoyo (ko-fi) ──────────────────────────────────────────────────── */
-    .support-card {
-      max-width: 640px; margin: 0 auto; text-align: center;
-      background: var(--glass-bg-strong);
-      background-image: var(--glass-highlight);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius);
-      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,.9);
-      padding: 2.75rem 2.5rem;
-    }
-    .support-card h2 { margin-bottom: .7rem }
-    .support-card p {
-      color: var(--muted); line-height: 1.7; font-size: 1rem;
-      max-width: 500px; margin: 0 auto 1.75rem;
-    }
-    .btn-kofi {
-      background: #FF5E5B; color: #fff;
-      box-shadow: 0 6px 22px rgba(255,94,91,.42), inset 0 1px 0 rgba(255,255,255,.35);
-    }
-    .btn-kofi:hover {
-      background: #e94b48;
-      box-shadow: 0 10px 30px rgba(255,94,91,.52), inset 0 1px 0 rgba(255,255,255,.40);
-    }
-
-    /* ─── faq ────────────────────────────────────────────────────────────── */
-    .faq-section { background: transparent; }
-    details {
-      background: var(--glass-bg-strong); border: 1px solid var(--glass-border);
-      border-radius: var(--radius); padding: 1rem 1.25rem;
-      -webkit-backdrop-filter: var(--glass-blur-sm); backdrop-filter: var(--glass-blur-sm);
-      box-shadow: var(--glass-shadow-lt);
-      transition: border-color .2s;
-    }
-    details + details { margin-top: .6rem }
-    details[open] { background: rgba(255,255,255,.58); border-color: var(--glass-edge); }
-    summary {
-      cursor: pointer; font-weight: 700; font-size: .98rem;
-      list-style: none; display: flex; align-items: center; justify-content: space-between;
-      gap: 1rem;
-      color: var(--ink);
-    }
-    summary::-webkit-details-marker { display: none }
-    summary::after {
-      content: '+'; color: var(--brand-md); font-size: 1.3rem; font-weight: 300;
-      transition: transform .2s;
-    }
-    details[open] summary::after { transform: rotate(45deg) }
-    details p { color: #475569; margin-top: .7rem; line-height: 1.65; font-size: .93rem }
-
-    /* ─── contact ────────────────────────────────────────────────────────── */
-    .contact-section { background: transparent; }
-    .contact-card {
-      padding: 2rem;
-      max-width: 440px;
-    }
-    .contact-card h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 1rem }
-    .contact-row {
-      display: flex; align-items: center; gap: .75rem;
-      padding: .7rem 0; border-bottom: 1px solid rgba(10,15,30,.07);
-      font-size: .92rem;
-    }
-    .contact-row:last-of-type { border-bottom: none }
-    .contact-icon {
-      width: 34px; height: 34px; border-radius: 8px;
-      display: grid; place-items: center; font-size: 1rem;
-      flex-shrink: 0;
-    }
-
-    /* ─── footer (claro translúcido) ─────────────────────────────────────── */
-    footer {
-      background: linear-gradient(rgba(255,255,255,.42), rgba(224,231,255,.55));
-      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-      color: var(--muted); border-top: 1px solid var(--glass-border);
-      padding: 2.5rem 0;
-    }
-    .footer-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 1rem; flex-wrap: wrap;
-    }
-    .footer-brand { display: flex; align-items: center; gap: .55rem; color: var(--ink); font-weight: 800 }
-    .footer-logo {
-      width: 28px; height: 28px; border-radius: 7px;
-      background: linear-gradient(135deg, var(--brand), var(--accent));
-      display: grid; place-items: center; font-size: .75rem; font-weight: 900; color: #fff;
-    }
-    .footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap }
-    .footer-links a { color: var(--muted); font-size: .88rem; transition: color .2s }
-    .footer-links a:hover { color: var(--brand-md); text-decoration: none }
-    .footer-copy { font-size: .82rem; color: var(--muted-2); margin-top: .4rem }
-
-    /* ─── scroll reveal ──────────────────────────────────────────────────── */
-    .js .reveal {
-      opacity: 0; transform: translateY(22px);
-      transition: opacity .55s ease, transform .55s ease;
-    }
-    .reveal.visible { opacity: 1; transform: none }
-
-    /* ─── reglas base (deben preceder a las media queries) ───────────────── */
-    .split-2 {
-      display: grid; grid-template-columns: 1.05fr .95fr;
-      gap: 3rem; align-items: center;
-    }
+    /* ─── 10 · captura real ─────────────────────────────────────────────── */
+    .split-2 { display: grid; grid-template-columns: 1fr 1.05fr; gap: 3rem; align-items: center }
     .split-2 > * { min-width: 0 }
-    .scroll-hint {
-      font-size: .78rem; color: var(--muted-2); text-align: center;
-      margin-top: .6rem; font-family: var(--mono); display: none;
-    }
-
-    /* ─── vista real (captura) ───────────────────────────────────────────── */
     .illus-pill {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: rgba(245,158,11,.14);
-      border: 1px dashed rgba(180,83,9,.5);
-      color: #b45309; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border-radius: 999px;
-      padding: .35rem .85rem; font-size: .8rem; font-weight: 600;
-      letter-spacing: .4px; text-transform: uppercase; margin-bottom: 1.1rem;
+      display: inline-flex; align-items: center; gap: .45rem;
+      font-family: var(--mono); font-size: .7rem; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--accent-ink);
+      border: 1px solid var(--line); background: var(--surface);
+      border-radius: 999px; padding: .35rem .8rem; margin-bottom: 1.1rem;
     }
-    .vista-list {
-      list-style: none; display: grid; gap: .75rem;
-      margin-top: 1.5rem; max-width: 480px;
-    }
+    .vista-list { list-style: none; display: grid; gap: .7rem; margin-top: 1.4rem }
     .vista-list li {
-      padding-left: 1.5rem; position: relative;
-      color: var(--muted); font-size: .95rem; line-height: 1.65;
+      padding-left: 1.6rem; position: relative;
+      color: var(--muted); font-size: .92rem; line-height: 1.6;
     }
-    .vista-list li::before { content: '✓'; position: absolute; left: 0; color: var(--ok); font-weight: 700 }
+    .vista-list li::before {
+      content: '✓'; position: absolute; left: 0; top: 0;
+      color: var(--ok); font-weight: 700;
+    }
     .vista-list li strong { color: var(--ink) }
     .shot-wrap {
-      margin: 0;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.75);
-      box-shadow: var(--glass-shadow), 0 0 70px rgba(34,211,238,.16), inset 0 1px 0 rgba(255,255,255,.9);
-      background: rgba(255,255,255,.42);
-      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-      padding: 10px;
+      margin: 0; border: 1px solid var(--line); border-radius: var(--radius);
+      overflow: hidden; background: var(--surface);
+      box-shadow: var(--shadow-card);
+      padding: 8px;
     }
-    .shot-wrap img { width: 100%; height: auto; display: block; border-radius: 12px; }
+    .shot-wrap img { width: 100%; height: auto; border-radius: 4px; border: 1px solid var(--line-soft) }
     .shot-caption {
-      font-size: .78rem; color: var(--muted-2); text-align: center;
-      margin-top: .6rem; font-family: var(--mono);
+      font-family: var(--mono); font-size: .7rem; color: var(--muted-2);
+      text-align: center; margin-top: .6rem;
     }
 
-    /* ─── comparativa ────────────────────────────────────────────────────── */
+    /* ─── 11 · comparativa · tabla como en la app ───────────────────────── */
     .table-scroll {
       overflow-x: auto; -webkit-overflow-scrolling: touch;
-      background: var(--glass-bg-strong);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius);
-      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-      box-shadow: var(--glass-shadow);
+      background: var(--surface);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
     }
-    .comp-table { min-width: 560px; width: 100%; border-collapse: collapse; font-size: .9rem }
+    .comp-table { min-width: 580px; width: 100%; border-collapse: collapse; font-size: .88rem }
     .comp-table th {
-      background: rgba(224,231,255,.75); color: var(--ink-2); text-align: left;
-      padding: .7rem .9rem; font-weight: 700;
+      background: var(--navy); color: #fff; text-align: left;
+      padding: .65rem .9rem; font-weight: 600; font-size: .8rem;
+      letter-spacing: .02em;
     }
-    .comp-table td { padding: .6rem .9rem; border-bottom: 1px solid rgba(10,15,30,.06); color: var(--ink-2) }
-    .comp-table tr:nth-child(even) td { background: var(--glass-bg-soft) }
+    .comp-table th:first-child { border-radius: var(--radius) 0 0 0 }
+    .comp-table td {
+      padding: .55rem .9rem; border-bottom: 1px solid var(--line-soft);
+      color: var(--ink-2);
+    }
+    .comp-table tbody tr:last-child td { border-bottom: none }
+    .comp-table tbody tr:hover td { background: var(--selection-2) }
     .comp-table th:nth-child(2), .comp-table th:nth-child(3),
     .comp-table td:nth-child(2), .comp-table td:nth-child(3) { text-align: center }
-    .col-sopro { background: rgba(59,130,246,.14) !important }
-    .mark-yes { color: #059669; font-weight: 800 }
-    .mark-no { color: var(--muted-2) }
-    .comp-summary { color: var(--muted); font-size: .9rem; margin-top: 1.2rem; line-height: 1.6 }
+    .col-sopro { background: var(--selection-2) !important; font-weight: 600 }
+    .comp-table th.col-sopro { color: var(--accent-ink) }
+    .mark-yes { color: var(--ok); font-weight: 700 }
+    .mark-no { color: var(--muted) }
+    .comp-summary { color: var(--muted); font-size: .9rem; margin-top: 1.2rem; line-height: 1.6; max-width: 720px }
     .legal-note {
-      font-size: .78rem; color: var(--muted-2); line-height: 1.6;
-      margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(10,15,30,.08);
+      font-family: var(--mono); font-size: .72rem; color: var(--muted-2); line-height: 1.6;
+      margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line-soft);
+      max-width: 720px;
+    }
+    .scroll-hint {
+      display: none; font-family: var(--mono); font-size: .72rem;
+      color: var(--muted-2); text-align: center; margin-top: .6rem;
     }
 
-    /* ─── casos de uso ───────────────────────────────────────────────────── */
+    /* ─── 12 · casos de uso ─────────────────────────────────────────────── */
     .role-badge {
-      width: 42px; height: 42px; border-radius: 10px;
-      background: linear-gradient(135deg, var(--brand-md), var(--indigo));
-      color: #fff; font-weight: 800; font-size: .95rem;
+      width: 40px; height: 40px; border-radius: var(--radius-sm);
+      background: var(--navy); color: #fff;
+      font-family: var(--mono); font-weight: 700; font-size: .72rem;
+      letter-spacing: .06em;
       display: grid; place-items: center; margin-bottom: .9rem;
     }
     .caso-list { list-style: none; margin-top: .5rem; display: grid; gap: .5rem }
     .caso-list li {
-      font-size: .88rem; color: var(--muted); line-height: 1.55;
-      padding-left: 1.15rem; position: relative;
+      font-size: .86rem; color: var(--muted); line-height: 1.55;
+      padding-left: 1.1rem; position: relative;
     }
-    .caso-list li::before { content: '›'; position: absolute; left: 0; color: var(--brand-lt); font-weight: 700 }
+    .caso-list li::before {
+      content: '›'; position: absolute; left: 0;
+      color: var(--accent); font-weight: 700;
+    }
 
-    /* ─── focus visible ──────────────────────────────────────────────────── */
-    .btn:focus-visible, summary:focus-visible { outline: 2px solid var(--brand-md); outline-offset: 2px }
-    /* ─── 4 · responsive + fallback + movimiento reducido ────────────────── */
-    @media (max-width: 860px) {
-      .hero-inner { grid-template-columns: 1fr }
-      .hero-inner > *, .split-2 > * { min-width: 0 }
-      .split-2 { grid-template-columns: 1fr }
-      .mock-wrap { width: 100%; max-width: 520px; margin: 0 auto; min-width: 0 }
-      .main-area { min-width: 0 }
-      table.preview { table-layout: fixed; width: 100% }
-      table.preview th, table.preview td { padding: .4rem .5rem; font-size: .72rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
-      table.preview th:last-child, table.preview td:last-child { width: 104px }
-      .scroll-hint { display: block }
-      .app-body { grid-template-columns: 1fr }
-      .sidebar { border-right: none; border-bottom: 1px solid #e5e7eb; display: none }
-      .grid-3, .steps-grid { grid-template-columns: 1fr }
-      .grid-2 { grid-template-columns: 1fr }
+    /* ─── 13 · descargas · hoja de especificaciones ─────────────────────── */
+    .download-section { background: var(--surface) }
+    .download-card {
+      background: var(--paper);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 2rem;
+      display: grid; grid-template-columns: 1.3fr .7fr; gap: 2rem; align-items: start;
+    }
+    .version-pill {
+      display: inline-flex; align-items: center; gap: .45rem;
+      background: var(--selection-2); border: 1px solid var(--selection);
+      color: var(--ink-2);
+      border-radius: 999px; padding: .32rem .8rem;
+      font-family: var(--mono); font-size: .76rem; font-weight: 600;
+      margin-bottom: 1.1rem;
+    }
+    .version-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok) }
+    .download-card h3 { font-size: 1.2rem; margin-bottom: .45rem }
+    .download-card .dl-desc { font-size: .9rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.2rem }
+    .smartscreen-note {
+      background: var(--warn-bg);
+      border: 1px solid #EAD9B8; border-left: 3px solid var(--warn);
+      border-radius: var(--radius-sm);
+      padding: .75rem 1rem;
+      color: var(--warn); font-size: .82rem; line-height: 1.55;
+      margin-top: 1.2rem;
+    }
+    .smartscreen-note strong { color: #6E4106 }
+    .req-box { border-left: 1px solid var(--line); padding-left: 1.6rem }
+    .req-title {
+      font-family: var(--mono); font-size: .68rem; letter-spacing: .12em;
+      text-transform: uppercase; font-weight: 600; color: var(--muted);
+      margin-bottom: .8rem;
+    }
+    .req-item {
+      display: flex; align-items: center; gap: .55rem;
+      font-family: var(--mono); font-size: .78rem; color: var(--ink-2);
+      padding: .45rem 0; border-bottom: 1px dashed var(--line-soft);
+    }
+    .req-item:last-child { border-bottom: none }
+    .req-item::before { content: '›'; color: var(--accent); font-weight: 700 }
+
+    /* ─── 14 · código abierto ───────────────────────────────────────────── */
+    .lic-card h3 { display: flex; align-items: center; gap: .5rem }
+    .lic-card h3 .lic-ico { color: var(--accent-ink) }
+    .notice {
+      background: var(--selection-2);
+      border: 1px solid var(--selection);
+      color: var(--ink-2); border-radius: var(--radius);
+      padding: 1rem 1.2rem; font-size: .9rem; line-height: 1.6;
+      margin-top: 1.5rem;
+      display: flex; gap: .65rem; align-items: flex-start;
+    }
+    .notice svg { flex: none; width: 18px; height: 18px; color: var(--accent-ink); margin-top: .15rem }
+
+    /* ─── 15 · apoyo ────────────────────────────────────────────────────── */
+    .support-card {
+      max-width: 620px; margin: 0 auto; text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 2.6rem 2.4rem;
+    }
+    .support-card p { color: var(--muted); line-height: 1.7; max-width: 460px; margin: 0 auto 1.7rem }
+    .btn-kofi { background: var(--kofi); color: #fff; border-color: transparent }
+    .btn-kofi:hover { background: #D44948; color: #fff; transform: translateY(-1px) }
+
+    /* ─── 16 · faq ──────────────────────────────────────────────────────── */
+    .faq-wrap { max-width: 720px }
+    details {
+      background: var(--surface);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      transition: border-color .18s;
+    }
+    details + details { margin-top: .6rem }
+    details[open] { border-color: var(--accent) }
+    summary {
+      cursor: pointer; font-weight: 600; font-size: .96rem;
+      list-style: none; display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; color: var(--ink);
+    }
+    summary::-webkit-details-marker { display: none }
+    summary::after {
+      content: '+'; font-family: var(--mono);
+      color: var(--accent-ink); font-size: 1.25rem; font-weight: 400;
+      transition: transform .2s;
+    }
+    details[open] summary::after { transform: rotate(45deg) }
+    details p { color: var(--muted); margin-top: .7rem; line-height: 1.65; font-size: .9rem }
+
+    /* ─── 17 · contacto ─────────────────────────────────────────────────── */
+    .contact-card {
+      max-width: 460px; background: var(--surface);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 1.8rem;
+    }
+    .contact-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .9rem }
+    .contact-row {
+      display: flex; align-items: center; gap: .8rem;
+      padding: .75rem 0; border-top: 1px solid var(--line-soft);
+      font-size: .9rem;
+    }
+    .contact-icon {
+      width: 34px; height: 34px; border-radius: var(--radius-sm);
+      background: var(--accent-soft); color: var(--accent-ink);
+      display: grid; place-items: center; flex: none;
+    }
+    .contact-icon svg { width: 16px; height: 16px }
+
+    /* ─── 18 · footer · cierre en navy como el encabezado de la app ─────── */
+    footer {
+      background: var(--navy-2); color: rgba(255,255,255,.75);
+      padding: 2.6rem 0;
+    }
+    .footer-inner {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1.5rem; flex-wrap: wrap;
+    }
+    .footer-brand { display: flex; align-items: center; gap: .55rem; color: #fff; font-weight: 700 }
+    .footer-logo {
+      width: 28px; height: 28px; border-radius: 5px;
+      background: rgba(255,255,255,.12);
+      display: grid; place-items: center;
+      font-family: var(--mono); font-size: .72rem; font-weight: 700; color: #fff;
+    }
+    .footer-copy { font-family: var(--mono); font-size: .72rem; color: rgba(255,255,255,.45); margin-top: .45rem }
+    .footer-links { display: flex; gap: .35rem 1.15rem; flex-wrap: wrap; max-width: 560px; justify-content: flex-end }
+    .footer-links a { color: rgba(255,255,255,.65); font-size: .82rem }
+    .footer-links a:hover { color: #fff; text-decoration: none }
+
+    /* ─── 19 · reveal ───────────────────────────────────────────────────── */
+    .js .reveal {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity .5s ease, transform .5s ease;
+      transition-delay: var(--d, 0ms);
+    }
+    .reveal.visible { opacity: 1; transform: none }
+
+    /* ─── 20 · responsive ───────────────────────────────────────────────── */
+    @media (max-width: 1080px) {
+      .menu a { padding: .45rem .5rem; font-size: .82rem }
+    }
+    @media (max-width: 900px) {
+      .hero-inner, .split-2 { grid-template-columns: 1fr }
+      .mock-wrap { max-width: 560px; margin: 0 auto; width: 100% }
+      .hero { padding: 7rem 0 4.5rem }
+      .grid-3 { grid-template-columns: 1fr 1fr }
+      .steps-grid { grid-template-columns: 1fr 1fr }
       .download-card { grid-template-columns: 1fr }
-      .support-card { padding: 1.6rem 1.25rem }
-      .support-card .btn-kofi { width: 100%; justify-content: center; white-space: normal; text-align: center }
-      .steps-grid::before { display: none }
+      .req-box { border-left: none; padding-left: 0; border-top: 1px solid var(--line); padding-top: 1.4rem }
+      .app-body { grid-template-columns: 1fr }
+      .app-side { display: none }
+    }
+    @media (max-width: 720px) {
       .nav-toggle { display: flex }
       .menu {
-        position: absolute; top: calc(100% + .6rem); left: 0; right: 0;
+        position: absolute; top: calc(100% + .5rem); left: 1.4rem; right: 1.4rem;
         flex-direction: column; align-items: stretch; gap: .1rem;
-        background: rgba(255,255,255,.72);
-        -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%);
-        border: 1px solid rgba(255,255,255,.8);
-        border-radius: var(--radius);
+        background: var(--surface);
+        border: 1px solid var(--line); border-radius: var(--radius);
         padding: .5rem;
-        box-shadow: 0 24px 60px rgba(37,99,235,.22);
+        box-shadow: var(--shadow-card);
         opacity: 0; visibility: hidden; transform: translateY(-8px);
-        transition: opacity .25s ease, transform .25s ease, visibility .25s;
+        transition: opacity .22s ease, transform .22s ease, visibility .22s;
         pointer-events: none;
       }
-      .menu.open {
-        opacity: 1; visibility: visible; transform: none; pointer-events: auto;
+      .menu.open { opacity: 1; visibility: visible; transform: none; pointer-events: auto }
+      .menu a { padding: .7rem .9rem; font-size: .94rem }
+      .menu .btn-nav { margin: .35rem 0 0; text-align: center }
+      section { padding: 4rem 0 }
+      .grid-3, .steps-grid, .grid-2 { grid-template-columns: 1fr }
+      .hero-stats { flex-wrap: wrap; gap: 1.4rem }
+      .scroll-hint { display: block }
+      .support-card { padding: 1.7rem 1.3rem }
+      .support-card .btn-kofi { width: 100%; justify-content: center; white-space: normal; text-align: center }
+      .footer-inner { flex-direction: column }
+      .footer-links { justify-content: flex-start }
+      table.grid { table-layout: fixed; width: 100% }
+      table.grid th, table.grid td { padding: .35rem .4rem; font-size: .68rem; overflow: hidden; text-overflow: ellipsis }
+      .app-statusbar { flex-wrap: wrap }
+
+      /* comparativa en móvil: primera columna fija + pista de scroll */
+      .comp-table { min-width: 440px; font-size: .8rem; table-layout: fixed }
+      .comp-table th, .comp-table td { padding: .5rem .55rem }
+      .comp-table th:first-child, .comp-table td:first-child { width: 34% }
+      .comp-table th:nth-child(2), .comp-table td:nth-child(2) { width: 35% }
+      .comp-table th:nth-child(3), .comp-table td:nth-child(3) { width: 31% }
+      .comp-table th:first-child, .comp-table tbody tr td:first-child { position: sticky; left: 0 }
+      .comp-table th:first-child { z-index: 2 }
+      .comp-table tbody tr td:first-child { z-index: 1 }
+      .comp-table th:first-child {
+        background: var(--navy);
+        box-shadow: inset -1px 0 0 rgba(255,255,255,.28), 4px 0 10px rgba(24,37,50,.14);
       }
-      .menu a { padding: .7rem .9rem; font-size: .95rem; border-radius: var(--radius-sm); color: var(--ink-2) }
-      .menu .btn-nav { margin-left: 0; margin-top: .35rem; text-align: center; padding: .7rem .9rem }
-      .hero-stats { gap: 1.2rem }
-      .footer-inner { flex-direction: column; align-items: flex-start }
+      .comp-table tbody tr td:first-child {
+        background: var(--surface);
+        box-shadow: inset -1px 0 0 var(--line), 4px 0 10px rgba(24,37,50,.08);
+      }
     }
 
-    /* ─── nav · ancho intermedio (tablet) ────────────────────────────────── */
-    @media (max-width: 1080px) and (min-width: 861px) {
-      .menu a { padding: .45rem .5rem; font-size: .84rem }
-      .menu { gap: 0 }
-    }
-
-    /* ─── fallback sin backdrop-filter ───────────────────────────────────── */
-    @supports not (backdrop-filter: blur(1px)) {
-      :root { --glass-bg: rgba(255,255,255,.92); --glass-bg-strong: rgba(255,255,255,.95); --glass-bg-soft: rgba(255,255,255,.85); }
-    }
-
-    /* ─── accesibilidad · movimiento reducido ────────────────────────────── */
+    /* ─── 21 · accesibilidad · movimiento reducido ──────────────────────── */
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto }
       *, *::before, *::after {
@@ -906,11 +803,12 @@
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
 
   <!-- ═══ NAV ═══════════════════════════════════════════════ -->
   <div class="nav-wrap" id="nav">
     <div class="container">
-      <nav>
+      <nav aria-label="Principal">
         <a class="brand" href="#" style="text-decoration:none">
           <div class="logo-mark">S</div>
           SOPRO
@@ -939,7 +837,7 @@
     <div class="container">
       <div class="hero-inner">
         <div>
-          <div class="eyebrow">
+          <div class="eyebrow reveal visible">
             <span class="eyebrow-dot"></span>
             Software de escritorio · Windows
           </div>
@@ -950,7 +848,8 @@
           </p>
           <div class="cta">
             <a class="btn btn-primary" href="#descargas">
-              ⬇ Descargar SOPRO
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10"/></svg>
+              Descargar SOPRO
             </a>
             <a class="btn btn-ghost" href="#flujo">
               Ver flujo de trabajo
@@ -972,112 +871,107 @@
           </div>
         </div>
 
-        <!-- mock app window -->
-        <div class="mock-wrap">
-          <div class="titlebar">
-            <div class="dot dot-r"></div>
-            <div class="dot dot-y"></div>
-            <div class="dot dot-g"></div>
-            <span class="titlebar-title">SOPRO · Presupuesto de obra</span>
-          </div>
-          <div class="app-body">
-            <div class="sidebar">
-              <div class="side-label">Módulos</div>
-              <div class="side-item active"><span class="side-icon">📊</span>Presupuesto</div>
-              <div class="side-item"><span class="side-icon">🧩</span>Matrices APU</div>
-              <div class="side-item"><span class="side-icon">⚗️</span>Explosión</div>
-              <div class="side-item"><span class="side-icon">🗓</span>Programa</div>
-              <div class="side-item"><span class="side-icon">📑</span>Reportes</div>
+        <!-- ventana de app: chrome fiel a la aplicación real -->
+        <div>
+          <div class="mock-wrap" role="img" aria-label="Vista ilustrativa del módulo de Presupuesto de SOPRO">
+            <div class="app-titlebar">
+              <span class="app-name">SOPRO</span>
+              <span class="app-sub">Proyecto · Alumbrado público demo</span>
             </div>
-            <div class="main-area">
-              <div class="toolbar-row">
-                <span class="tb-btn">Recalcular</span>
-                <div class="tb-sep"></div>
-                <span class="tb-btn" style="background:#fef3c7;color:#92400e">Exportar PDF</span>
-                <div class="tb-sep"></div>
-                <span class="tb-btn" style="background:#dcfce7;color:#166534">Excel</span>
+            <div class="app-ribbon" aria-hidden="true">
+              <span class="rb">Recalcular</span><span class="rb-sep"></span>
+              <span class="rb">Aplicar</span><span class="rb-sep"></span>
+              <span class="rb">Importar Excel</span><span class="rb-sep"></span>
+              <span class="rb">Explosión</span>
+            </div>
+            <div class="app-body">
+              <div class="app-side" aria-hidden="true">
+                <div class="side-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="12" height="12" rx="1.5"/></svg>Proyecto</div>
+                <div class="side-item active"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 13V6m5 7V3m5 10V8"/></svg>Presupuesto</div>
+                <div class="side-item sub">Hoja de Presupuesto</div>
+                <div class="side-item sub">Explosión de Insumos</div>
+                <div class="side-item sub">Cálculo de Indirectos</div>
+                <div class="side-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M2 6h12M6 6v7"/></svg>Programa de Obra</div>
+                <div class="side-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 2h6l3 3v9H4z"/></svg>Reportes</div>
+                <div class="side-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>Catálogos</div>
               </div>
-              <table class="preview">
-                <thead>
-                  <tr>
-                    <th>Clave</th>
-                    <th>Descripción</th>
-                    <th>Unidad</th>
-                    <th>Importe</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="clave">1.01</td>
-                    <td>Trazo y nivelación</td>
-                    <td>m²</td>
-                    <td class="importe">$12,450.00</td>
-                  </tr>
-                  <tr>
-                    <td class="clave">2.03</td>
-                    <td>Base hidráulica compactada</td>
-                    <td>m³</td>
-                    <td class="importe">$85,320.00</td>
-                  </tr>
-                  <tr>
-                    <td class="clave">3.02</td>
-                    <td>Carpeta asfáltica</td>
-                    <td>m²</td>
-                    <td class="importe">$214,980.00</td>
-                  </tr>
-                  <tr class="total-row">
-                    <td colspan="3" style="font-weight:700">Total presupuesto</td>
-                    <td class="importe">$312,750.00</td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="statusbar">
-                <span id="mock-ver">—</span>
-                <span class="status-ok"><span class="status-dot"></span>Código abierto · MIT</span>
+              <div class="app-main">
+                <div class="app-banner">
+                  <div class="b-title">CATÁLOGO DE CONCEPTOS</div>
+                  <div class="b-meta">
+                    <span>Ind.OC 7.000% · Camp. 3.000% · Fin. 0.000%</span>
+                    <span>Factor 1.08800×</span>
+                  </div>
+                </div>
+                <table class="grid" aria-hidden="true">
+                  <thead>
+                    <tr>
+                      <th>Tipo</th><th>Clave</th><th>Descripción</th>
+                      <th style="text-align:right">Cantidad</th><th style="text-align:right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="grp"><td class="row-type">Capítulo</td><td style="font-family:var(--mono)">1</td><td>Electrificación y alumbrado público</td><td class="num"></td><td class="num imp">$47,986.02</td></tr>
+                    <tr class="grp"><td class="row-type">Subcap.</td><td style="font-family:var(--mono)">1.1</td><td>Preliminares</td><td class="num"></td><td class="num imp">$107.97</td></tr>
+                    <tr><td class="row-type">Concepto</td><td style="font-family:var(--mono)">1.1.1</td><td>Excavación de cepa para poste</td><td class="num">1.00</td><td class="num">$107.97</td></tr>
+                    <tr class="grp"><td class="row-type">Subcap.</td><td style="font-family:var(--mono)">1.2</td><td>Conceptos principales</td><td class="num"></td><td class="num imp">$2,955.54</td></tr>
+                    <tr><td class="row-type">Concepto</td><td style="font-family:var(--mono)">1.2.4</td><td>Suministro e instalación de poste octagonal 9 m</td><td class="num">1.00</td><td class="num">$12,135.01</td></tr>
+                    <tr><td class="row-type">Concepto</td><td style="font-family:var(--mono)">1.2.5</td><td>Suministro e instalación de luminaria 100W</td><td class="num">1.00</td><td class="num">$4,540.45</td></tr>
+                    <tr><td class="row-type">Concepto</td><td style="font-family:var(--mono)">1.2.7</td><td>Tendido de cableado para alumbrado</td><td class="num">165.00</td><td class="num">$24,340.80</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
+            <div class="app-statusbar">
+              <span>9 conceptos · <strong style="color:var(--ink)">$47,986.02</strong></span>
+              <span class="status-ok"><span class="status-dot"></span>Código abierto · MIT</span>
+            </div>
+            <span id="mock-ver" hidden aria-hidden="true">—</span>
           </div>
+          <p class="mock-caption">Vista ilustrativa · captura real en la sección «Vista»</p>
         </div>
       </div>
     </div>
   </header>
 
-  <main>
+  <main id="main">
 
     <!-- ═══ CARACTERÍSTICAS ════════════════════════════════ -->
     <section id="caracteristicas">
       <div class="container">
-        <span class="section-label reveal">Módulos</span>
-        <h2 class="reveal">Características principales</h2>
-        <p class="sub reveal">Pensado para el trabajo técnico diario de presupuestación de obra pública.</p>
+        <div class="section-head">
+          <span class="section-label reveal">01 · Módulos</span>
+          <h2 class="reveal">Características principales</h2>
+          <p class="sub reveal">Pensado para el trabajo técnico diario de presupuestación de obra pública.</p>
+        </div>
         <div class="grid-3">
-          <div class="feat-card reveal">
-            <div class="feat-icon">📊</div>
+          <div class="card reveal">
+            <div class="feat-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="3" width="15" height="14" rx="1.5"/><path d="M2.5 7.5h15M7.5 7.5V17"/></svg></div>
             <h3>Presupuestos</h3>
             <p>Captura y organiza conceptos de obra con capítulos, subcapítulos y niveles de agrupación.</p>
           </div>
-          <div class="feat-card reveal">
-            <div class="feat-icon">🧩</div>
+          <div class="card reveal" style="--d:60ms">
+            <div class="feat-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="3" width="6" height="6" rx="1"/><rect x="11.5" y="3" width="6" height="6" rx="1"/><rect x="2.5" y="11" width="6" height="6" rx="1"/><rect x="11.5" y="11" width="6" height="6" rx="1"/></svg></div>
             <h3>Matrices APU</h3>
             <p>Análisis de precios unitarios con materiales, mano de obra, herramienta, maquinaria, básicos y cuadrillas.</p>
           </div>
-          <div class="feat-card reveal">
-            <div class="feat-icon">⚗️</div>
+          <div class="card reveal" style="--d:120ms">
+            <div class="feat-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4h14l-5.5 7v5l-3 2v-7z"/></svg></div>
             <h3>Explosión de insumos</h3>
             <p>Consolida cantidades e importes de todos los insumos utilizados en el presupuesto.</p>
           </div>
-          <div class="feat-card reveal">
-            <div class="feat-icon">🗓</div>
+          <div class="card reveal">
+            <div class="feat-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 5h3M3 10h7M3 15h5"/><rect x="9" y="4" width="7" height="2.4" rx="1"/><rect x="13" y="9" width="4" height="2.4" rx="1"/><rect x="10.5" y="14" width="6.5" height="2.4" rx="1"/></svg></div>
             <h3>Programa de obra</h3>
             <p>Organiza actividades, periodos, Gantt y curva S para planeación y seguimiento.</p>
           </div>
-          <div class="feat-card reveal">
-            <div class="feat-icon">📄</div>
+          <div class="card reveal" style="--d:60ms">
+            <div class="feat-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 2.5h7l4 4V17.5H5z"/><path d="M12 2.5V7h4M7.5 11h5M7.5 14h5"/></svg></div>
             <h3>Reportes PDF / Excel</h3>
             <p>Exporta con formato profesional respetando columnas visibles y configuración del usuario.</p>
           </div>
-          <div class="feat-card reveal">
-            <div class="feat-icon">🔓</div>
+          <div class="card reveal" style="--d:120ms">
+            <div class="feat-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 12l-3 3 3 3M13 3l3 3-3 3M10 6.5v7" transform="translate(0 1)"/></svg></div>
             <h3>Código abierto</h3>
             <p>Distribuido bajo licencia MIT con el código fuente disponible públicamente en GitHub.</p>
           </div>
@@ -1086,39 +980,41 @@
     </section>
 
     <!-- ═══ FLUJO ═══════════════════════════════════════════ -->
-    <section id="flujo" class="band">
+    <section id="flujo">
       <div class="container">
-        <span class="section-label reveal">Proceso</span>
-        <h2 class="reveal">Flujo de trabajo</h2>
-        <p class="sub reveal">Del proyecto nuevo al expediente técnico completo, en seis pasos.</p>
-        <div class="steps-grid">
-          <div class="step-card reveal">
-            <div class="step-num">1</div>
+        <div class="section-head">
+          <span class="section-label reveal">02 · Proceso</span>
+          <h2 class="reveal">Flujo de trabajo</h2>
+          <p class="sub reveal">Del proyecto nuevo al expediente técnico completo, en seis pasos.</p>
+        </div>
+        <div class="steps-grid reveal">
+          <div class="step-card">
+            <div class="step-num">PASO 01</div>
             <h3>Crear proyecto</h3>
             <p>Define datos generales, ubicación y configuración inicial del proyecto.</p>
           </div>
-          <div class="step-card reveal">
-            <div class="step-num">2</div>
+          <div class="step-card">
+            <div class="step-num">PASO 02</div>
             <h3>Capturar presupuesto</h3>
             <p>Agrega conceptos, cantidades, agrupaciones y matrices asociadas.</p>
           </div>
-          <div class="step-card reveal">
-            <div class="step-num">3</div>
+          <div class="step-card">
+            <div class="step-num">PASO 03</div>
             <h3>Integrar matrices</h3>
             <p>Administra APUs, básicos, cuadrillas e insumos desde el propio sistema.</p>
           </div>
-          <div class="step-card reveal">
-            <div class="step-num">4</div>
+          <div class="step-card">
+            <div class="step-num">PASO 04</div>
             <h3>Recalcular</h3>
             <p>Actualiza importes, precios unitarios, indirectos, financiamiento y utilidad.</p>
           </div>
-          <div class="step-card reveal">
-            <div class="step-num">5</div>
+          <div class="step-card">
+            <div class="step-num">PASO 05</div>
             <h3>Programar obra</h3>
             <p>Genera actividades, periodos, Gantt, curva S y programa de insumos.</p>
           </div>
-          <div class="step-card reveal">
-            <div class="step-num">6</div>
+          <div class="step-card">
+            <div class="step-num">PASO 06</div>
             <h3>Exportar reportes</h3>
             <p>Genera reportes técnicos en PDF y Excel para revisión o integración de expediente.</p>
           </div>
@@ -1131,17 +1027,17 @@
       <div class="container">
         <div class="split-2">
           <div>
-            <div class="illus-pill">◉ Captura real</div>
-            <h2>Así se ve tu trabajo diario en SOPRO</h2>
-            <p class="sub">Vista del módulo de Presupuesto con la jerarquía de capítulos, subcapítulos y conceptos, cantidades, precios unitarios e importes.</p>
+            <div class="illus-pill reveal">◉ Captura real</div>
+            <h2 class="reveal">Así se ve tu trabajo diario en SOPRO</h2>
+            <p class="sub reveal">Vista del módulo de Presupuesto con la jerarquía de capítulos, subcapítulos y conceptos, cantidades, precios unitarios e importes.</p>
             <ul class="vista-list">
-              <li><strong>Presupuesto por capítulos:</strong> conceptos con clave, descripción, unidad e importe, organizados en capítulos y subcapítulos con totales calculados.</li>
-              <li><strong>Matrices APU:</strong> integración de materiales, mano de obra, herramienta, maquinaria, básicos y cuadrillas dentro del propio proyecto.</li>
-              <li><strong>Explosión de insumos:</strong> consolidado de cantidades e importes de todos los insumos del presupuesto.</li>
-              <li><strong>Programa de obra:</strong> actividades, periodos, Gantt y curva S para planeación y seguimiento.</li>
+              <li class="reveal"><strong>Presupuesto por capítulos:</strong> conceptos con clave, descripción, unidad e importe, organizados en capítulos y subcapítulos con totales calculados.</li>
+              <li class="reveal"><strong>Matrices APU:</strong> integración de materiales, mano de obra, herramienta, maquinaria, básicos y cuadrillas dentro del propio proyecto.</li>
+              <li class="reveal"><strong>Explosión de insumos:</strong> consolidado de cantidades e importes de todos los insumos del presupuesto.</li>
+              <li class="reveal"><strong>Programa de obra:</strong> actividades, periodos, Gantt y curva S para planeación y seguimiento.</li>
             </ul>
           </div>
-          <figure class="shot-wrap">
+          <figure class="shot-wrap reveal">
             <img src="assets/screenshots/presupuesto.webp"
                  alt="Captura real del módulo de Presupuesto de SOPRO: hoja de presupuesto con capítulos, subcapítulos y conceptos"
                  width="1200" height="630" loading="lazy" />
@@ -1152,11 +1048,13 @@
     </section>
 
     <!-- ═══ COMPARATIVA ════════════════════════════════════ -->
-    <section id="comparativa" class="band">
+    <section id="comparativa">
       <div class="container">
-        <span class="section-label reveal">Comparativa</span>
-        <h2 class="reveal">SOPRO vs OPUS CMS</h2>
-        <p class="sub reveal">Comparación de capacidades centrales de presupuestación, con información públicamente documentada.</p>
+        <div class="section-head">
+          <span class="section-label reveal">04 · Comparativa</span>
+          <h2 class="reveal">SOPRO vs OPUS CMS</h2>
+          <p class="sub reveal">Comparación de capacidades centrales de presupuestación, con información públicamente documentada.</p>
+        </div>
         <div class="table-scroll reveal">
           <table class="comp-table">
             <thead><tr><th>Capacidad</th><th class="col-sopro">SOPRO</th><th>OPUS CMS</th></tr></thead>
@@ -1182,19 +1080,21 @@
           </table>
         </div>
         <p class="scroll-hint">← Desliza para ver la tabla completa →</p>
-        <p class="comp-summary">En presupuestación de obra pública —presupuestos, APUs, explosión de insumos, programa de obra y reportes— ambas herramientas cubren las mismas tareas centrales. OPUS CMS agrega alcance en CAD, BIM, compras y licitaciones; SOPRO se enfoca en la presupuestación con persistencia local por proyecto y distribución libre bajo licencia MIT.</p>
-        <p class="legal-note">OPUS y OPUS CMS son marcas registradas de ECOSOFT S.A. de C.V. SOPRO es un proyecto independiente y no está afiliado, patrocinado ni avalado por ECOSOFT. Esta comparativa se elaboró con información públicamente documentada de ambos productos y puede cambiar con futuras versiones.</p>
+        <p class="comp-summary reveal">En presupuestación de obra pública —presupuestos, APUs, explosión de insumos, programa de obra y reportes— ambas herramientas cubren las mismas tareas centrales. OPUS CMS agrega alcance en CAD, BIM, compras y licitaciones; SOPRO se enfoca en la presupuestación con persistencia local por proyecto y distribución libre bajo licencia MIT.</p>
+        <p class="legal-note reveal">OPUS y OPUS CMS son marcas registradas de ECOSOFT S.A. de C.V. SOPRO es un proyecto independiente y no está afiliado, patrocinado ni avalado por ECOSOFT. Esta comparativa se elaboró con información públicamente documentada de ambos productos y puede cambiar con futuras versiones.</p>
       </div>
     </section>
 
     <!-- ═══ CASOS DE USO ═══════════════════════════════════ -->
     <section id="casos">
       <div class="container">
-        <span class="section-label reveal">Quién lo usa</span>
-        <h2 class="reveal">Casos de uso</h2>
-        <p class="sub reveal">Escenarios típicos donde SOPRO apoya el trabajo técnico de presupuestación. Descripciones genéricas: no son testimonios ni referencias verificadas de clientes.</p>
+        <div class="section-head">
+          <span class="section-label reveal">05 · Quién lo usa</span>
+          <h2 class="reveal">Casos de uso</h2>
+          <p class="sub reveal">Escenarios típicos donde SOPRO apoya el trabajo técnico de presupuestación. Descripciones genéricas: no son testimonios ni referencias verificadas de clientes.</p>
+        </div>
         <div class="grid-3">
-          <div class="feat-card reveal">
+          <div class="card reveal">
             <div class="role-badge">ING</div>
             <h3>Despacho de ingeniería civil</h3>
             <ul class="caso-list">
@@ -1203,7 +1103,7 @@
               <li>Entrega de expediente técnico en PDF y Excel.</li>
             </ul>
           </div>
-          <div class="feat-card reveal">
+          <div class="card reveal" style="--d:60ms">
             <div class="role-badge">MUN</div>
             <h3>Dependencia municipal</h3>
             <ul class="caso-list">
@@ -1212,7 +1112,7 @@
               <li>Archivos locales por proyecto, sin depender de servidores o suscripciones.</li>
             </ul>
           </div>
-          <div class="feat-card reveal">
+          <div class="card reveal" style="--d:120ms">
             <div class="role-badge">CONS</div>
             <h3>Constructor contratista</h3>
             <ul class="caso-list">
@@ -1228,29 +1128,30 @@
     <!-- ═══ DESCARGAS ══════════════════════════════════════ -->
     <section id="descargas" class="download-section">
       <div class="container">
-        <span class="section-label reveal">Distribución</span>
-        <h2 class="reveal">Descargar SOPRO</h2>
-        <p class="sub reveal">Instalador para Windows. Siempre disponible en el repositorio público de releases.</p>
+        <div class="section-head">
+          <span class="section-label reveal">06 · Distribución</span>
+          <h2 class="reveal">Descargar SOPRO</h2>
+          <p class="sub reveal">Instalador para Windows. Siempre disponible en el repositorio público de releases.</p>
+        </div>
         <div class="download-card reveal">
           <div>
             <div class="version-pill">
               <span class="version-dot"></span>
               <span id="latest-version">Consultando versión…</span>
             </div>
-            <h3 style="font-size:1.25rem;margin-bottom:.5rem">Instalador para Windows</h3>
-            <p style="font-size:.9rem;line-height:1.6;margin-bottom:1.2rem">
-              Descarga directa desde GitHub Releases. No requiere cuenta ni registro.
-            </p>
+            <h3>Instalador para Windows</h3>
+            <p class="dl-desc">Descarga directa desde GitHub Releases. No requiere cuenta ni registro.</p>
             <div class="cta">
-              <a class="btn btn-primary" id="download-btn" href="https://github.com/iCarlost/SOPRO-Releases/releases/latest" target="_blank" rel="noopener">
-                ⬇ Descargar instalador
+              <a class="btn btn-accent" id="download-btn" href="https://github.com/iCarlost/SOPRO-Releases/releases/latest" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10"/></svg>
+                <span id="download-label">Descargar instalador</span>
               </a>
               <a class="btn btn-ghost" href="https://github.com/iCarlost/SOPRO-Releases/releases/latest" target="_blank" rel="noopener">
                 Ver release en GitHub
               </a>
             </div>
             <div class="smartscreen-note">
-              ⚠ Windows puede mostrar advertencia de SmartScreen. Selecciona <strong>«Más información»</strong> → <strong>«Ejecutar de todas formas»</strong>.
+              Windows puede mostrar advertencia de SmartScreen. Selecciona <strong>«Más información»</strong> → <strong>«Ejecutar de todas formas»</strong>.
             </div>
           </div>
           <div class="req-box">
@@ -1268,39 +1169,41 @@
     <!-- ═══ CÓDIGO ABIERTO ═════════════════════════════════ -->
     <section id="opensource">
       <div class="container">
-        <span class="section-label reveal">Proyecto</span>
-        <h2 class="reveal">Código abierto</h2>
-        <p class="sub reveal">SOPRO es software libre distribuido bajo licencia MIT. Descarga, usa, estudia y modifica el código libremente.</p>
+        <div class="section-head">
+          <span class="section-label reveal">07 · Proyecto</span>
+          <h2 class="reveal">Código abierto</h2>
+          <p class="sub reveal">SOPRO es software libre distribuido bajo licencia MIT. Descarga, usa, estudia y modifica el código libremente.</p>
+        </div>
         <div class="grid-2">
-          <div class="lic-card reveal">
-            <h3>🔓 Licencia MIT</h3>
+          <div class="card lic-card reveal">
+            <h3><span class="lic-ico" aria-hidden="true">🔓</span>Licencia MIT</h3>
             <p>Uso libre, comercial o personal, con atribución. Sin restricciones técnicas ni vigencia limitada.</p>
           </div>
-          <div class="lic-card reveal">
-            <h3>📦 Código fuente</h3>
+          <div class="card lic-card reveal" style="--d:60ms">
+            <h3><span class="lic-ico" aria-hidden="true">📦</span>Código fuente</h3>
             <p>El repositorio público incluye el código completo, la documentación y el motor de cálculo.</p>
           </div>
-          <div class="lic-card reveal">
-            <h3>🔔 Actualizaciones</h3>
+          <div class="card lic-card reveal">
+            <h3><span class="lic-ico" aria-hidden="true">🔔</span>Actualizaciones</h3>
             <p>SOPRO notifica automáticamente cuando hay una nueva versión disponible en el repositorio de releases.</p>
           </div>
-          <div class="lic-card reveal">
-            <h3>🤝 Contribuciones</h3>
+          <div class="card lic-card reveal" style="--d:60ms">
+            <h3><span class="lic-ico" aria-hidden="true">🤝</span>Contribuciones</h3>
             <p>¿Encontraste un error o quieres proponer una mejora? El proyecto acepta issues y pull requests.</p>
           </div>
         </div>
         <div class="notice reveal">
-          <span>ℹ️</span>
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 9v5M10 6h.01"/></svg>
           <span>SOPRO no requiere licencia, activación ni conexión a un servidor. Instala, usa y comparte libremente.</span>
         </div>
       </div>
     </section>
 
     <!-- ═══ APOYO (KO-FI) ══════════════════════════════════ -->
-    <section id="apoyar" class="band">
+    <section id="apoyar">
       <div class="container">
         <div class="support-card reveal">
-          <span class="section-label">Apoyo</span>
+          <span class="section-label">08 · Apoyo</span>
           <h2>Apoya el proyecto</h2>
           <p>SOPRO es libre, gratuito y de código abierto. Si te ahorra tiempo en tus presupuestos, puedes invitarme un café para apoyar su desarrollo.</p>
           <a class="btn btn-kofi" href="https://ko-fi.com/icarlost" target="_blank" rel="noopener noreferrer">☕ Invítame un café en Ko-fi</a>
@@ -1309,11 +1212,13 @@
     </section>
 
     <!-- ═══ FAQ ════════════════════════════════════════════ -->
-    <section id="faq" class="faq-section">
+    <section id="faq">
       <div class="container">
-        <span class="section-label reveal">FAQ</span>
-        <h2 class="reveal">Preguntas frecuentes</h2>
-        <div style="max-width:700px;margin-top:1.5rem">
+        <div class="section-head" style="margin-bottom:1.8rem">
+          <span class="section-label reveal">09 · FAQ</span>
+          <h2 class="reveal">Preguntas frecuentes</h2>
+        </div>
+        <div class="faq-wrap">
           <details class="reveal">
             <summary>¿SOPRO funciona sin internet?</summary>
             <p>Sí. El uso normal de SOPRO es completamente local. Internet solo se utiliza para descargar el instalador o revisar si hay nuevas versiones disponibles.</p>
@@ -1339,17 +1244,21 @@
     </section>
 
     <!-- ═══ CONTACTO ═══════════════════════════════════════ -->
-    <section id="contacto" class="contact-section">
+    <section id="contacto">
       <div class="container">
-        <span class="section-label reveal">Contacto</span>
-        <h2 class="reveal">¿Listo para empezar?</h2>
-        <p class="sub reveal">Para soporte técnico, implementación institucional o colaboración.</p>
+        <div class="section-head" style="margin-bottom:1.8rem">
+          <span class="section-label reveal">10 · Contacto</span>
+          <h2 class="reveal">¿Listo para empezar?</h2>
+          <p class="sub reveal">Para soporte técnico, implementación institucional o colaboración.</p>
+        </div>
         <div class="contact-card reveal">
           <h3>SOPRO · Carlos Pérez</h3>
           <div class="contact-row">
-            <div class="contact-icon">🐙</div>
+            <div class="contact-icon">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="5.5"/><path d="M5.5 12.5c.6-1.6 1.4-2.4 2.5-2.4s1.9.8 2.5 2.4M6.3 6.8h.01M9.7 6.8h.01"/></svg>
+            </div>
             <div>
-              <div style="font-size:.8rem;color:var(--muted);margin-bottom:.1rem">Soporte</div>
+              <div style="font-size:.78rem;color:var(--muted);margin-bottom:.1rem">Soporte</div>
               <a href="https://github.com/iCarlost/SOPRO/issues" target="_blank" rel="noopener">Issues en GitHub</a>
             </div>
           </div>
@@ -1449,22 +1358,27 @@
       function render(info) {
         const versionEl = document.getElementById("latest-version");
         const downloadBtn = document.getElementById("download-btn");
+        const downloadLabel = document.getElementById("download-label");
+        const setLabel = (text) => {
+          if (downloadLabel) downloadLabel.textContent = text;
+          else if (downloadBtn) downloadBtn.textContent = text;
+        };
         const mockVer = document.getElementById("mock-ver");
         if (info && info.tag) {
           versionEl.textContent = "Última versión: " + info.tag;
           if (mockVer) mockVer.textContent = info.tag;
           if (info.assetUrl) {
             downloadBtn.href = info.assetUrl;
-            downloadBtn.textContent = "⬇ Descargar " + info.assetName;
+            setLabel("Descargar " + info.assetName);
           } else {
             downloadBtn.href = info.htmlUrl || fallback;
-            downloadBtn.textContent = "⬇ Descargar instalador";
+            setLabel("Descargar instalador");
           }
         } else {
           versionEl.textContent = "Última versión en GitHub Releases";
           if (mockVer) mockVer.textContent = "—";
           downloadBtn.href = fallback;
-          downloadBtn.textContent = "⬇ Descargar instalador";
+          setLabel("Descargar instalador");
         }
       }
 
@@ -1501,4 +1415,3 @@
   </script>
 </body>
 </html>
-

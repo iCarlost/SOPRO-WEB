@@ -8,7 +8,7 @@
   <meta name="description" content="Política de privacidad de SOPRO: aplicación de escritorio que opera localmente, sin recopilar datos personales ni transmitir información a servidores externos." />
   <link rel="canonical" href="https://icarlost.github.io/SOPRO-WEB/privacy.html" />
   <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#dbeafe" />
+  <meta name="theme-color" content="#F5F7FA" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <meta property="og:title" content="Política de Privacidad — SOPRO" />
   <meta property="og:description" content="SOPRO opera localmente sin recopilar datos personales ni transmitir información a servidores externos." />
@@ -18,10 +18,11 @@
   <meta name="twitter:card" content="summary" />
   <style>
     /* ======================================================================
-       privacy.html · página interior con el diseño glass-vibrant de index.html.
+       privacy.html · página interior con la dirección visual
+       «Expediente Técnico» de index.html.
        Archivo 100% self-contained: NO enlaza assets/styles.css.
-       Los tokens y reglas se copian de index.html para mantener consistencia.
-       Las rutas de fuentes apuntan a 'assets/fonts/...' (archivo en la raíz).
+       Los tokens y reglas se comparten con index.html para mantener
+       consistencia visual. Rutas de fuentes: 'assets/fonts/...'.
        ====================================================================== */
 
     /* ─── 1 · @font-face · fuentes autohospedadas (variable wght 100..800) ── */
@@ -66,121 +67,111 @@
       unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
     }
 
-    /* ─── 2 · reset / base / layout ──────────────────────────────────────── */
+    /* ─── 2 · tokens compartidos con index.html ─────────────────────────── */
+    :root {
+      color-scheme: light;
+
+      /* Papel y tinta */
+      --paper:      #F5F7FA;
+      --surface:    #FFFFFF;
+      --surface-2:  #EEF2F6;
+      --ink:        #182532;
+      --ink-2:      #2E4152;
+      --muted:      #5D6E7E;
+      --muted-2:    #8496A5;
+
+      /* Paleta de la app */
+      --navy:       #22384F;
+      --navy-2:     #1B2D40;
+      --navy-3:     #2C435E;
+      --selection:  #CDE7F3;
+      --selection-2:#EAF5FA;
+
+      /* Acento único */
+      --accent:     #1F6FB2;
+      --accent-ink: #175A94;
+      --accent-soft:#E4F0F8;
+
+      /* Geometría y sombra */
+      --line:       #D9E1E8;
+      --line-soft:  #E8EDF2;
+      --radius:     8px;
+      --radius-sm:  5px;
+      --shadow-card:  0 1px 2px rgba(24,37,50,.06), 0 10px 30px rgba(24,37,50,.07);
+      --shadow-soft:  0 1px 2px rgba(24,37,50,.05);
+
+      /* Tipografía */
+      --font: 'Sora', system-ui, 'Segoe UI', sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+    }
+
+    /* ─── 3 · base ──────────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
-    html { scroll-behavior: smooth; scroll-padding-top: 84px }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px }
     body {
       font-family: var(--font);
       color: var(--ink);
+      background: var(--paper);
       -webkit-font-smoothing: antialiased;
-      background:
-        radial-gradient(860px 860px at 8% -6%,   rgba(59,130,246,.35), transparent 62%),
-        radial-gradient(900px 900px at 94% 30%,  rgba(14,165,233,.30), transparent 62%),
-        radial-gradient(760px 760px at 30% 106%, rgba(99,102,241,.25), transparent 60%),
-        linear-gradient(150deg, #dbeafe 0%, #cffafe 48%, #e0e7ff 100%);
-      background-attachment: fixed;
-      min-height: 100vh;
+      line-height: 1.55;
     }
-    a { color: var(--brand-md); text-decoration: none }
-    a:hover { text-decoration: underline }
+    a { color: var(--accent-ink); text-decoration: none }
+    a:hover { text-decoration: underline; text-underline-offset: 3px }
     img, svg { display: block }
-    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.4rem }
-
-    /* ─── 3 · tokens glass ───────────────────────────────────────────────── */
-    :root {
-      color-scheme: light;
-      --ink:       #0a0f1e;
-      --ink-2:     #1e293b;
-      --muted:     #4b5a72;
-      --muted-2:   #55637a;
-      --on-glass-dim: rgba(10,15,30,.72);
-      --brand:    #1e40af;
-      --brand-md: #1d4ed8;
-      --brand-lt: #3b82f6;
-      --accent:   #0891b2;
-      --accent-lt:#22d3ee;
-      --indigo:   #6366f1;
-      --ok:       #10b981;
-      --amber:    #f59e0b;
-      --bg-base:  #dbeafe;
-      --glass-bg:         rgba(255,255,255,.38);
-      --glass-bg-strong:  rgba(255,255,255,.42);
-      --glass-bg-soft:    rgba(255,255,255,.24);
-      --glass-border:     rgba(255,255,255,.70);
-      --glass-border-sub: rgba(255,255,255,.50);
-      --glass-edge:       rgba(34,211,238,.55);
-      --glass-blur:       blur(18px) saturate(180%);
-      --glass-blur-sm:    blur(16px) saturate(175%);
-      --glass-shadow:       0 8px 32px rgba(37,99,235,.16), 0 2px 10px rgba(8,145,178,.10);
-      --glass-shadow-lt:    0 4px 18px rgba(37,99,235,.12);
-      --glass-shadow-hover: 0 18px 48px rgba(37,99,235,.24), 0 4px 16px rgba(34,211,238,.20);
-      --glass-highlight: linear-gradient(135deg, rgba(255,255,255,.95), rgba(255,255,255,0) 46%);
-      --glass-tint:      rgba(34,211,238,.12);
-      --radius:    16px;
-      --radius-sm: 10px;
-      --font: 'Sora', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'Cascadia Code', Consolas, monospace;
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 1.4rem }
+    .skip-link {
+      position: absolute; left: -999px; top: 0; z-index: 200;
+      background: var(--navy); color: #fff; padding: .6rem 1rem;
+      border-radius: 0 0 var(--radius-sm) 0; font-size: .9rem;
+    }
+    .skip-link:focus { left: 0 }
+    :is(a, button, summary):focus-visible {
+      outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-sm);
     }
 
-    /* ─── nav ────────────────────────────────────────────────────────────── */
-    .nav-wrap { position: fixed; inset: 0 0 auto 0; z-index: 100; transition: background .3s, box-shadow .3s, border-color .3s; border-bottom: 1px solid transparent; }
-    .nav-wrap.scrolled {
-      background: rgba(255,255,255,.55);
-      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-      border-bottom-color: rgba(255,255,255,.75);
-      box-shadow: 0 4px 24px rgba(37,99,235,.14);
+    /* ─── 4 · nav · barra sólida como el ribbon de la app ───────────────── */
+    .nav-wrap {
+      position: fixed; inset: 0 0 auto 0; z-index: 100;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--line);
+      transition: box-shadow .25s ease;
     }
-    nav {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 0;
-      position: relative;
-    }
+    .nav-wrap.scrolled { box-shadow: 0 2px 12px rgba(24,37,50,.08) }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: .8rem 0 }
     .brand {
-      display: flex; align-items: center; gap: .65rem;
-      font-weight: 800; font-size: 1.18rem;
-      color: var(--ink); letter-spacing: -.3px;
+      display: flex; align-items: center; gap: .6rem;
+      font-weight: 700; font-size: 1.1rem; color: var(--ink); letter-spacing: -.02em;
     }
     .logo-mark {
-      width: 36px; height: 36px; border-radius: 10px;
-      background: linear-gradient(135deg, var(--brand-md), var(--accent-lt));
+      width: 34px; height: 34px; border-radius: var(--radius-sm);
+      background: var(--navy); color: #fff;
       display: grid; place-items: center;
-      font-size: .95rem; font-weight: 900; color: #fff;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 6px 20px rgba(8,145,178,.4);
+      font-family: var(--mono); font-weight: 700; font-size: .95rem;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.14);
     }
-    .menu {
-      display: flex; gap: .25rem; align-items: center;
-    }
+    .menu { display: flex; gap: .15rem; align-items: center }
     .menu a {
-      color: var(--on-glass-dim); font-size: .9rem; font-weight: 500;
-      padding: .45rem .75rem; border-radius: 8px;
-      transition: color .2s, background .2s;
+      color: var(--ink-2); font-size: .88rem; font-weight: 500;
+      padding: .45rem .65rem; border-radius: var(--radius-sm);
+      transition: color .15s, background .15s;
     }
-    .menu a:hover {
-      color: var(--ink); background: rgba(29,78,216,.10); text-decoration: none;
-    }
+    .menu a:hover { color: var(--ink); background: var(--surface-2); text-decoration: none }
     .menu .btn-nav {
-      background: linear-gradient(135deg, var(--brand-md), var(--accent));
-      color: #fff; font-weight: 700;
-      padding: .5rem 1rem; border-radius: 9px; margin-left: .25rem;
-      box-shadow: 0 4px 16px rgba(29,78,216,.4);
+      background: var(--navy); color: #fff; font-weight: 600;
+      padding: .5rem .95rem; margin-left: .35rem;
     }
-    .menu .btn-nav:hover { box-shadow: 0 6px 20px rgba(29,78,216,.45); }
+    .menu .btn-nav:hover { background: var(--navy-3); color: #fff }
 
-    /* mobile menu toggle */
     .nav-toggle {
-      display: none;
-      flex-direction: column; justify-content: center; gap: 5px;
-      width: 42px; height: 42px; padding: 11px;
-      background: transparent;
-      border: 1px solid rgba(10,15,30,.22);
-      border-radius: 9px; cursor: pointer;
+      display: none; flex-direction: column; justify-content: center; gap: 5px;
+      width: 40px; height: 40px; padding: 10px;
+      background: transparent; border: 1px solid var(--line);
+      border-radius: var(--radius-sm); cursor: pointer;
     }
-    .nav-toggle:hover { background: rgba(29,100,216,.08); }
-    .nav-toggle:focus-visible { outline: 2px solid var(--brand-md); outline-offset: 2px; }
+    .nav-toggle:hover { background: var(--surface-2) }
     .nav-toggle span {
-      display: block; height: 2px; width: 100%;
-      background: var(--ink); border-radius: 2px;
-      transition: transform .25s ease, opacity .25s ease;
+      display: block; height: 2px; width: 100%; background: var(--ink);
+      border-radius: 2px; transition: transform .22s ease, opacity .22s ease;
     }
     .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg) }
     .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0 }
@@ -194,35 +185,33 @@
     .page-container { max-width: 800px; margin: 0 auto; }
     .page-back {
       display: inline-flex; align-items: center; gap: .35rem;
-      font-size: .9rem; font-weight: 600; color: var(--brand-md);
+      font-size: .9rem; font-weight: 600; color: var(--accent-ink);
       margin-bottom: 1.1rem;
       transition: color .2s, gap .2s;
     }
-    .page-back:hover { color: var(--brand); text-decoration: none; gap: .55rem }
+    .page-back:hover { color: var(--accent); text-decoration: none; gap: .55rem }
     .page-card {
-      background: rgba(255,255,255,.55);
-      background-image: var(--glass-highlight);
-      border: 1px solid var(--glass-border);
+      background: var(--surface);
+      border: 1px solid var(--line);
       border-radius: var(--radius);
-      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,.9);
+      box-shadow: var(--shadow-card);
       padding: 2.4rem 2.2rem;
     }
     .page-card h1 {
       color: var(--ink);
       font-size: clamp(1.7rem, 3.4vw, 2.3rem);
-      font-weight: 800; line-height: 1.15;
-      letter-spacing: -.4px;
+      font-weight: 700; line-height: 1.15;
+      letter-spacing: -.025em;
       margin-bottom: 1rem;
     }
     .page-card h2 {
       color: var(--ink);
       font-size: clamp(1.15rem, 2.2vw, 1.4rem);
-      font-weight: 700; letter-spacing: -.2px;
+      font-weight: 700; letter-spacing: -.02em;
       margin: 1.8rem 0 .5rem;
     }
     .page-card p {
-      color: #475569; font-size: .98rem; line-height: 1.6;
+      color: var(--ink-2); font-size: .98rem; line-height: 1.6;
       margin-bottom: .4rem;
     }
     .page-card p:first-of-type { color: var(--muted); font-size: 1.02rem; }
@@ -232,69 +221,51 @@
       margin-bottom: 1rem;
     }
 
-    /* ─── footer (claro translúcido) ─────────────────────────────────────── */
+    /* ─── footer · cierre en navy como el encabezado de la app ──────────── */
     footer {
-      background: linear-gradient(rgba(255,255,255,.42), rgba(224,231,255,.55));
-      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-      color: var(--muted); border-top: 1px solid var(--glass-border);
-      padding: 2.5rem 0;
+      background: var(--navy-2); color: rgba(255,255,255,.75);
+      padding: 2.6rem 0;
     }
     .footer-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 1rem; flex-wrap: wrap;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1.5rem; flex-wrap: wrap;
     }
-    .footer-brand { display: flex; align-items: center; gap: .55rem; color: var(--ink); font-weight: 800 }
+    .footer-brand { display: flex; align-items: center; gap: .55rem; color: #fff; font-weight: 700 }
     .footer-logo {
-      width: 28px; height: 28px; border-radius: 7px;
-      background: linear-gradient(135deg, var(--brand), var(--accent));
-      display: grid; place-items: center; font-size: .75rem; font-weight: 900; color: #fff;
+      width: 28px; height: 28px; border-radius: 5px;
+      background: rgba(255,255,255,.12);
+      display: grid; place-items: center;
+      font-family: var(--mono); font-size: .72rem; font-weight: 700; color: #fff;
     }
-    .footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap }
-    .footer-links a { color: var(--muted); font-size: .88rem; transition: color .2s }
-    .footer-links a:hover { color: var(--brand-md); text-decoration: none }
-    .footer-copy { font-size: .82rem; color: var(--muted-2); margin-top: .4rem }
+    .footer-copy { font-family: var(--mono); font-size: .72rem; color: rgba(255,255,255,.45); margin-top: .45rem }
+    .footer-links { display: flex; gap: .35rem 1.15rem; flex-wrap: wrap; max-width: 560px; justify-content: flex-end }
+    .footer-links a { color: rgba(255,255,255,.65); font-size: .82rem }
+    .footer-links a:hover { color: #fff; text-decoration: none }
 
-    /* ─── focus visible ──────────────────────────────────────────────────── */
-    .page-back:focus-visible, .menu a:focus-visible, .page-card a:focus-visible {
-      outline: 2px solid var(--brand-md); outline-offset: 2px;
+    /* ─── 4 · responsive + movimiento reducido ──────────────────────────── */
+    @media (max-width: 1080px) {
+      .menu a { padding: .45rem .5rem; font-size: .82rem }
     }
-
-    /* ─── 4 · responsive + fallback + movimiento reducido ────────────────── */
-    @media (max-width: 860px) {
+    @media (max-width: 720px) {
       .page-main { padding: 6.5rem 0 3.5rem }
       .page-card { padding: 1.8rem 1.4rem }
       .nav-toggle { display: flex }
       .menu {
-        position: absolute; top: calc(100% + .6rem); left: 0; right: 0;
+        position: absolute; top: calc(100% + .5rem); left: 1.4rem; right: 1.4rem;
         flex-direction: column; align-items: stretch; gap: .1rem;
-        background: rgba(255,255,255,.72);
-        -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%);
-        border: 1px solid rgba(255,255,255,.8);
-        border-radius: var(--radius);
+        background: var(--surface);
+        border: 1px solid var(--line); border-radius: var(--radius);
         padding: .5rem;
-        box-shadow: 0 24px 60px rgba(37,99,235,.22);
+        box-shadow: var(--shadow-card);
         opacity: 0; visibility: hidden; transform: translateY(-8px);
-        transition: opacity .25s ease, transform .25s ease, visibility .25s;
+        transition: opacity .22s ease, transform .22s ease, visibility .22s;
         pointer-events: none;
       }
-      .menu.open {
-        opacity: 1; visibility: visible; transform: none; pointer-events: auto;
-      }
-      .menu a { padding: .7rem .9rem; font-size: .95rem; border-radius: var(--radius-sm); color: var(--ink-2) }
-      .menu .btn-nav { margin-left: 0; margin-top: .35rem; text-align: center; padding: .7rem .9rem }
-      .footer-inner { flex-direction: column; align-items: flex-start }
-    }
-
-    /* ─── nav · ancho intermedio (tablet) ────────────────────────────────── */
-    @media (max-width: 1080px) and (min-width: 861px) {
-      .menu a { padding: .45rem .5rem; font-size: .84rem }
-      .menu { gap: 0 }
-    }
-
-    /* ─── fallback sin backdrop-filter ───────────────────────────────────── */
-    @supports not (backdrop-filter: blur(1px)) {
-      :root { --glass-bg: rgba(255,255,255,.92); --glass-bg-strong: rgba(255,255,255,.95); --glass-bg-soft: rgba(255,255,255,.85); }
-      .page-card { background: rgba(255,255,255,.92); }
+      .menu.open { opacity: 1; visibility: visible; transform: none; pointer-events: auto }
+      .menu a { padding: .7rem .9rem; font-size: .94rem }
+      .menu .btn-nav { margin: .35rem 0 0; text-align: center }
+      .footer-inner { flex-direction: column }
+      .footer-links { justify-content: flex-start }
     }
 
     /* ─── accesibilidad · movimiento reducido ────────────────────────────── */
@@ -310,11 +281,12 @@
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
 
   <!-- ═══ NAV ═══════════════════════════════════════════════ -->
   <div class="nav-wrap" id="nav">
     <div class="container">
-      <nav>
+      <nav aria-label="Principal">
         <a class="brand" href="index.html" style="text-decoration:none">
           <div class="logo-mark">S</div>
           SOPRO
@@ -339,7 +311,7 @@
   </div>
 
   <!-- ═══ CONTENIDO ════════════════════════════════════════ -->
-  <main class="page-main">
+  <main class="page-main" id="main">
     <div class="container">
       <div class="page-container">
         <a class="page-back" href="index.html">← Volver al inicio</a>
