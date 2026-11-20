@@ -475,8 +475,55 @@
       .shot-hint { opacity: 1; transform: none }
     }
     .shot-caption {
-      font-family: var(--mono); font-size: .7rem; color: var(--muted-2);
+      font-family: var(--mono); font-size: .7rem; color: var(--muted);
       text-align: center; margin-top: .6rem;
+    }
+    /* tira de miniaturas: resto de capturas de la galería (rejilla compacta) */
+    .shot-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem;
+      min-width: 0;
+    }
+    .shot-thumb {
+      min-width: 0; min-height: 44px; /* área táctil ≥ 44 px */
+      display: flex; flex-direction: column; gap: .4rem;
+      padding: 0; border: 0; background: none; cursor: zoom-in;
+      font: inherit; text-align: inherit; border-radius: var(--radius-sm);
+    }
+    .shot-thumb:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+    .shot-thumb-frame {
+      display: block; overflow: hidden; min-width: 0;
+      border: 1px solid var(--line); border-radius: var(--radius-sm);
+      background: var(--surface);
+      transition: border-color .15s, box-shadow .15s, transform .15s;
+    }
+    .shot-thumb-frame img {
+      display: block; width: 100%; height: auto; max-width: 100%;
+    }
+    .shot-thumb:hover .shot-thumb-frame,
+    .shot-thumb:focus-visible .shot-thumb-frame {
+      border-color: var(--accent);
+      box-shadow: 0 3px 12px rgba(31,111,178,.18);
+      transform: translateY(-2px);
+    }
+    .shot-thumb:hover .shot-thumb-frame img { opacity: .9 }
+    .shot-thumb-label {
+      font-family: var(--mono); font-size: .68rem; font-weight: 600;
+      letter-spacing: .05em; text-transform: uppercase;
+      color: var(--muted); text-align: center; line-height: 1.25;
+      transition: color .15s; overflow-wrap: break-word;
+    }
+    .shot-thumb:hover .shot-thumb-label,
+    .shot-thumb:focus-visible .shot-thumb-label { color: var(--accent-ink) }
+    /* micro-título de la tira: señala que hay más capturas interactivas */
+    .shot-strip-title {
+      font-family: var(--mono); font-size: .68rem; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: .55rem;
+      display: flex; align-items: center; gap: .55rem;
+    }
+    .shot-strip-title::after { content: ''; flex: 1; height: 1px; background: var(--line-soft) }
+    @media (max-width: 720px) {
+      .shot-strip { grid-template-columns: repeat(2, 1fr); gap: .7rem .6rem }
     }
 
     /* ─── 10b · lightbox de capturas (diálogo nativo) ───────────────────── */
@@ -1230,23 +1277,92 @@
             </ul>
           </div>
           <div class="shot-gallery">
-            <!-- Galería «Vista real» · cada [data-lb] es un slide del lightbox.
-                 Para añadir una captura: duplica este <figure> con su imagen y
-                 caption; el JS agrupa todos los [data-lb] y el modal activa
-                 prev/next automáticamente. -->
+            <!-- Galería «Vista real» · el carrusel del lightbox agrupa todos
+                 los [data-lb] en orden de aparición (la captura principal es
+                 el slide 1). Cada disparador declara su imagen completa con
+                 data-lb-src, su descripción con data-lb-alt y su título con
+                 data-lb-caption, de modo que el modal siempre muestra el
+                 WebP grande, nunca la miniatura.
+                 Mantenimiento · para añadir una sexta captura:
+                 1) guarda el WebP grande en assets/screenshots/ (p. ej. informe.webp);
+                 2) guarda su miniatura en assets/screenshots/thumbs/ (mismo nombre);
+                 3) añade dentro de .shot-strip un botón como los de abajo:
+                    <button class="shot-thumb" type="button" data-lb
+                            data-lb-src="assets/screenshots/informe.webp"
+                            data-lb-alt="Descripción accesible de la captura"
+                            data-lb-caption="Título corto del slide"
+                            aria-label="Ampliar captura: título corto">
+                      <span class="shot-thumb-frame">
+                        <img src="assets/screenshots/thumbs/informe.webp" alt=""
+                             width="340" height="182" loading="lazy" />
+                      </span>
+                      <span class="shot-thumb-label">Informe</span>
+                    </button>
+                 No hay que tocar el JS: prev/next, flechas, swipe, contador y
+                 wrap se activan solos con N disparadores. -->
             <figure class="shot-wrap reveal">
               <button class="shot-btn" type="button" data-lb aria-haspopup="dialog"
-                      aria-label="Ampliar captura: vista del módulo de Presupuesto">
+                      data-lb-src="assets/screenshots/presupuesto.webp"
+                      data-lb-alt="Hoja de presupuesto de SOPRO con capítulos, conceptos, cantidades, precios unitarios e importes."
+                      data-lb-caption="Presupuesto por capítulos y conceptos"
+                      aria-label="Ampliar captura: hoja de presupuesto de SOPRO">
                 <img src="assets/screenshots/presupuesto.webp"
-                     alt="Captura real del módulo de Presupuesto de SOPRO: hoja de presupuesto con capítulos, subcapítulos y conceptos"
-                     width="1200" height="630" loading="lazy" />
+                     alt="Hoja de presupuesto de SOPRO con capítulos, conceptos, cantidades, precios unitarios e importes."
+                     width="1918" height="1028" loading="lazy" />
                 <span class="shot-hint" aria-hidden="true">
                   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14M7 5v4M5 7h4"/></svg>
                   Ampliar
                 </span>
               </button>
-              <figcaption class="shot-caption">Captura real de la aplicación · módulo Presupuesto</figcaption>
+              <figcaption class="shot-caption">Presupuesto por capítulos y conceptos</figcaption>
             </figure>
+            <div class="shot-strip-title reveal">Más capturas · toca para ampliar</div>
+            <div class="shot-strip reveal">
+              <button class="shot-thumb" type="button" data-lb aria-haspopup="dialog"
+                      data-lb-src="assets/screenshots/presupuesto-matriz.webp"
+                      data-lb-alt="Presupuesto con el panel de matriz APU abierto: insumos, cantidades y costos."
+                      data-lb-caption="Presupuesto con matriz APU"
+                      aria-label="Ampliar captura: presupuesto con matriz APU">
+                <span class="shot-thumb-frame">
+                  <img src="assets/screenshots/thumbs/presupuesto-matriz.webp" alt=""
+                       width="340" height="183" loading="lazy" />
+                </span>
+                <span class="shot-thumb-label">Matriz APU</span>
+              </button>
+              <button class="shot-thumb" type="button" data-lb aria-haspopup="dialog"
+                      data-lb-src="assets/screenshots/explosion.webp"
+                      data-lb-alt="Explosión de insumos con materiales, mano de obra, herramienta y maquinaria, cantidades e importes."
+                      data-lb-caption="Explosión de insumos por categoría"
+                      aria-label="Ampliar captura: explosión de insumos por categoría">
+                <span class="shot-thumb-frame">
+                  <img src="assets/screenshots/thumbs/explosion.webp" alt=""
+                       width="340" height="183" loading="lazy" />
+                </span>
+                <span class="shot-thumb-label">Explosión</span>
+              </button>
+              <button class="shot-thumb" type="button" data-lb aria-haspopup="dialog"
+                      data-lb-src="assets/screenshots/programa-obra.webp"
+                      data-lb-alt="Programa de obra con actividades, periodos, diagrama de Gantt y curva de inversión."
+                      data-lb-caption="Programa de obra con Gantt"
+                      aria-label="Ampliar captura: programa de obra con Gantt">
+                <span class="shot-thumb-frame">
+                  <img src="assets/screenshots/thumbs/programa-obra.webp" alt=""
+                       width="340" height="182" loading="lazy" />
+                </span>
+                <span class="shot-thumb-label">Programa</span>
+              </button>
+              <button class="shot-thumb" type="button" data-lb aria-haspopup="dialog"
+                      data-lb-src="assets/screenshots/catalogo-materiales.webp"
+                      data-lb-alt="Catálogo de materiales con claves, descripciones, unidades, precios unitarios y origen."
+                      data-lb-caption="Catálogo de materiales y precios"
+                      aria-label="Ampliar captura: catálogo de materiales y precios">
+                <span class="shot-thumb-frame">
+                  <img src="assets/screenshots/thumbs/catalogo-materiales.webp" alt=""
+                       width="340" height="183" loading="lazy" />
+                </span>
+                <span class="shot-thumb-label">Materiales</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1583,12 +1699,19 @@
       const nextBtn = document.getElementById("lb-next");
       const closeBtn = document.getElementById("lb-close");
 
-      // cada [data-lb] es un slide; el caption sale de su figcaption o data-lb-caption
+      // cada [data-lb] es un slide; el disparador declara su imagen completa
+      // con data-lb-src y su descripción con data-lb-alt (así el modal siempre
+      // muestra el WebP grande, nunca la miniatura); el caption sale de
+      // data-lb-caption o del figcaption del figure contenedor
       const slides = triggers.map((btn, i) => {
         const figImg = btn.querySelector("img");
         const caption = btn.dataset.lbCaption
           || (btn.closest("figure")?.querySelector("figcaption")?.textContent || "").trim();
-        return { src: figImg?.currentSrc || figImg?.src || "", alt: figImg?.alt || "", caption, btn, i };
+        return {
+          src: btn.dataset.lbSrc || figImg?.currentSrc || figImg?.src || "",
+          alt: btn.dataset.lbAlt || figImg?.alt || "",
+          caption, btn, i
+        };
       });
 
       let index = 0;
