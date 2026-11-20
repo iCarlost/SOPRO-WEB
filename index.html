@@ -442,16 +442,109 @@
       color: var(--ok); font-weight: 700;
     }
     .vista-list li strong { color: var(--ink) }
+    .shot-gallery { display: grid; gap: 1.2rem }
     .shot-wrap {
       margin: 0; border: 1px solid var(--line); border-radius: var(--radius);
       overflow: hidden; background: var(--surface);
       box-shadow: var(--shadow-card);
       padding: 8px;
     }
-    .shot-wrap img { width: 100%; height: auto; border-radius: 4px; border: 1px solid var(--line-soft) }
+    .shot-btn {
+      position: relative;
+      display: block; width: 100%;
+      padding: 0; border: 0; background: none;
+      border-radius: 4px; cursor: zoom-in;
+      font: inherit; text-align: inherit;
+    }
+    .shot-btn img { width: 100%; height: auto; border-radius: 4px; border: 1px solid var(--line-soft) }
+    .shot-hint {
+      position: absolute; right: 14px; bottom: 14px;
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--navy); color: #fff;
+      font-family: var(--mono); font-size: .68rem; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: .38rem .75rem; border-radius: 999px;
+      box-shadow: 0 2px 10px rgba(16,26,37,.35);
+      opacity: 0; transform: translateY(4px);
+      transition: opacity .18s ease, transform .18s ease;
+      pointer-events: none;
+    }
+    .shot-hint svg { width: 12px; height: 12px }
+    .shot-btn:hover .shot-hint, .shot-btn:focus-visible .shot-hint, .shot-btn:focus .shot-hint { opacity: 1; transform: none }
+    @media (hover: none) {
+      .shot-hint { opacity: 1; transform: none }
+    }
     .shot-caption {
       font-family: var(--mono); font-size: .7rem; color: var(--muted-2);
       text-align: center; margin-top: .6rem;
+    }
+
+    /* ─── 10b · lightbox de capturas (diálogo nativo) ───────────────────── */
+    html.lb-open { overflow: hidden }
+    .lightbox {
+      width: min(960px, calc(100vw - 2rem));
+      max-height: calc(100dvh - 2rem);
+      margin: auto; overflow: auto;
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--surface); color: var(--ink);
+      padding: 0; box-shadow: var(--shadow-card);
+    }
+    .lightbox[open] { animation: lb-in .18s ease }
+    @keyframes lb-in {
+      from { opacity: 0; transform: translateY(10px) }
+      to { opacity: 1; transform: none }
+    }
+    .lightbox::backdrop { background: rgba(16,26,37,.85) }
+    .lb-inner { position: relative; padding: .8rem .8rem 1rem }
+    .lb-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; margin-bottom: .7rem;
+    }
+    .lb-title {
+      font-family: var(--mono); font-size: .7rem; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    }
+    .lb-close {
+      width: 34px; height: 34px; flex: none;
+      display: grid; place-items: center;
+      background: var(--surface); color: var(--ink-2);
+      border: 1px solid var(--line); border-radius: 999px;
+      cursor: pointer; transition: background .15s, color .15s, border-color .15s;
+    }
+    .lb-close:hover { background: var(--navy); color: #fff; border-color: var(--navy) }
+    .lb-close svg { width: 14px; height: 14px }
+    .lb-stage { margin: 0 }
+    .lb-stage img {
+      display: block; margin: 0 auto;
+      max-width: 100%; max-height: min(68vh, 640px);
+      width: auto; height: auto;
+      border: 1px solid var(--line); border-radius: 4px;
+      background: var(--paper);
+    }
+    .lb-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1.1rem; margin-top: .85rem;
+    }
+    .lb-nav {
+      width: 34px; height: 34px;
+      display: grid; place-items: center;
+      background: var(--surface); color: var(--ink-2);
+      border: 1px solid var(--line); border-radius: 999px;
+      cursor: pointer; transition: background .15s, color .15s, border-color .15s;
+    }
+    .lb-nav:hover { background: var(--navy); color: #fff; border-color: var(--navy) }
+    .lb-nav:disabled { opacity: .4; cursor: default }
+    .lb-nav:disabled:hover { background: var(--surface); color: var(--ink-2); border-color: var(--line) }
+    .lb-nav svg { width: 14px; height: 14px }
+    .lb-nav[hidden] { display: none }
+    .lb-count {
+      font-family: var(--mono); font-size: .72rem; font-weight: 600;
+      color: var(--muted); font-variant-numeric: tabular-nums;
+      min-width: 3.4em; text-align: center;
+    }
+    .lb-caption {
+      font-family: var(--mono); font-size: .72rem; color: var(--muted);
+      text-align: center; margin-top: .5rem; line-height: 1.5;
     }
 
     /* ─── 11 · comparativa · tabla como en la app ───────────────────────── */
@@ -779,6 +872,17 @@
         background: var(--surface);
         box-shadow: inset -1px 0 0 var(--line), 4px 0 10px rgba(24,37,50,.08);
       }
+
+      /* lightbox en móvil: pantalla completa y controles táctiles */
+      .lightbox {
+        width: 100vw; max-width: 100vw;
+        height: 100vh; height: 100dvh; max-height: 100dvh;
+        margin: 0; border: 0; border-radius: 0;
+      }
+      .lb-inner { display: flex; flex-direction: column; min-height: 100%; padding: .9rem }
+      .lb-stage { flex: 1; display: grid; place-items: center; min-height: 0 }
+      .lb-stage img { max-height: 100%; max-width: 100%; width: auto }
+      .lb-close, .lb-nav { width: 44px; height: 44px }
     }
 
     /* ─── 21 · accesibilidad · movimiento reducido ──────────────────────── */
@@ -1125,12 +1229,25 @@
               <li class="reveal"><strong>Programa de obra:</strong> actividades, periodos, Gantt y curva S para planeación y seguimiento.</li>
             </ul>
           </div>
-          <figure class="shot-wrap reveal">
-            <img src="assets/screenshots/presupuesto.webp"
-                 alt="Captura real del módulo de Presupuesto de SOPRO: hoja de presupuesto con capítulos, subcapítulos y conceptos"
-                 width="1200" height="630" loading="lazy" />
-            <figcaption class="shot-caption">Captura real de la aplicación · módulo Presupuesto</figcaption>
-          </figure>
+          <div class="shot-gallery">
+            <!-- Galería «Vista real» · cada [data-lb] es un slide del lightbox.
+                 Para añadir una captura: duplica este <figure> con su imagen y
+                 caption; el JS agrupa todos los [data-lb] y el modal activa
+                 prev/next automáticamente. -->
+            <figure class="shot-wrap reveal">
+              <button class="shot-btn" type="button" data-lb aria-haspopup="dialog"
+                      aria-label="Ampliar captura: vista del módulo de Presupuesto">
+                <img src="assets/screenshots/presupuesto.webp"
+                     alt="Captura real del módulo de Presupuesto de SOPRO: hoja de presupuesto con capítulos, subcapítulos y conceptos"
+                     width="1200" height="630" loading="lazy" />
+                <span class="shot-hint" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14M7 5v4M5 7h4"/></svg>
+                  Ampliar
+                </span>
+              </button>
+              <figcaption class="shot-caption">Captura real de la aplicación · módulo Presupuesto</figcaption>
+            </figure>
+          </div>
         </div>
       </div>
     </section>
@@ -1361,6 +1478,31 @@
 
   </main>
 
+  <!-- ═══ LIGHTBOX · vista ampliada de capturas (galería [data-lb]) ══════ -->
+  <dialog class="lightbox" id="lightbox" aria-labelledby="lb-title" aria-describedby="lb-caption">
+    <div class="lb-inner">
+      <div class="lb-head">
+        <span class="lb-title" id="lb-title">Captura ampliada</span>
+        <button class="lb-close" id="lb-close" type="button" aria-label="Cerrar vista ampliada">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+        </button>
+      </div>
+      <figure class="lb-stage">
+        <img id="lb-img" alt="" />
+      </figure>
+      <div class="lb-bar">
+        <button class="lb-nav" id="lb-prev" type="button" aria-label="Captura anterior" hidden>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+        </button>
+        <p class="lb-count" id="lb-count" aria-live="polite">1 / 1</p>
+        <button class="lb-nav" id="lb-next" type="button" aria-label="Captura siguiente" hidden>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>
+        </button>
+      </div>
+      <p class="lb-caption" id="lb-caption"></p>
+    </div>
+  </dialog>
+
   <!-- ═══ FOOTER ═════════════════════════════════════════════ -->
   <footer>
     <div class="container">
@@ -1427,6 +1569,98 @@
     } else {
       revealEls.forEach(el => el.classList.add("visible"));
     }
+
+    // lightbox · galería de capturas «Vista real»
+    (function () {
+      const triggers = Array.from(document.querySelectorAll("[data-lb]"));
+      const dlg = document.getElementById("lightbox");
+      if (!dlg || triggers.length === 0) return;
+
+      const img = document.getElementById("lb-img");
+      const captionEl = document.getElementById("lb-caption");
+      const countEl = document.getElementById("lb-count");
+      const prevBtn = document.getElementById("lb-prev");
+      const nextBtn = document.getElementById("lb-next");
+      const closeBtn = document.getElementById("lb-close");
+
+      // cada [data-lb] es un slide; el caption sale de su figcaption o data-lb-caption
+      const slides = triggers.map((btn, i) => {
+        const figImg = btn.querySelector("img");
+        const caption = btn.dataset.lbCaption
+          || (btn.closest("figure")?.querySelector("figcaption")?.textContent || "").trim();
+        return { src: figImg?.currentSrc || figImg?.src || "", alt: figImg?.alt || "", caption, btn, i };
+      });
+
+      let index = 0;
+      let lastTrigger = null;
+
+      function render() {
+        const s = slides[index];
+        img.src = s.src;
+        img.alt = s.alt;
+        captionEl.textContent = s.caption;
+        countEl.textContent = (index + 1) + " / " + slides.length;
+        const multi = slides.length > 1;
+        prevBtn.hidden = !multi;
+        nextBtn.hidden = !multi;
+      }
+
+      function open(trigger) {
+        lastTrigger = trigger;
+        index = triggers.indexOf(trigger);
+        if (index < 0) index = 0;
+        render();
+        dlg.showModal();
+        document.documentElement.classList.add("lb-open");
+      }
+
+      function close() {
+        if (dlg.open) dlg.close();
+      }
+
+      triggers.forEach(btn => btn.addEventListener("click", () => open(btn)));
+
+      closeBtn.addEventListener("click", close);
+
+      prevBtn.addEventListener("click", () => {
+        index = (index - 1 + slides.length) % slides.length;
+        render();
+      });
+      nextBtn.addEventListener("click", () => {
+        index = (index + 1) % slides.length;
+        render();
+      });
+
+      // clic en el fondo (backdrop o borde del diálogo) cierra
+      dlg.addEventListener("click", (e) => { if (e.target === dlg) close(); });
+
+      // Escape cierra de forma nativa (evento cancel → close);
+      // al cerrar se libera el scroll y se devuelve el foco al disparador
+      dlg.addEventListener("close", () => {
+        document.documentElement.classList.remove("lb-open");
+        if (lastTrigger) lastTrigger.focus();
+      });
+
+      // flechas del teclado: solo con más de una captura
+      dlg.addEventListener("keydown", (e) => {
+        if (slides.length < 2) return;
+        if (e.key === "ArrowRight") { e.preventDefault(); index = (index + 1) % slides.length; render(); }
+        if (e.key === "ArrowLeft") { e.preventDefault(); index = (index - 1 + slides.length) % slides.length; render(); }
+      });
+
+      // swipe en móvil: solo con más de una captura
+      let touchX = null;
+      dlg.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+      dlg.addEventListener("touchend", (e) => {
+        if (touchX === null || slides.length < 2) { touchX = null; return; }
+        const dx = e.changedTouches[0].clientX - touchX;
+        if (Math.abs(dx) > 40) {
+          index = dx < 0 ? (index + 1) % slides.length : (index - 1 + slides.length) % slides.length;
+          render();
+        }
+        touchX = null;
+      }, { passive: true });
+    })();
 
     // GitHub releases
     async function loadRelease() {
