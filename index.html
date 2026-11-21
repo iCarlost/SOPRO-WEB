@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script>document.documentElement.classList.add('js');</script>
   <title>SOPRO · Sistema de Presupuestación de Obra Pública</title>
-  <meta name="description" content="App de escritorio Windows para presupuestar obra pública: APUs, explosión de insumos, programa de obra y reportes PDF/Excel. Código abierto MIT." />
+  <meta name="description" content="Aplicación de escritorio para Windows que presupuesta obra pública: APUs, explosión de insumos, programa de obra y reportes PDF/Excel. Código abierto MIT." />
   <meta name="author" content="Carlos Pérez" />
   <meta name="application-name" content="SOPRO — Sistema de Presupuestación de Obra Pública" />
   <meta name="keywords" content="SOPRO, presupuesto de obra pública, análisis de precios unitarios, APU, programa de obra, explosión de insumos, software de presupuestos" />
@@ -604,6 +604,7 @@
       border: 1px solid var(--line); border-radius: var(--radius);
       box-shadow: var(--shadow-soft);
     }
+    .table-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
     .comp-table { min-width: 580px; width: 100%; border-collapse: collapse; font-size: .88rem }
     .comp-table th {
       background: var(--navy); color: #fff; text-align: left;
@@ -631,7 +632,7 @@
     }
     .scroll-hint {
       display: none; font-family: var(--mono); font-size: .72rem;
-      color: var(--muted-2); text-align: center; margin-top: .6rem;
+      color: var(--muted); text-align: center; margin-top: .6rem;
     }
 
     /* ─── 12 · casos de uso ─────────────────────────────────────────────── */
@@ -741,6 +742,49 @@
     }
     .req-item:last-child { border-bottom: none }
     .req-item::before { content: '›'; color: var(--accent); font-weight: 700 }
+
+    /* Novedades de la versión · panel «expediente técnico» */
+    .release-news {
+      margin-top: 1.25rem;
+      background: var(--paper);
+      border: 1px solid var(--line); border-left: 3px solid var(--accent);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.3rem .95rem;
+    }
+    .rn-head {
+      display: flex; align-items: baseline; flex-wrap: wrap;
+      gap: .3rem .9rem;
+      padding-bottom: .6rem; margin-bottom: .6rem;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .rn-label {
+      font-family: var(--mono); font-size: .68rem; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    }
+    .rn-version {
+      font-family: var(--mono); font-size: .76rem; font-weight: 700; color: var(--accent);
+    }
+    .rn-link {
+      margin-left: auto;
+      font-family: var(--mono); font-size: .72rem; color: var(--accent);
+      text-decoration: none; border-bottom: 1px solid transparent;
+      transition: border-color .15s ease;
+    }
+    .rn-link:hover, .rn-link:focus-visible { border-bottom-color: var(--accent) }
+    .rn-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+    .rn-list { list-style: none; display: grid; gap: .4rem }
+    .rn-list li {
+      position: relative; padding-left: 1.1rem;
+      font-size: .84rem; color: var(--ink-2); line-height: 1.55;
+    }
+    .rn-list li::before {
+      content: '›'; position: absolute; left: 0;
+      color: var(--accent); font-weight: 700;
+    }
+    @media (max-width: 720px) {
+      .release-news { padding: .85rem 1rem .8rem }
+      .rn-link { margin-left: 0 }
+    }
 
     /* ─── 14 · código abierto ───────────────────────────────────────────── */
     .lic-card h3 { display: flex; align-items: center; gap: .5rem }
@@ -867,7 +911,7 @@
       display: grid; place-items: center;
       font-family: var(--mono); font-size: .72rem; font-weight: 700; color: #fff;
     }
-    .footer-copy { font-family: var(--mono); font-size: .72rem; color: rgba(255,255,255,.45); margin-top: .45rem }
+    .footer-copy { font-family: var(--mono); font-size: .72rem; color: rgba(255,255,255,.52); margin-top: .45rem }
     .footer-links { display: flex; gap: .35rem 1.15rem; flex-wrap: wrap; max-width: 560px; justify-content: flex-end }
     .footer-links a { color: rgba(255,255,255,.65); font-size: .82rem }
     .footer-links a:hover { color: #fff; text-decoration: none }
@@ -1049,7 +1093,7 @@
             "name": "¿SOPRO funciona sin internet?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Sí. El uso normal de SOPRO es completamente local. Internet solo se utiliza para descargar el instalador o revisar si hay nuevas versiones disponibles."
+              "text": "Sí. El uso normal de SOPRO es completamente local. Internet solo se usa para descargar el instalador y comprobar si hay versiones nuevas."
             }
           },
           {
@@ -1062,7 +1106,7 @@
           },
           {
             "@type": "Question",
-            "name": "¿Qué pasa si Windows muestra \"Editor desconocido\"?",
+            "name": "¿Qué pasa si Windows muestra «Editor desconocido»?",
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "Es una advertencia normal en instaladores no firmados con certificado de código. Selecciona «Más información» y luego «Ejecutar de todas formas» para continuar."
@@ -1073,7 +1117,7 @@
             "name": "¿Dónde se guardan mis proyectos?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "SOPRO trabaja con archivos de base de datos locales (.db) por proyecto. El usuario conserva control total de sus archivos y puede respaldarlos como cualquier otro archivo."
+              "text": "SOPRO trabaja con archivos de base de datos locales (.db) por proyecto. Conservas el control total de tus archivos y puedes respaldarlos como cualquier otro archivo."
             }
           },
           {
@@ -1152,7 +1196,7 @@
             </div>
             <div class="stat-item">
               <div class="stat-val">PDF</div>
-              <div class="stat-lbl">y Excel nativo</div>
+              <div class="stat-lbl">y Excel nativos</div>
             </div>
             <div class="stat-item">
               <div class="stat-val">100%</div>
@@ -1218,7 +1262,7 @@
             </div>
             <span id="mock-ver" hidden aria-hidden="true">—</span>
           </div>
-          <p class="mock-caption">Vista ilustrativa · captura real en la sección «Vista»</p>
+          <p class="mock-caption">Vista ilustrativa · captura real en «Vista real»</p>
         </div>
       </div>
     </div>
@@ -1317,7 +1361,7 @@
       <div class="container">
         <div class="split-2">
           <div>
-            <div class="illus-pill reveal">◉ Captura real</div>
+            <div class="illus-pill reveal">◉ 03 · Vista real</div>
             <h2 class="reveal">Así se ve tu trabajo diario en SOPRO</h2>
             <p class="sub reveal">Vista del módulo de Presupuesto con la jerarquía de capítulos, subcapítulos y conceptos, cantidades, precios unitarios e importes.</p>
             <ul class="vista-list">
@@ -1425,9 +1469,9 @@
         <div class="section-head">
           <span class="section-label reveal">04 · Comparativa</span>
           <h2 class="reveal">SOPRO vs OPUS CMS</h2>
-          <p class="sub reveal">Comparación de capacidades centrales de presupuestación, con información públicamente documentada.</p>
+          <p class="sub reveal">Comparación de capacidades centrales de presupuestación, con información pública de ambos productos.</p>
         </div>
-        <div class="table-scroll reveal">
+        <div class="table-scroll reveal" tabindex="0" role="region" aria-label="Comparativa SOPRO vs OPUS CMS">
           <table class="comp-table">
             <thead><tr><th>Capacidad</th><th class="col-sopro">SOPRO</th><th>OPUS CMS</th></tr></thead>
             <tbody>
@@ -1452,7 +1496,7 @@
           </table>
         </div>
         <p class="scroll-hint">← Desliza para ver la tabla completa →</p>
-        <p class="comp-summary reveal">En presupuestación de obra pública —presupuestos, APUs, explosión de insumos, programa de obra y reportes— ambas herramientas cubren las mismas tareas centrales. OPUS CMS agrega alcance en CAD, BIM, compras y licitaciones; SOPRO se enfoca en la presupuestación con persistencia local por proyecto y distribución libre bajo licencia MIT.</p>
+        <p class="comp-summary reveal">En presupuestación de obra pública (presupuestos, APUs, explosión de insumos, programa de obra y reportes), ambas herramientas cubren las mismas tareas centrales. OPUS CMS agrega alcance en CAD, BIM, compras y licitaciones; SOPRO se enfoca en la presupuestación con persistencia local por proyecto y distribución libre bajo licencia MIT.</p>
         <p class="legal-note reveal">OPUS y OPUS CMS son marcas registradas de ECOSOFT S.A. de C.V. SOPRO es un proyecto independiente y no está afiliado, patrocinado ni avalado por ECOSOFT. Esta comparativa se elaboró con información públicamente documentada de ambos productos y puede cambiar con futuras versiones.</p>
       </div>
     </section>
@@ -1503,7 +1547,7 @@
         <div class="section-head">
           <span class="section-label reveal">06 · Distribución</span>
           <h2 class="reveal">Descargar SOPRO</h2>
-          <p class="sub reveal">Instalador para Windows. Siempre disponible en el repositorio público de releases.</p>
+          <p class="sub reveal">Instalador para Windows. Siempre disponible en el repositorio público de versiones.</p>
         </div>
         <div class="download-card reveal">
           <div>
@@ -1520,7 +1564,7 @@
                 <span id="download-label">Descargar instalador</span>
               </a>
               <a class="btn btn-ghost" href="https://github.com/iCarlost/SOPRO-Releases/releases/latest" target="_blank" rel="noopener">
-                Ver release en GitHub
+                Ver notas de la versión
               </a>
             </div>
             <ol class="install-steps">
@@ -1535,7 +1579,7 @@
             </details>
             <p class="download-support-note">SOPRO es gratuito y seguirá siéndolo. <a href="#apoyar">☕ Apoya SOPRO voluntariamente</a></p>
             <div class="smartscreen-note">
-              Windows puede mostrar advertencia de SmartScreen. Selecciona <strong>«Más información»</strong> → <strong>«Ejecutar de todas formas»</strong>.
+              Windows puede mostrar una advertencia de SmartScreen. Selecciona <strong>«Más información»</strong> → <strong>«Ejecutar de todas formas»</strong>.
             </div>
           </div>
           <div class="req-box">
@@ -1544,8 +1588,16 @@
             <div class="req-item">Permisos de usuario estándar</div>
             <div class="req-item">Sin licencia · código abierto MIT</div>
             <div class="req-item">Sin servidor requerido</div>
-            <div class="req-item">Internet solo para descarga</div>
+            <div class="req-item">Internet solo para descarga y avisos</div>
           </div>
+        </div>
+        <div class="release-news" id="release-news" hidden>
+          <div class="rn-head">
+            <span class="rn-label">Novedades de la versión</span>
+            <span class="rn-version" id="rn-version"></span>
+            <a class="rn-link" id="rn-link" href="https://github.com/iCarlost/SOPRO-Releases/releases/latest" target="_blank" rel="noopener">Ver notas completas en GitHub</a>
+          </div>
+          <ul class="rn-list" id="rn-list"></ul>
         </div>
       </div>
     </section>
@@ -1569,11 +1621,11 @@
           </div>
           <div class="card lic-card reveal">
             <h3><span class="lic-ico" aria-hidden="true">🔔</span>Actualizaciones</h3>
-            <p>SOPRO notifica automáticamente cuando hay una nueva versión disponible en el repositorio de releases.</p>
+            <p>SOPRO avisa cuando hay una nueva versión disponible en GitHub.</p>
           </div>
           <div class="card lic-card reveal" style="--d:60ms">
             <h3><span class="lic-ico" aria-hidden="true">🤝</span>Contribuciones</h3>
-            <p>¿Encontraste un error o quieres proponer una mejora? El proyecto acepta issues y pull requests.</p>
+            <p>¿Encontraste un error o quieres proponer una mejora? Puedes abrir un issue o un pull request en GitHub.</p>
           </div>
         </div>
         <div class="notice reveal">
@@ -1592,7 +1644,7 @@
             Tu presupuesto de obra ya cuesta suficiente.
             <span>Tu software no tiene por qué hacerlo.</span>
           </h2>
-          <p class="support-desc">SOPRO es gratuito y de código abierto: sin licencias, suscripciones ni pagos obligatorios. Si te resulta útil, puedes contribuir voluntariamente a que el proyecto siga creciendo.</p>
+          <p class="support-desc">SOPRO es gratuito y de código abierto: sin cuotas de licencia, suscripciones ni pagos obligatorios. Si te resulta útil, puedes contribuir voluntariamente a que el proyecto siga creciendo.</p>
           <a class="btn btn-kofi" href="https://ko-fi.com/icarlost" target="_blank" rel="noopener noreferrer" aria-label="Apoya el desarrollo de SOPRO en Ko-fi (abre en otra pestaña)">☕ Apoya el desarrollo de SOPRO</a>
           <p class="support-footnote">Tu aportación es completamente opcional. Todas las funciones y actualizaciones siguen disponibles sin donar.</p>
         </div>
@@ -1609,19 +1661,19 @@
         <div class="faq-wrap">
           <details class="reveal">
             <summary>¿SOPRO funciona sin internet?</summary>
-            <p>Sí. El uso normal de SOPRO es completamente local. Internet solo se utiliza para descargar el instalador o revisar si hay nuevas versiones disponibles.</p>
+            <p>Sí. El uso normal de SOPRO es completamente local. Internet solo se usa para descargar el instalador y comprobar si hay versiones nuevas.</p>
           </details>
           <details class="reveal">
             <summary>¿SOPRO requiere licencia o activación?</summary>
             <p>No. Desde la versión 1.6.0, SOPRO es código abierto bajo licencia MIT. Instálalo, úsalo y compártelo libremente, sin registros ni vigencia.</p>
           </details>
           <details class="reveal">
-            <summary>¿Qué pasa si Windows muestra "Editor desconocido"?</summary>
+            <summary>¿Qué pasa si Windows muestra «Editor desconocido»?</summary>
             <p>Es una advertencia normal en instaladores no firmados con certificado de código. Selecciona <strong>«Más información»</strong> y luego <strong>«Ejecutar de todas formas»</strong> para continuar.</p>
           </details>
           <details class="reveal">
             <summary>¿Dónde se guardan mis proyectos?</summary>
-            <p>SOPRO trabaja con archivos de base de datos locales (.db) por proyecto. El usuario conserva control total de sus archivos y puede respaldarlos como cualquier otro archivo.</p>
+            <p>SOPRO trabaja con archivos de base de datos locales (.db) por proyecto. Conservas el control total de tus archivos y puedes respaldarlos como cualquier otro archivo.</p>
           </details>
           <details class="reveal">
             <summary>¿SOPRO es compatible con OPUS CMS?</summary>
@@ -1851,7 +1903,7 @@
     async function loadRelease() {
       const api = "https://api.github.com/repos/iCarlost/SOPRO-Releases/releases/latest";
       const fallback = "https://github.com/iCarlost/SOPRO-Releases/releases/latest";
-      const CACHE_KEY = "sopro-release-v2";
+      const CACHE_KEY = "sopro-release-v3"; // v3 incluye body (notas markdown)
       const TTL = 3600000; // 1 hora
 
       function readCache() {
@@ -1899,6 +1951,58 @@
         renderMeta(info || {});
       }
 
+      // limpia markdown básico: negritas, código, enlaces y citas → texto plano
+      function cleanMd(text) {
+        return text
+          .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1") // [texto](url) → texto
+          .replace(/\*\*([^*]*)\*\*/g, "$1")       // **negrita** → texto
+          .replace(/[*`]/g, "")
+          .replace(/^>\s*/, "")
+          .trim();
+      }
+      // trunca sin cortar palabras; añade «…» si hace falta
+      function truncateMd(text, max) {
+        if (text.length <= max) return text;
+        const cut = text.slice(0, max);
+        const space = cut.lastIndexOf(" ");
+        return (space > max * 0.5 ? cut.slice(0, space) : cut).trimEnd() + "…";
+      }
+
+      // novedades de la versión: hasta 2 bullets del body (solo texto)
+      function renderNews(info) {
+        const newsEl = document.getElementById("release-news");
+        const verEl = document.getElementById("rn-version");
+        const linkEl = document.getElementById("rn-link");
+        const listEl = document.getElementById("rn-list");
+        if (!newsEl || !listEl) return;
+
+        const bullets = info && typeof info.body === "string"
+          ? info.body
+              .split(/\r?\n/)
+              .filter(line => line.trimStart().startsWith("- "))
+              .filter(line => !line.includes("Compilado desde"))
+              .slice(0, 2)
+              .map(line => cleanMd(line.trim().replace(/^[-*]\s+/, "")))
+              .filter(t => t)
+              .map(t => truncateMd(t, 190))
+          : [];
+
+        if (!bullets.length) {
+          newsEl.hidden = true;
+          listEl.textContent = "";
+          return;
+        }
+        if (verEl) verEl.textContent = info.tag || "";
+        if (linkEl) linkEl.href = info.htmlUrl || fallback;
+        listEl.textContent = "";
+        bullets.forEach(t => {
+          const li = document.createElement("li");
+          li.textContent = t;
+          listEl.appendChild(li);
+        });
+        newsEl.hidden = false;
+      }
+
       // datos del instalador: tamaño · fecha · SHA-256 (solo si existen)
       function renderMeta(info) {
         const metaEl = document.getElementById("release-meta");
@@ -1941,7 +2045,7 @@
 
       // reutiliza caché válida sin fetch
       const cached = readCache();
-      if (cached) { render(cached); return; }
+      if (cached) { render(cached); renderNews(cached); return; }
 
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 8000);
@@ -1961,12 +2065,15 @@
           htmlUrl: data.html_url || null,
           publishedAt: data.published_at || null,
           assetSize: typeof asset?.size === "number" ? asset.size : null,
-          assetDigest: asset?.digest || null
+          assetDigest: asset?.digest || null,
+          body: typeof data.body === "string" ? data.body : null
         };
         writeCache(info); // solo se cachean respuestas correctas
         render(info);
+        renderNews(info);
       } catch {
         render(null); // fallback al repositorio de Releases
+        renderNews(null);
       } finally {
         clearTimeout(timer);
       }
