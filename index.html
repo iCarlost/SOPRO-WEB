@@ -12,7 +12,7 @@
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#F5F7FA" />
   <link rel="canonical" href="https://icarlost.github.io/SOPRO-WEB/" />
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/favicon.ico" sizes="16x16 24x24 32x32 48x48 64x64 128x128 256x256" />
   <noscript><style>.reveal { opacity: 1; transform: none }</style></noscript>
   <meta property="og:title" content="SOPRO · Sistema de Presupuestación de Obra Pública" />
   <meta property="og:description" content="Presupuestos, APUs, explosión de insumos, programa de obra y reportes PDF/Excel en una aplicación de escritorio para Windows." />
@@ -20,7 +20,7 @@
   <meta property="og:url" content="https://icarlost.github.io/SOPRO-WEB/" />
   <meta property="og:site_name" content="SOPRO" />
   <meta property="og:locale" content="es_MX" />
-  <meta property="og:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image-v2.png" />
+  <meta property="og:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image-v3.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:type" content="image/png" />
@@ -28,7 +28,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SOPRO · Sistema de Presupuestación de Obra Pública" />
   <meta name="twitter:description" content="Presupuestos, APUs, explosión de insumos, programa de obra y reportes PDF/Excel en una aplicación de escritorio para Windows." />
-  <meta name="twitter:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image-v2.png" />
+  <meta name="twitter:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image-v3.png" />
   <meta name="twitter:image:alt" content="SOPRO: presupuesto de obra pública con APUs, explosión de insumos y programa de obra." />
   <style>
     /* ======================================================================
@@ -167,11 +167,9 @@
       font-weight: 700; font-size: 1.1rem; color: var(--ink); letter-spacing: -.02em;
     }
     .logo-mark {
-      width: 34px; height: 34px; border-radius: var(--radius-sm);
-      background: var(--navy); color: #fff;
-      display: grid; place-items: center;
-      font-family: var(--mono); font-weight: 700; font-size: .95rem;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.14);
+      width: 34px; height: 34px; flex: none;
+      object-fit: contain;
+      filter: drop-shadow(0 1px 2px rgba(24,37,50,.16));
     }
     .menu {
       display: flex; gap: .15rem; align-items: center; flex-wrap: nowrap;
@@ -920,10 +918,9 @@
     }
     .footer-brand { display: flex; align-items: center; gap: .55rem; color: #fff; font-weight: 700 }
     .footer-logo {
-      width: 28px; height: 28px; border-radius: 5px;
-      background: rgba(255,255,255,.12);
-      display: grid; place-items: center;
-      font-family: var(--mono); font-size: .72rem; font-weight: 700; color: #fff;
+      width: 30px; height: 30px; flex: none;
+      object-fit: contain;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,.45));
     }
     .footer-copy { font-family: var(--mono); font-size: .72rem; color: rgba(255,255,255,.52); margin-top: .45rem }
     .footer-links { display: flex; gap: .35rem 1.15rem; flex-wrap: wrap; max-width: 560px; justify-content: flex-end }
@@ -1080,7 +1077,7 @@
         "@id": "https://icarlost.github.io/SOPRO-WEB/#org",
         "name": "SOPRO",
         "url": "https://icarlost.github.io/SOPRO-WEB/",
-        "logo": "https://icarlost.github.io/SOPRO-WEB/assets/favicon.svg",
+        "logo": "https://icarlost.github.io/SOPRO-WEB/assets/logo.png",
         "sameAs": ["https://github.com/iCarlost/SOPRO"]
       },
       {
@@ -1190,7 +1187,7 @@
     <div class="container">
       <nav aria-label="Principal">
         <a class="brand" href="#" style="text-decoration:none">
-          <div class="logo-mark">S</div>
+          <img class="logo-mark" src="assets/logo-96.png" alt="" width="34" height="34" />
           <span class="brand-name">SOPRO</span>
         </a>
         <div class="menu" id="menu">
@@ -1800,7 +1797,7 @@
       <div class="footer-inner">
         <div>
           <div class="footer-brand">
-            <div class="footer-logo">S</div>
+            <img class="footer-logo" src="assets/logo-96.png" alt="" width="30" height="30" loading="lazy" />
             SOPRO
           </div>
           <div class="footer-copy">© <span id="year"></span> Carlos Pérez. Todos los derechos reservados.</div>
