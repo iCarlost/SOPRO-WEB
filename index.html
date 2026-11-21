@@ -20,13 +20,16 @@
   <meta property="og:url" content="https://icarlost.github.io/SOPRO-WEB/" />
   <meta property="og:site_name" content="SOPRO" />
   <meta property="og:locale" content="es_MX" />
-  <meta property="og:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image.png" />
+  <meta property="og:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image-v2.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:alt" content="SOPRO: presupuesto de obra pública con APUs, explosión de insumos y programa de obra." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SOPRO · Sistema de Presupuestación de Obra Pública" />
   <meta name="twitter:description" content="Presupuestos, APUs, explosión de insumos, programa de obra y reportes PDF/Excel en una aplicación de escritorio para Windows." />
-  <meta name="twitter:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image.png" />
+  <meta name="twitter:image" content="https://icarlost.github.io/SOPRO-WEB/assets/og-image-v2.png" />
+  <meta name="twitter:image:alt" content="SOPRO: presupuesto de obra pública con APUs, explosión de insumos y programa de obra." />
   <style>
     /* ======================================================================
        index.html · dirección visual «Expediente Técnico».
@@ -669,6 +672,53 @@
     .version-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok) }
     .download-card h3 { font-size: 1.2rem; margin-bottom: .45rem }
     .download-card .dl-desc { font-size: .9rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.2rem }
+    .dl-meta {
+      font-family: var(--mono); font-size: .78rem; color: var(--muted);
+      letter-spacing: .01em; margin-bottom: 1.1rem; line-height: 1.5;
+    }
+    .install-steps {
+      list-style: none; counter-reset: paso;
+      margin-top: 1.2rem; border-top: 1px solid var(--line-soft);
+    }
+    .install-steps li {
+      counter-increment: paso;
+      display: flex; align-items: baseline; gap: .6rem;
+      font-size: .84rem; color: var(--ink-2); line-height: 1.5;
+      padding: .5rem 0; border-bottom: 1px solid var(--line-soft);
+    }
+    .install-steps li::before {
+      content: counter(paso, decimal-leading-zero);
+      font-family: var(--mono); font-size: .7rem; font-weight: 600;
+      color: var(--accent); flex: none;
+    }
+    .sha-box {
+      margin-top: 1rem; padding: 0; /* padding 0 anula el estilo global de FAQ (details) */
+      border: 1px solid var(--line); border-radius: var(--radius-sm);
+      background: var(--surface);
+    }
+    .sha-box summary {
+      cursor: pointer; list-style: none;
+      display: flex; align-items: center; justify-content: flex-start; gap: .5rem;
+      font-family: var(--mono); font-size: .74rem; font-weight: 600;
+      color: var(--ink-2); padding: .6rem .8rem;
+      transition: color .15s ease;
+    }
+    .sha-box summary::-webkit-details-marker { display: none }
+    .sha-box summary::before {
+      content: '▸'; color: var(--accent); font-size: .68rem;
+      transition: transform .18s ease;
+    }
+    .sha-box summary::after { content: none } /* anula el '+' global de FAQ */
+    .sha-box[open] summary::before { transform: rotate(90deg) }
+    .sha-box summary:hover, .sha-box summary:focus-visible { color: var(--accent) }
+    .sha-hint { font-size: .78rem; color: var(--muted); line-height: 1.5; margin: 0; padding: 0 .8rem .35rem }
+    .sha-box code {
+      display: block; margin: 0 .8rem .8rem; padding: .55rem .7rem;
+      background: var(--paper); border: 1px solid var(--line-soft);
+      border-radius: var(--radius-sm);
+      font-family: var(--mono); font-size: .72rem; line-height: 1.6;
+      color: var(--ink-2); overflow-wrap: anywhere; word-break: break-all;
+    }
     .smartscreen-note {
       background: var(--warn-bg);
       border: 1px solid #EAD9B8; border-left: 3px solid var(--warn);
@@ -753,6 +803,7 @@
     .download-support-note a {
       color: var(--accent-ink); font-weight: 600;
       text-decoration: underline; text-underline-offset: 3px;
+      white-space: nowrap; /* mantiene el icono junto al texto en móvil */
     }
     .download-support-note a:hover { color: var(--navy) }
 
@@ -964,7 +1015,7 @@
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Presupuestación de obra pública (APU)",
         "operatingSystem": "Windows 10, Windows 11",
-        "softwareVersion": "1.6.0",
+        "softwareVersion": "1.20.1",
         "inLanguage": "es-MX",
         "license": "https://opensource.org/licenses/MIT",
         "isAccessibleForFree": true,
@@ -1462,6 +1513,7 @@
             </div>
             <h3>Instalador para Windows</h3>
             <p class="dl-desc">Descarga directa desde GitHub Releases. No requiere cuenta ni registro.</p>
+            <p class="dl-meta" id="release-meta" hidden></p>
             <div class="cta">
               <a class="btn btn-accent" id="download-btn" href="https://github.com/iCarlost/SOPRO-Releases/releases/latest" target="_blank" rel="noopener">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10"/></svg>
@@ -1471,6 +1523,16 @@
                 Ver release en GitHub
               </a>
             </div>
+            <ol class="install-steps">
+              <li>Descarga el instalador con el botón de arriba.</li>
+              <li>Ejecútalo y sigue el asistente de instalación.</li>
+              <li>Abre SOPRO y crea tu primer proyecto.</li>
+            </ol>
+            <details class="sha-box" id="sha-box" hidden>
+              <summary>Verificar instalación (SHA-256)</summary>
+              <p class="sha-hint">Compara el hash del archivo descargado con este valor:</p>
+              <code id="release-sha"></code>
+            </details>
             <p class="download-support-note">SOPRO es gratuito y seguirá siéndolo. <a href="#apoyar">☕ Apoya SOPRO voluntariamente</a></p>
             <div class="smartscreen-note">
               Windows puede mostrar advertencia de SmartScreen. Selecciona <strong>«Más información»</strong> → <strong>«Ejecutar de todas formas»</strong>.
@@ -1789,7 +1851,7 @@
     async function loadRelease() {
       const api = "https://api.github.com/repos/iCarlost/SOPRO-Releases/releases/latest";
       const fallback = "https://github.com/iCarlost/SOPRO-Releases/releases/latest";
-      const CACHE_KEY = "sopro-release-v1";
+      const CACHE_KEY = "sopro-release-v2";
       const TTL = 3600000; // 1 hora
 
       function readCache() {
@@ -1834,6 +1896,47 @@
           downloadBtn.href = fallback;
           setLabel("Descargar instalador");
         }
+        renderMeta(info || {});
+      }
+
+      // datos del instalador: tamaño · fecha · SHA-256 (solo si existen)
+      function renderMeta(info) {
+        const metaEl = document.getElementById("release-meta");
+        const shaBox = document.getElementById("sha-box");
+        const shaCode = document.getElementById("release-sha");
+
+        const parts = [];
+        if (typeof info.assetSize === "number" && info.assetSize > 0) {
+          parts.push((info.assetSize / 1e6).toFixed(1) + " MB");
+        }
+        if (info.publishedAt) {
+          const t = Date.parse(info.publishedAt);
+          if (!Number.isNaN(t)) {
+            parts.push(new Intl.DateTimeFormat("es-MX", {
+              day: "numeric", month: "long", year: "numeric", timeZone: "UTC"
+            }).format(new Date(t)));
+          }
+        }
+        if (metaEl) {
+          if (parts.length) {
+            metaEl.textContent = parts.join(" · ");
+            metaEl.hidden = false;
+          } else {
+            metaEl.hidden = true;
+          }
+        }
+
+        if (shaBox && shaCode) {
+          const digest = typeof info.assetDigest === "string" ? info.assetDigest.trim() : "";
+          const hex = digest.startsWith("sha256:") ? digest.slice(7) : digest;
+          if (/^[0-9a-f]{64}$/i.test(hex)) {
+            shaCode.textContent = hex;
+            shaBox.hidden = false;
+          } else {
+            shaBox.hidden = true;
+            shaCode.textContent = "";
+          }
+        }
       }
 
       // reutiliza caché válida sin fetch
@@ -1855,7 +1958,10 @@
           tag,
           assetUrl: asset?.browser_download_url || null,
           assetName: asset?.name || null,
-          htmlUrl: data.html_url || null
+          htmlUrl: data.html_url || null,
+          publishedAt: data.published_at || null,
+          assetSize: typeof asset?.size === "number" ? asset.size : null,
+          assetDigest: asset?.digest || null
         };
         writeCache(info); // solo se cachean respuestas correctas
         render(info);
