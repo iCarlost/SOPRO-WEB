@@ -532,7 +532,7 @@
     /* ─── 10b · lightbox de capturas (diálogo nativo) ───────────────────── */
     html.lb-open { overflow: hidden }
     .lightbox {
-      width: min(960px, calc(100vw - 2rem));
+      width: min(1200px, calc(100vw - 2rem));
       max-height: calc(100dvh - 2rem);
       margin: auto; overflow: auto;
       border: 1px solid var(--line); border-radius: var(--radius);
@@ -563,10 +563,24 @@
     }
     .lb-close:hover { background: var(--navy); color: #fff; border-color: var(--navy) }
     .lb-close svg { width: 14px; height: 14px }
+    .lb-actions { display: flex; align-items: center; gap: .5rem }
+    /* el botón de zoom solo tiene sentido en móvil: en escritorio la captura
+       ya se muestra grande; oculto aquí, visible en la sección ≤720px */
+    .lb-zoom-btn {
+      display: none;
+      width: 44px; height: 44px; flex: none;
+      place-items: center;
+      background: var(--surface); color: var(--ink-2);
+      border: 1px solid var(--line); border-radius: 999px;
+      cursor: pointer; transition: background .15s, color .15s, border-color .15s;
+    }
+    .lb-zoom-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy) }
+    .lb-zoom-btn[aria-pressed="true"] { background: var(--navy); color: #fff; border-color: var(--navy) }
+    .lb-zoom-btn svg { width: 16px; height: 16px }
     .lb-stage { margin: 0 }
     .lb-stage img {
       display: block; margin: 0 auto;
-      max-width: 100%; max-height: min(68vh, 640px);
+      max-width: 100%; max-height: min(72vh, 700px);
       width: auto; height: auto;
       border: 1px solid var(--line); border-radius: 4px;
       background: var(--paper);
@@ -1025,6 +1039,24 @@
       .lb-stage { flex: 1; display: grid; place-items: center; min-height: 0 }
       .lb-stage img { max-height: 100%; max-width: 100%; width: auto }
       .lb-close, .lb-nav { width: 44px; height: 44px }
+      .lb-zoom-btn { display: grid }
+
+      /* captura ampliada: 1:1 dentro del stage desplazable; nada de
+         place-items (recortaría el borde superior/izquierdo) y el foco
+         visible para recorrerla con teclado. Con la ampliación, .lb-inner
+         se fija a la altura del diálogo para que el scroll vertical
+         ocurra dentro del stage, nunca en el diálogo. */
+      .lightbox.lb-zoomed .lb-inner { height: 100% }
+      .lightbox.lb-zoomed .lb-stage {
+        display: block; overflow: auto;
+        /* anula place-items del estado ajustado: con la imagen mayor que el
+           stage, el centrado dejaría el borde izquierdo/superior fuera de
+           alcance (justify-items también gobierna el flujo de bloques) */
+        justify-items: start; align-items: start;
+        overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+      }
+      .lightbox.lb-zoomed .lb-stage img { max-width: none; max-height: none; margin: 0 }
+      .lb-stage:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
     }
 
     /* ─── 21 · accesibilidad · movimiento reducido ──────────────────────── */
@@ -1117,7 +1149,23 @@
             "name": "¿Dónde se guardan mis proyectos?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "SOPRO trabaja con archivos de base de datos locales (.db) por proyecto. Conservas el control total de tus archivos y puedes respaldarlos como cualquier otro archivo."
+              "text": "Los proyectos se guardan como archivos .soproproj en Documentos\\SOPRO\\Proyectos; el catálogo maestro y los reportes, por defecto en Documentos\\SOPRO. Los registros y cachés están en AppData\\Local\\SOPRO. Puedes respaldarlos como cualquier otro archivo."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cómo actualizo SOPRO?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SOPRO comprueba si hay una versión nueva al arrancar y, si existe, ofrece abrir la descarga. Ejecuta el instalador sobre la versión anterior: no hace falta desinstalar y tus proyectos y preferencias se conservan."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué pasa si desinstalo SOPRO?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Se elimina el programa y la asociación de archivos .soproproj, pero se conservan tus proyectos, catálogo, reportes y registros. Antes de desinstalar, es recomendable respaldar tus archivos."
             }
           },
           {
@@ -1673,7 +1721,15 @@
           </details>
           <details class="reveal">
             <summary>¿Dónde se guardan mis proyectos?</summary>
-            <p>SOPRO trabaja con archivos de base de datos locales (.db) por proyecto. Conservas el control total de tus archivos y puedes respaldarlos como cualquier otro archivo.</p>
+            <p>Los proyectos se guardan como archivos .soproproj en Documentos\SOPRO\Proyectos; el catálogo maestro y los reportes, por defecto en Documentos\SOPRO. Los registros y cachés están en AppData\Local\SOPRO. Puedes respaldarlos como cualquier otro archivo.</p>
+          </details>
+          <details class="reveal">
+            <summary>¿Cómo actualizo SOPRO?</summary>
+            <p>SOPRO comprueba si hay una versión nueva al arrancar y, si existe, ofrece abrir la descarga. Ejecuta el instalador sobre la versión anterior: no hace falta desinstalar y tus proyectos y preferencias se conservan.</p>
+          </details>
+          <details class="reveal">
+            <summary>¿Qué pasa si desinstalo SOPRO?</summary>
+            <p>Se elimina el programa y la asociación de archivos .soproproj, pero se conservan tus proyectos, catálogo, reportes y registros. Antes de desinstalar, es recomendable respaldar tus archivos.</p>
           </details>
           <details class="reveal">
             <summary>¿SOPRO es compatible con OPUS CMS?</summary>
@@ -1713,11 +1769,16 @@
     <div class="lb-inner">
       <div class="lb-head">
         <span class="lb-title" id="lb-title">Captura ampliada</span>
-        <button class="lb-close" id="lb-close" type="button" aria-label="Cerrar vista ampliada">
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
-        </button>
+        <div class="lb-actions">
+          <button class="lb-zoom-btn" id="lb-zoom" type="button" aria-pressed="false" aria-label="Ampliar captura">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.4"/><path d="M10.2 10.2L14 14M7 5v4M5 7h4"/></svg>
+          </button>
+          <button class="lb-close" id="lb-close" type="button" aria-label="Cerrar vista ampliada">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+          </button>
+        </div>
       </div>
-      <figure class="lb-stage">
+      <figure class="lb-stage" id="lb-stage" tabindex="-1">
         <img id="lb-img" alt="" />
       </figure>
       <div class="lb-bar">
@@ -1812,6 +1873,8 @@
       const prevBtn = document.getElementById("lb-prev");
       const nextBtn = document.getElementById("lb-next");
       const closeBtn = document.getElementById("lb-close");
+      const zoomBtn = document.getElementById("lb-zoom");
+      const stageEl = document.getElementById("lb-stage");
 
       // cada [data-lb] es un slide; el disparador declara su imagen completa
       // con data-lb-src y su descripción con data-lb-alt (así el modal siempre
@@ -1830,6 +1893,18 @@
 
       let index = 0;
       let lastTrigger = null;
+      let zoomed = false;
+
+      // precarga acotada: cada WebP grande se pide una sola vez (Set) y solo
+      // cuando el usuario se acerca a un disparador o navega con el modal
+      // abierto; nunca se precargan las cinco al cargar la página
+      const preloaded = new Set();
+      function preload(i) {
+        const s = slides[i];
+        if (!s || !s.src || preloaded.has(i)) return;
+        preloaded.add(i);
+        new Image().src = s.src; // petición en segundo plano, no bloquea
+      }
 
       function render() {
         const s = slides[index];
@@ -1840,6 +1915,13 @@
         const multi = slides.length > 1;
         prevBtn.hidden = !multi;
         nextBtn.hidden = !multi;
+        // al abrir o cambiar de slide, calienta el vecino de cada lado
+        preload(index);
+        preload((index + 1) % slides.length);
+        preload((index - 1 + slides.length) % slides.length);
+        // el slide nuevo empieza arriba: nada de scroll heredado del zoom
+        stageEl.scrollTop = 0;
+        stageEl.scrollLeft = 0;
       }
 
       function open(trigger) {
@@ -1855,9 +1937,44 @@
         if (dlg.open) dlg.close();
       }
 
-      triggers.forEach(btn => btn.addEventListener("click", () => open(btn)));
+      triggers.forEach((btn, i) => {
+        btn.addEventListener("click", () => open(btn));
+        const warm = () => preload(i);
+        btn.addEventListener("pointerenter", warm);
+        btn.addEventListener("focus", warm);
+        btn.addEventListener("touchstart", warm, { passive: true });
+      });
 
       closeBtn.addEventListener("click", close);
+
+      // zoom real (móvil): la captura se muestra a escala 1:1 dentro del
+      // stage, que pasa a desplazarse con el gesto o las flechas del teclado;
+      // el botón comunica el estado y devuelve el foco al ajustar
+      function setZoom(on) {
+        zoomed = on;
+        dlg.classList.toggle("lb-zoomed", on);
+        zoomBtn.setAttribute("aria-pressed", String(on));
+        zoomBtn.setAttribute("aria-label", on ? "Ajustar captura" : "Ampliar captura");
+        // mientras está ampliada, la navegación se retira: el gesto y el
+        // teclado desplazan la imagen, no cambian de captura
+        prevBtn.disabled = on;
+        nextBtn.disabled = on;
+        if (on) {
+          stageEl.tabIndex = 0;
+          stageEl.setAttribute("role", "region");
+          stageEl.setAttribute("aria-label", "Captura ampliada, desplaza para explorarla");
+          stageEl.focus();
+        } else {
+          stageEl.scrollTop = 0;
+          stageEl.scrollLeft = 0;
+          stageEl.removeAttribute("aria-label");
+          stageEl.removeAttribute("role");
+          stageEl.tabIndex = -1;
+          if (dlg.open && document.activeElement === stageEl) zoomBtn.focus();
+        }
+      }
+
+      zoomBtn.addEventListener("click", () => setZoom(!zoomed));
 
       prevBtn.addEventListener("click", () => {
         index = (index - 1 + slides.length) % slides.length;
@@ -1874,21 +1991,26 @@
       // Escape cierra de forma nativa (evento cancel → close);
       // al cerrar se libera el scroll y se devuelve el foco al disparador
       dlg.addEventListener("close", () => {
+        if (zoomed) setZoom(false);
         document.documentElement.classList.remove("lb-open");
         if (lastTrigger) lastTrigger.focus();
       });
 
-      // flechas del teclado: solo con más de una captura
+      // flechas del teclado: solo con más de una captura; ampliada, las
+      // flechas quedan libres para desplazar la imagen dentro del stage
       dlg.addEventListener("keydown", (e) => {
+        if (zoomed) return;
         if (slides.length < 2) return;
         if (e.key === "ArrowRight") { e.preventDefault(); index = (index + 1) % slides.length; render(); }
         if (e.key === "ArrowLeft") { e.preventDefault(); index = (index - 1 + slides.length) % slides.length; render(); }
       });
 
-      // swipe en móvil: solo con más de una captura
+      // swipe en móvil: solo con más de una captura; ampliada, el gesto
+      // desplaza la imagen y no navega
       let touchX = null;
       dlg.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
       dlg.addEventListener("touchend", (e) => {
+        if (zoomed) { touchX = null; return; }
         if (touchX === null || slides.length < 2) { touchX = null; return; }
         const dx = e.changedTouches[0].clientX - touchX;
         if (Math.abs(dx) > 40) {
